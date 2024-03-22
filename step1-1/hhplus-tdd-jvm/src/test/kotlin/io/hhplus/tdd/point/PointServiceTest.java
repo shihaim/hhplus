@@ -1,7 +1,7 @@
 package io.hhplus.tdd.point;
 
-import io.hhplus.tdd.database.PointHistoryTable;
-import io.hhplus.tdd.database.UserPointTable;
+import io.hhplus.tdd.point.repository.PointRepositoryImpl;
+import io.hhplus.tdd.point.service.PointServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -13,22 +13,19 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.ThrowableAssert.ThrowingCallable;
-import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class PointServiceTest {
 
     @InjectMocks
-    PointService pointService;
+    private PointServiceImpl pointService;
 
     @Mock
-    UserPointTable userPointTable;
-
-    @Mock
-    PointHistoryTable pointHistoryTable;
+    PointRepositoryImpl pointRepository;
 
     /**
-     * UserPointTable에서 조회시 null인 경우 새로운 객체를 생성하므로 id 조회 실패에 대한 실패 테스트는 작성 X
+     * pointRepository에서 조회시 null인 경우 새로운 객체를 생성하므로 id 조회 실패에 대한 실패 테스트는 작성 X
      */
     @Test
     void 포인트조회성공() {
@@ -36,7 +33,7 @@ class PointServiceTest {
         Long userId = 1L;
         Long point = 10000L;
         UserPoint userPoint = new UserPoint(userId, point, System.currentTimeMillis());
-        doReturn(userPoint).when(userPointTable).selectById(userId);
+        doReturn(userPoint).when(pointRepository).selectById(userId);
 
         //when
         UserPoint findUserPoint = pointService.point(userId);
@@ -75,11 +72,11 @@ class PointServiceTest {
         Long point = 10000L;
         long updateMillis = System.currentTimeMillis();
         UserPoint userPoint = new UserPoint(userId, point, updateMillis);
-        doReturn(userPoint).when(userPointTable).selectById(userId);
+        doReturn(userPoint).when(pointRepository).selectById(userId);
 
         Long chargePoint = 5000L;
         UserPoint chargingPoint = new UserPoint(userId, userPoint.getPoint() + chargePoint, updateMillis);
-        doReturn(chargingPoint).when(userPointTable).insertOrUpdate(userId, userPoint.getPoint() + chargePoint);
+        doReturn(chargingPoint).when(pointRepository).insertOrUpdate(userId, userPoint.getPoint() + chargePoint);
 
         //when
         UserPoint result = pointService.charge(userId, chargePoint);
@@ -103,15 +100,15 @@ class PointServiceTest {
         Long point = 10000L;
         long updateMillis = System.currentTimeMillis();
         UserPoint userPoint = new UserPoint(userId, point, updateMillis);
-        doReturn(userPoint).when(userPointTable).selectById(userId);
+        doReturn(userPoint).when(pointRepository).selectById(userId);
 
         Long chargePoint = 5000L;
         UserPoint chargingUserPoint = new UserPoint(userId, point + chargePoint, updateMillis);
-        doReturn(chargingUserPoint).when(userPointTable).insertOrUpdate(userId, point + chargePoint);
+        doReturn(chargingUserPoint).when(pointRepository).insertOrUpdate(userId, point + chargePoint);
 
         TransactionType type = TransactionType.CHARGE;
         PointHistory pointHistory = new PointHistory(-1L, userId, type, chargePoint, chargingUserPoint.getUpdateMillis());
-        doReturn(pointHistory).when(pointHistoryTable).insert(userId, chargePoint, type, chargingUserPoint.getUpdateMillis());
+        doReturn(pointHistory).when(pointRepository).insert(userId, chargePoint, type, chargingUserPoint.getUpdateMillis());
 
         //when
         pointService.charge(userId, chargePoint);
@@ -147,7 +144,7 @@ class PointServiceTest {
         Long point = 10000L;
         long updateMillis = System.currentTimeMillis();
         UserPoint userPoint = new UserPoint(userId, point, updateMillis);
-        doReturn(userPoint).when(userPointTable).selectById(userId);
+        doReturn(userPoint).when(pointRepository).selectById(userId);
 
         //when
         Long usePoint = 10001L;
@@ -172,15 +169,15 @@ class PointServiceTest {
         Long point = 10000L;
         long updateMillis = System.currentTimeMillis();
         UserPoint userPoint = new UserPoint(userId, point, updateMillis);
-        doReturn(userPoint).when(userPointTable).selectById(userId);
+        doReturn(userPoint).when(pointRepository).selectById(userId);
 
         Long usePoint = 10000L;
         UserPoint usingUserPoint = new UserPoint(userId, userPoint.getPoint() - usePoint, updateMillis);
-        doReturn(usingUserPoint).when(userPointTable).insertOrUpdate(userId, userPoint.getPoint() - usePoint);
+        doReturn(usingUserPoint).when(pointRepository).insertOrUpdate(userId, userPoint.getPoint() - usePoint);
 
         TransactionType type = TransactionType.USE;
         PointHistory pointHistory = new PointHistory(-1L, userId, type, usePoint, updateMillis);
-        doReturn(pointHistory).when(pointHistoryTable).insert(userId, usePoint, type, updateMillis);
+        doReturn(pointHistory).when(pointRepository).insert(userId, usePoint, type, updateMillis);
 
         //when
         pointService.use(userId, usePoint);
@@ -198,16 +195,16 @@ class PointServiceTest {
         Long point = 10000L;
         long updateMillis = System.currentTimeMillis();
         UserPoint userPoint = new UserPoint(userId, point, updateMillis);
-        doReturn(userPoint).when(userPointTable).selectById(userId);
+        doReturn(userPoint).when(pointRepository).selectById(userId);
 
 
         Long usePoint = 10000L;
         UserPoint usingUserPoint = new UserPoint(userId, userPoint.getPoint() - usePoint, updateMillis);
-        doReturn(usingUserPoint).when(userPointTable).insertOrUpdate(userId, userPoint.getPoint() - usePoint);
+        doReturn(usingUserPoint).when(pointRepository).insertOrUpdate(userId, userPoint.getPoint() - usePoint);
 
         TransactionType type = TransactionType.USE;
         PointHistory pointHistory = new PointHistory(-1L, userId, type, usePoint, updateMillis);
-        doReturn(pointHistory).when(pointHistoryTable).insert(userId, usePoint, type, updateMillis);
+        doReturn(pointHistory).when(pointRepository).insert(userId, usePoint, type, updateMillis);
 
         //when
         UserPoint result = pointService.use(userId, usePoint);
@@ -225,7 +222,7 @@ class PointServiceTest {
     void 포인트내역조회성공_충전및사용_내역이_없음() {
         //given
         Long userId = 1L;
-        doReturn(List.of()).when(pointHistoryTable).selectAllByUserId(userId);
+        doReturn(List.of()).when(pointRepository).selectAllByUserId(userId);
 
         //when
         List<PointHistory> findPointHistory = pointService.history(userId);
@@ -244,7 +241,7 @@ class PointServiceTest {
         doReturn(List.of(
                 new PointHistory(1L, 1L, TransactionType.CHARGE, 5000L, System.currentTimeMillis()),
                 new PointHistory(2L, 1L, TransactionType.USE, 5000L, System.currentTimeMillis())
-        )).when(pointHistoryTable).selectAllByUserId(userId);
+        )).when(pointRepository).selectAllByUserId(userId);
 
         //when
         List<PointHistory> result = pointService.history(userId);
