@@ -22,10 +22,12 @@ public class PointService {
     }
 
     public UserPoint point(final Long userId) {
+        logger.info("call point method");
         return userPointTable.selectById(userId);
     }
 
     public UserPoint charge(final Long userId, final Long point) {
+        logger.info("call charge method");
         if (point < 0) {
             throw new IllegalArgumentException("충전할 포인트가 음수일 수 없습니다.");
         }
@@ -33,12 +35,15 @@ public class PointService {
         final UserPoint userPoint = userPointTable.selectById(userId);
         final Long chargePoint = userPoint.getPoint() + point;
 
-        pointHistoryTable.insert(userId, point, TransactionType.CHARGE, System.currentTimeMillis());
+        UserPoint result = userPointTable.insertOrUpdate(userId, chargePoint);
 
-        return userPointTable.insertOrUpdate(userId, chargePoint);
+        pointHistoryTable.insert(userId, point, TransactionType.CHARGE, result.getUpdateMillis());
+
+        return result;
     }
 
     public UserPoint use(final Long userId, final Long usePoint) {
+        logger.info("call use method");
         if (usePoint < 0) {
             throw new IllegalArgumentException("사용할 포인트가 음수일 수 없습니다.");
         }
@@ -50,12 +55,15 @@ public class PointService {
 
         final Long restPoint = findUserPoint.getPoint() - usePoint;
 
-        pointHistoryTable.insert(userId, usePoint, TransactionType.USE, System.currentTimeMillis());
+        UserPoint result = userPointTable.insertOrUpdate(userId, restPoint);
 
-        return userPointTable.insertOrUpdate(userId, restPoint);
+        pointHistoryTable.insert(result.getId(), usePoint, TransactionType.USE, result.getUpdateMillis());
+
+        return result;
     }
 
     public List<PointHistory> history(final Long userId) {
+        logger.info("call history method");
         return pointHistoryTable.selectAllByUserId(userId);
     }
 }
