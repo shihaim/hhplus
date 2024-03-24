@@ -14,11 +14,11 @@ public class InitData {
     @Autowired
     private LectureRepository lectureRepository;
 
-//    @PostConstruct
+    @PostConstruct
     void initData() {
         Lecture lecture = Lecture.builder()
                 .lectureName("항해플러스 특강")
-                .quantity(30)
+                .quantity(2)
                 .openDate(LocalDateTime.now())
                 .build();
         lectureRepository.save(lecture);

@@ -31,14 +31,19 @@ public class Lecture {
     @OneToMany(mappedBy = "lecture")
     private List<LectureReservation> lectureReservations = new ArrayList<>();
 
+    @Builder
+    public Lecture(String lectureName, int quantity, LocalDateTime openDate) {
+        this.lectureName = lectureName;
+        this.quantity = quantity;
+        this.openDate = openDate;
+    }
+
     public void reduceQuantity() {
         if (quantity - 1 < 0) throw new LectureReservationException(LectureReservationErrorResult.CLOESED_LECTURE_RESERVATION);
         quantity -= 1;
     }
 
-    @Builder
-    public Lecture(String lectureName, int quantity, LocalDateTime openDate) {
-        this.lectureName = lectureName;
+    public void update(int quantity, LocalDateTime openDate) {
         this.quantity = quantity;
         this.openDate = openDate;
     }

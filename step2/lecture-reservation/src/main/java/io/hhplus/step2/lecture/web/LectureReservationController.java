@@ -1,13 +1,18 @@
 package io.hhplus.step2.lecture.web;
 
 import io.hhplus.step2.lecture.common.ReservationResponse;
+import io.hhplus.step2.lecture.domain.Lecture;
+import io.hhplus.step2.lecture.repository.component.LectureRepository;
 import io.hhplus.step2.lecture.service.LectureReservationManager;
 import io.hhplus.step2.lecture.web.dto.ReservationCreateDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
 
 @RestController
 @RequiredArgsConstructor
@@ -15,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 public class LectureReservationController {
 
     private final LectureReservationManager manager;
+    private final LectureRepository lectureRepository;
 
     @PostMapping("/{userId}")
     public ResponseEntity<ReservationResponse> reservation(
@@ -31,5 +37,14 @@ public class LectureReservationController {
     ) {
         String result = manager.findReservedLecture(userId);
         return ResponseEntity.ok(ReservationResponse.create(result, HttpStatus.OK));
+    }
+
+    @PatchMapping("/{lectureId}")
+    @Transactional
+    public void updateLecture(@PathVariable Long lectureId,
+                              @RequestParam int quantity,
+                              @RequestParam LocalDateTime openDate) {
+        Lecture lecture = lectureRepository.findById(lectureId).get();
+        lecture.update(quantity, openDate);
     }
 }
