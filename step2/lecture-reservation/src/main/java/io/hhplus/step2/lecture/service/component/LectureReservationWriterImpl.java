@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Component
 @Transactional
@@ -17,6 +18,7 @@ import java.time.LocalDateTime;
 public class LectureReservationWriterImpl implements LectureReservationWriter {
 
     private final LectureReservationCoreRepository repository;
+    private static final DateTimeFormatter yyyyMMddHHFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH");
 
     /**
      * 특강 신청
@@ -30,7 +32,14 @@ public class LectureReservationWriterImpl implements LectureReservationWriter {
         Lecture lecture = repository.findLectureById(lectureId)
                 .orElseThrow(() -> new LectureReservationException(LectureReservationErrorResult.LECTURE_NOT_FOUND));
 
-        if (reservationDate.isBefore(lecture.getOpenDate()))
+        // 0보다 큰 경우
+        // (openDate { 2024-04-20 13:00:00 }) compareTo (reservationDate { 2024-04-20 12:59:59 }) = 1
+        // 0보다 작거나 같은 경우
+        // (openDate { 2024-04-20 13:00:00 }) compareTo (reservationDate { 2024-04-20 13:59:59 }) = 0
+        // (openDate { 2024-04-20 13:00:00 }) compareTo (reservationDate { 2024-04-20 14:00:00 }) = -1
+        String convertOpenDate = lecture.getOpenDate().format(yyyyMMddHHFormatter);
+        String convertReservationDate = reservationDate.format(yyyyMMddHHFormatter);
+        if (convertOpenDate.compareTo(convertReservationDate) > 0)
             throw new LectureReservationException(LectureReservationErrorResult.UNABLE_TO_RESERVE_LECTURE);
 
         // 특강 수량 minus
