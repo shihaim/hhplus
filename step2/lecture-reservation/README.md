@@ -33,7 +33,7 @@ JPA에서 제공해주는 ```@Lock```을 이용하여 ```select for update```방
 
 
 ## ERD
-![erd](https://github.com/shihaim/hhplus/tree/main/step2/lecture-reservation/특강_ERD.png)
+![LectureReservation ERD](https://github.com/shihaim/hhplus/tree/main/step2/lecture-reservation/step2_ERD.png)
 
 ---
 ### 추가 요구사항

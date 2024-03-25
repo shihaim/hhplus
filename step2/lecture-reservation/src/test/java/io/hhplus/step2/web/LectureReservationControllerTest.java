@@ -5,7 +5,7 @@ import com.google.gson.GsonBuilder;
 import io.hhplus.step2.lecture.common.ReservationResponse;
 import io.hhplus.step2.lecture.exception.GlobalExceptionHandler;
 import io.hhplus.step2.lecture.web.LectureReservationController;
-import io.hhplus.step2.lecture.web.dto.ReservationCreateDto;
+import io.hhplus.step2.lecture.web.dto.CreateLectureReservationDto;
 import io.hhplus.step2.sevice.stub.LectureReservationManagerStub;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -71,7 +71,7 @@ public class LectureReservationControllerTest {
         //when
         ResultActions resultActions = mockMvc.perform(
                 MockMvcRequestBuilders.post(url)
-                        .content(gson.toJson(new ReservationCreateDto(lectureId, reservationDate)))
+                        .content(gson.toJson(new CreateLectureReservationDto(lectureId, reservationDate)))
                         .contentType(MediaType.APPLICATION_JSON)
         );
 
@@ -89,7 +89,7 @@ public class LectureReservationControllerTest {
         // when
         ResultActions resultActions = mockMvc.perform(
                 MockMvcRequestBuilders.post(url)
-                        .content(gson.toJson(new ReservationCreateDto(lectureId, reservationDate)))
+                        .content(gson.toJson(new CreateLectureReservationDto(lectureId, reservationDate)))
                         .contentType(MediaType.APPLICATION_JSON)
         );
 
@@ -122,7 +122,7 @@ public class LectureReservationControllerTest {
         //when
         ResultActions resultActions = mockMvc.perform(
                 MockMvcRequestBuilders.post(url)
-                        .content(gson.toJson(new ReservationCreateDto(lectureId, reservationDate)))
+                        .content(gson.toJson(new CreateLectureReservationDto(lectureId, reservationDate)))
                         .contentType(MediaType.APPLICATION_JSON)
         );
 

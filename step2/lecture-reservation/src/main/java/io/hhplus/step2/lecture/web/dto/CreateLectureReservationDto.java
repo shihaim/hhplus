@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Positive;
 
 import java.time.LocalDateTime;
 
-public record ReservationCreateDto(
+public record CreateLectureReservationDto(
         @NotNull
         @Positive
         Long lectureId,

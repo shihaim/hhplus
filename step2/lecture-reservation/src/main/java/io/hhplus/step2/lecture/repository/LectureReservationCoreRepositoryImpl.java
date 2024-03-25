@@ -7,6 +7,8 @@ import io.hhplus.step2.lecture.repository.component.LectureReservationRepository
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -29,5 +31,18 @@ public class LectureReservationCoreRepositoryImpl implements LectureReservationC
     @Override
     public Long saveLectureReservation(final LectureReservation lectureReservation) {
         return lectureReservationRepository.save(lectureReservation).getId();
+    }
+
+    @Override
+    public List<Lecture> findLectureList(LocalDateTime searchFromDate, LocalDateTime searchToDate) {
+        if (searchFromDate != null && searchToDate != null) {
+            return lectureRepository.findLecturesByOpenDateBetween(searchFromDate, searchToDate);
+        } else if (searchToDate != null) {
+            return lectureRepository.findLecturesByOpenDateBefore(searchToDate);
+        } else if (searchFromDate != null) {
+            return lectureRepository.findLecturesByOpenDateAfter(searchFromDate);
+        } else {
+            return lectureRepository.findAll();
+        }
     }
 }

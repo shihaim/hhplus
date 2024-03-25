@@ -2,6 +2,7 @@ package io.hhplus.step2.lecture.web;
 
 import io.hhplus.step2.lecture.domain.Lecture;
 import io.hhplus.step2.lecture.repository.component.LectureRepository;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,7 @@ public class LectureController {
 
     private final LectureRepository lectureRepository;
 
+    /** 특강 변경을 위한 임의용 */
     @PatchMapping("/{lectureId}")
     @Transactional
     public void updateLecture(@PathVariable Long lectureId,

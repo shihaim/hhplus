@@ -19,9 +19,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class LectureReservationServiceTest {
 
-    private final LectureReservationCoreRepositoryStub repository = new LectureReservationCoreRepositoryStub();
-    private final LectureReservationReader readerSut = new LectureReservationReaderImpl(repository);
-    private final LectureReservationWriter writerSut = new LectureReservationWriterImpl(repository);
+    private final LectureReservationCoreRepositoryStub repositoryStub = new LectureReservationCoreRepositoryStub();
+    private final LectureReservationReader readerSut = new LectureReservationReaderImpl(repositoryStub);
+    private final LectureReservationWriter writerSut = new LectureReservationWriterImpl(repositoryStub);
 
     /**
      * [특강 신청]
@@ -58,15 +58,15 @@ public class LectureReservationServiceTest {
 
         // 특강 저장
         Lecture saveLecture = new Lecture(lectureId, "항해플러스 특강", 30, LocalDateTime.of(2024, 4, 20, 13, 0));
-        repository.saveLecture(saveLecture);
+        repositoryStub.saveLecture(saveLecture);
 
         // 특강 정보 조회
-        Lecture lecture = repository.findLectureById(lectureId).get();
+        Lecture lecture = repositoryStub.findLectureById(lectureId).get();
 
         // 특강 신청 정보 저장
         LectureReservation lectureReservation = new LectureReservation(userId, lectureId, lecture);
         lecture.getLectureReservations().add(lectureReservation);
-        repository.saveLectureReservation(lectureReservation);
+        repositoryStub.saveLectureReservation(lectureReservation);
 
         LocalDateTime reservationDate = LocalDateTime.of(2024, 4, 20, 13, 0);
 
@@ -89,7 +89,7 @@ public class LectureReservationServiceTest {
 
         // 특강 저장
         Lecture saveLecture = new Lecture(lectureId, "항해플러스 특강", 30, LocalDateTime.of(2024, 4, 20, 13, 0));
-        repository.saveLecture(saveLecture);
+        repositoryStub.saveLecture(saveLecture);
 
         // 4월 20일 토요일 12시 59분 59초에 실행
         LocalDateTime reservationDate = LocalDateTime.of(2024, 4, 20, 12, 59, 59);
@@ -113,10 +113,10 @@ public class LectureReservationServiceTest {
 
         // 특강 저장
         Lecture saveLecture = new Lecture(lectureId, "항해플러스 특강", 30, LocalDateTime.of(2024, 4, 20, 13, 0));
-        repository.saveLecture(saveLecture);
+        repositoryStub.saveLecture(saveLecture);
 
         // 특강 정보 조회 및 특강 신청 마감됐음을 가정
-        Lecture findLecture = repository.findLectureById(lectureId).get();
+        Lecture findLecture = repositoryStub.findLectureById(lectureId).get();
         for (int i = 0; i < 30; i++) {
             findLecture.reduceQuantity();
         }
@@ -141,13 +141,13 @@ public class LectureReservationServiceTest {
 
         // 특강 저장
         Lecture saveLecture = new Lecture(lectureId, "항해플러스 특강", 30, LocalDateTime.of(2024, 4, 20, 13, 0));
-        repository.saveLecture(saveLecture);
+        repositoryStub.saveLecture(saveLecture);
 
         // when
         LocalDateTime reservationDate = LocalDateTime.of(2024, 4, 20, 13, 0);
         Long savedLectureReservation = writerSut.lectureReservation(userId, lectureId, reservationDate);
 
-        LectureReservation findLectureReservation = repository.findReservedLectureByUserId(userId).get();
+        LectureReservation findLectureReservation = repositoryStub.findReservedLectureByUserId(userId).get();
         Lecture findLecture = findLectureReservation.getLecture();
 
         // then
@@ -173,11 +173,11 @@ public class LectureReservationServiceTest {
 
         // 특강 저장
         Lecture saveLecture = new Lecture(lectureId, "항해플러스 특강", 30, LocalDateTime.of(2024, 4, 20, 13, 0));
-        repository.saveLecture(saveLecture);
+        repositoryStub.saveLecture(saveLecture);
 
         //특강 신청 정보 저장
         LectureReservation saveLectureReservation = new LectureReservation(userId, saveLecture);
-        repository.saveLectureReservation(saveLectureReservation);
+        repositoryStub.saveLectureReservation(saveLectureReservation);
 
         // when
         String result = readerSut.findReservedLecture(2L);
@@ -195,11 +195,11 @@ public class LectureReservationServiceTest {
 
         // 특강 저장
         Lecture saveLecture = new Lecture(lectureId, "항해플러스 특강", 30, LocalDateTime.of(2024, 4, 20, 13, 0));
-        repository.saveLecture(saveLecture);
+        repositoryStub.saveLecture(saveLecture);
 
         //특강 신청 정보 저장
         LectureReservation saveLectureReservation = new LectureReservation(userId, saveLecture);
-        repository.saveLectureReservation(saveLectureReservation);
+        repositoryStub.saveLectureReservation(saveLectureReservation);
 
         // when
         String result = readerSut.findReservedLecture(1L);

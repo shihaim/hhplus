@@ -5,12 +5,12 @@ import io.hhplus.step2.lecture.domain.LectureReservation;
 import io.hhplus.step2.lecture.exception.LectureReservationErrorResult;
 import io.hhplus.step2.lecture.exception.LectureReservationException;
 import io.hhplus.step2.lecture.repository.LectureReservationCoreRepository;
+import io.hhplus.step2.lecture.service.util.DateFormattingConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 @Component
 @Transactional
@@ -18,7 +18,6 @@ import java.time.format.DateTimeFormatter;
 public class LectureReservationWriterImpl implements LectureReservationWriter {
 
     private final LectureReservationCoreRepository repository;
-    private static final DateTimeFormatter yyyyMMddHHFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH");
 
     /**
      * 특강 신청
@@ -37,8 +36,8 @@ public class LectureReservationWriterImpl implements LectureReservationWriter {
         // 0보다 작거나 같은 경우
         // (openDate { 2024-04-20 13:00:00 }) compareTo (reservationDate { 2024-04-20 13:59:59 }) = 0
         // (openDate { 2024-04-20 13:00:00 }) compareTo (reservationDate { 2024-04-20 14:00:00 }) = -1
-        String convertOpenDate = lecture.getOpenDate().format(yyyyMMddHHFormatter);
-        String convertReservationDate = reservationDate.format(yyyyMMddHHFormatter);
+        String convertOpenDate = DateFormattingConverter.convert(lecture.getOpenDate());
+        String convertReservationDate = DateFormattingConverter.convert(reservationDate);
         if (convertOpenDate.compareTo(convertReservationDate) > 0)
             throw new LectureReservationException(LectureReservationErrorResult.UNABLE_TO_RESERVE_LECTURE);
 
