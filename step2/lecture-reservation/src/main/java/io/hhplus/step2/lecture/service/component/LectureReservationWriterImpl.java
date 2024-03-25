@@ -30,7 +30,7 @@ public class LectureReservationWriterImpl implements LectureReservationWriter {
         Lecture lecture = repository.findLectureById(lectureId)
                 .orElseThrow(() -> new LectureReservationException(LectureReservationErrorResult.LECTURE_NOT_FOUND));
 
-        if (!lecture.getOpenDate().isBefore(reservationDate))
+        if (reservationDate.isBefore(lecture.getOpenDate()))
             throw new LectureReservationException(LectureReservationErrorResult.UNABLE_TO_RESERVE_LECTURE);
 
         // 특강 수량 minus

@@ -14,7 +14,7 @@ public class InitData {
     @Autowired
     private LectureRepository lectureRepository;
 
-    @PostConstruct
+//    @PostConstruct
     void initData() {
         Lecture lecture = Lecture.builder()
                 .lectureName("항해플러스 특강")

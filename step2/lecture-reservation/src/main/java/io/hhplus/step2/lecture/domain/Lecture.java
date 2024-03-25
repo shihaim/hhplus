@@ -38,6 +38,21 @@ public class Lecture {
         this.openDate = openDate;
     }
 
+    public Lecture(Long id, String lectureName, int quantity, LocalDateTime openDate) {
+        this.id = id;
+        this.lectureName = lectureName;
+        this.quantity = quantity;
+        this.openDate = openDate;
+    }
+
+    public Lecture(Long id, String lectureName, int quantity, LocalDateTime openDate, List<LectureReservation> lectureReservations) {
+        this.id = id;
+        this.lectureName = lectureName;
+        this.quantity = quantity;
+        this.openDate = openDate;
+        this.lectureReservations = lectureReservations;
+    }
+
     public void reduceQuantity() {
         if (quantity - 1 < 0) throw new LectureReservationException(LectureReservationErrorResult.CLOESED_LECTURE_RESERVATION);
         quantity -= 1;

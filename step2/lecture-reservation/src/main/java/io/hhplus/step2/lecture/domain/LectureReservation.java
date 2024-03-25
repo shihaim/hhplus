@@ -28,4 +28,15 @@ public class LectureReservation {
         this.userId = userId;
         this.lecture = lecture;
     }
+
+    public LectureReservation(Long id, Long userId) {
+        this.id = id;
+        this.userId = userId;
+    }
+
+    public LectureReservation(Long id, Long userId, Lecture lecture) {
+        this.id = id;
+        this.userId = userId;
+        this.lecture = lecture;
+    }
 }
