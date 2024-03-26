@@ -4,8 +4,10 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import io.hhplus.step2.lecture.common.ReservationResponse;
 import io.hhplus.step2.lecture.exception.GlobalExceptionHandler;
+import io.hhplus.step2.lecture.service.dto.FindLectureDto;
 import io.hhplus.step2.lecture.web.LectureReservationController;
 import io.hhplus.step2.lecture.web.dto.CreateLectureReservationDto;
+import io.hhplus.step2.lecture.web.dto.LectureSearchDto;
 import io.hhplus.step2.sevice.stub.LectureReservationManagerStub;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,6 +29,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.stream.Stream;
 
 import static org.mockito.Mockito.doReturn;
@@ -57,7 +60,7 @@ public class LectureReservationControllerTest {
     /**
      * [특강 신청]
      * case1: 파라미터 검증( PathVariable, ReservationCreateDto )
-     * case2: 특강 신청 성공
+     * case2: 특강 신청 API 성공
      */
 
     @Test
@@ -148,7 +151,7 @@ public class LectureReservationControllerTest {
     /**
      * [특강 신청 완료 여부 조회]
      * case3: 파라미터 검증( PathVariable )
-     * case4: 특강 신청 성공 (성공했음/실패했음)
+     * case4: 특강 신청 API 성공 (성공했음/실패했음)
      */
 
     @Test
@@ -218,5 +221,38 @@ public class LectureReservationControllerTest {
         String content = (String) result.getContent();
 
         return content;
+    }
+
+    /**
+     * [특강 목록 조회]
+     * case7: 특강 목록 조회 API 성공 (파라미터 검증 X - Null 허용)
+     */
+
+    @Test
+    @DisplayName("특강목록조회성공")
+    void case7() throws Exception {
+        // given
+        String url = "/api/v1/lectures";
+
+        List<FindLectureDto> result = List.of(
+                new FindLectureDto("항플 특강1", 10, LocalDateTime.of(2024, 4, 20, 13, 0, 0)),
+                new FindLectureDto("항플 특강2", 10, LocalDateTime.of(2024, 4, 21, 13, 0, 0)),
+                new FindLectureDto("항플 특강3", 10, LocalDateTime.of(2024, 4, 22, 13, 0, 0))
+        );
+
+        LocalDateTime searchFromDate = LocalDateTime.of(2024, 4, 20, 0, 0, 0);
+        LocalDateTime searchToDate = LocalDateTime.of(2024, 4, 22, 0, 0, 0);
+
+        doReturn(result).when(managerStub).findLectureList(searchFromDate, searchToDate);
+
+        // when
+        ResultActions resultActions = mockMvc.perform(
+                MockMvcRequestBuilders.get(url)
+                        .content(gson.toJson(new LectureSearchDto(searchFromDate, searchToDate)))
+                        .contentType(MediaType.APPLICATION_JSON)
+        );
+
+        // then
+        resultActions.andExpect(status().isOk());
     }
 }

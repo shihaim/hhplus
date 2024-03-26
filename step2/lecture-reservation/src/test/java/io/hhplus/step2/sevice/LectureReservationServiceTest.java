@@ -8,11 +8,13 @@ import io.hhplus.step2.lecture.service.component.LectureReservationReader;
 import io.hhplus.step2.lecture.service.component.LectureReservationReaderImpl;
 import io.hhplus.step2.lecture.service.component.LectureReservationWriter;
 import io.hhplus.step2.lecture.service.component.LectureReservationWriterImpl;
+import io.hhplus.step2.lecture.service.dto.FindLectureDto;
 import io.hhplus.step2.repository.stub.LectureReservationCoreRepositoryStub;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -208,4 +210,47 @@ public class LectureReservationServiceTest {
         assertThat(result).isEqualTo("성공했음");
     }
 
+    /**
+     * [특강 목록 조회]
+     * case8: searchFromDate가 SearchToDate보다 크면 잘못된 파라미터로 인한 Error Throw
+     * case9: 특강 목록 조회 성공
+     */
+
+    @Test
+    @DisplayName("특강목록조회실패 - 잘못된 파라미터(시작일이 마감일보다 클 수 없음)")
+    void case8() {
+        // given
+        for (int i = 1; i <= 5; i++) {
+            repositoryStub.saveLecture(new Lecture((long) i, "항플 특강" + i, 10 + i, LocalDateTime.of(2024, 4, 20 + i, 0, 0, 0)));
+        }
+        LocalDateTime searchFromDate = LocalDateTime.of(2024, 4, 24, 0, 0, 0);
+        LocalDateTime searchToDate = LocalDateTime.of(2024, 4, 23, 0, 0, 0);
+
+        // when
+        LectureReservationException result = assertThrows(
+                LectureReservationException.class,
+                () -> readerSut.findLectureList(searchFromDate, searchToDate)
+        );
+
+        // then
+        assertThat(result.getErrorResult()).isEqualTo(LectureReservationErrorResult.INVALID_PARAMETER);
+        assertThat(result.getErrorResult().getMessage()).isEqualTo("Invalid parameter type");
+    }
+
+    @Test
+    @DisplayName("특강목록조회성공")
+    void case9() {
+        // given
+        for (int i = 1; i <= 5; i++) {
+            repositoryStub.saveLecture(new Lecture((long) i, "항플 특강" + i, 10 + i, LocalDateTime.of(2024, 4, 20 + i, 0, 0, 0)));
+        }
+        LocalDateTime searchFromDate = LocalDateTime.of(2024, 4, 22, 0, 0, 0);
+        LocalDateTime searchToDate = LocalDateTime.of(2024, 4, 24, 0, 0, 0);
+
+        // when
+        List<FindLectureDto> result = readerSut.findLectureList(searchFromDate, searchToDate);
+
+        // then
+        assertThat(result.size()).isEqualTo(3);
+    }
 }

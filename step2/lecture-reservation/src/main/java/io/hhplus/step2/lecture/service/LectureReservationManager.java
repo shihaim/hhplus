@@ -23,5 +23,11 @@ public interface LectureReservationManager {
      */
     String findReservedLecture(final Long userId);
 
+    /**
+     * 특강 목록 조회
+     * @param searchFromDate
+     * @param searchToDate
+     * @return
+     */
     List<FindLectureDto> findLectureList(final LocalDateTime searchFromDate, final LocalDateTime searchToDate);
 }

@@ -38,8 +38,14 @@ public class LectureReservationManagerImpl implements LectureReservationManager 
         return lectureReservationReader.findReservedLecture(userId);
     }
 
+    /**
+     * 특강 목록 조회
+     * @param searchFromDate
+     * @param searchToDate
+     * @return
+     */
     @Override
-    public List<FindLectureDto> findLectureList(LocalDateTime searchFromDate, LocalDateTime searchToDate) {
+    public List<FindLectureDto> findLectureList(final LocalDateTime searchFromDate, final LocalDateTime searchToDate) {
         return lectureReservationReader.findLectureList(searchFromDate, searchToDate);
     }
 }

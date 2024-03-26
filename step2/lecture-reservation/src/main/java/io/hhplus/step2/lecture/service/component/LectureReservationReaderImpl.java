@@ -33,8 +33,14 @@ public class LectureReservationReaderImpl implements LectureReservationReader {
         }
     }
 
+    /**
+     * 특강 목록 조회
+     * @param searchFromDate
+     * @param searchToDate
+     * @return
+     */
     @Override
-    public List<FindLectureDto> findLectureList(LocalDateTime searchFromDate, LocalDateTime searchToDate) {
+    public List<FindLectureDto> findLectureList(final LocalDateTime searchFromDate, final LocalDateTime searchToDate) {
         if (searchFromDate != null && searchToDate != null) {
             String convertFromDate = DateFormattingConverter.convert(searchFromDate);
             String convertToDate = DateFormattingConverter.convert(searchToDate);

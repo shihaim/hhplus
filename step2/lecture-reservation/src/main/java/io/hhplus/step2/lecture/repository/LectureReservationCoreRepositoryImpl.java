@@ -34,13 +34,13 @@ public class LectureReservationCoreRepositoryImpl implements LectureReservationC
     }
 
     @Override
-    public List<Lecture> findLectureList(LocalDateTime searchFromDate, LocalDateTime searchToDate) {
+    public List<Lecture> findLectureList(final LocalDateTime searchFromDate, final LocalDateTime searchToDate) {
         if (searchFromDate != null && searchToDate != null) {
             return lectureRepository.findLecturesByOpenDateBetween(searchFromDate, searchToDate);
         } else if (searchToDate != null) {
-            return lectureRepository.findLecturesByOpenDateBefore(searchToDate);
+            return lectureRepository.findLecturesByOpenDateLessThanEqual(searchToDate);
         } else if (searchFromDate != null) {
-            return lectureRepository.findLecturesByOpenDateAfter(searchFromDate);
+            return lectureRepository.findLecturesByOpenDateGreaterThanEqual(searchFromDate);
         } else {
             return lectureRepository.findAll();
         }

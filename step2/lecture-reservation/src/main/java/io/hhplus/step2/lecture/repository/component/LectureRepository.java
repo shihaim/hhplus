@@ -17,7 +17,7 @@ public interface LectureRepository extends JpaRepository<Lecture, Long> {
     @Query("select l from Lecture l where l.id = :lectureId")
     Optional<Lecture> findLectureByIdForUpdate(@Param("lectureId") Long lectureId);
 
-    List<Lecture> findLecturesByOpenDateBefore(@Param("searchToDate") LocalDateTime searchToDate);
-    List<Lecture> findLecturesByOpenDateAfter(@Param("searchFromDate") LocalDateTime searchFromDate);
+    List<Lecture> findLecturesByOpenDateLessThanEqual(@Param("searchToDate") LocalDateTime searchToDate);
+    List<Lecture> findLecturesByOpenDateGreaterThanEqual(@Param("searchFromDate") LocalDateTime searchFromDate);
     List<Lecture> findLecturesByOpenDateBetween(@Param("searchFromDate") LocalDateTime searchFromDate, @Param("searchToDate") LocalDateTime searchToDate);
 }

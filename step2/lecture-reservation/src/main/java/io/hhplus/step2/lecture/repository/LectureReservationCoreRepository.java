@@ -12,5 +12,5 @@ public interface LectureReservationCoreRepository {
     Optional<Lecture> findLectureById(final Long lectureId);
     Optional<LectureReservation> findReservedLectureByUserId(final Long userId);
     Long saveLectureReservation(final LectureReservation lectureReservation);
-    List<Lecture> findLectureList(LocalDateTime searchFromDate, LocalDateTime searchToDate);
+    List<Lecture> findLectureList(final LocalDateTime searchFromDate, final LocalDateTime searchToDate);
 }
