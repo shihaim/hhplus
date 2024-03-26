@@ -7,6 +7,6 @@ public class DateFormattingConverter {
     private static final DateTimeFormatter yyyyMMddHHFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH");
 
     public static String convert(LocalDateTime value) {
-        return value.format(yyyyMMddHHFormatter);
+        return value != null ? value.format(yyyyMMddHHFormatter) : null;
     }
 }

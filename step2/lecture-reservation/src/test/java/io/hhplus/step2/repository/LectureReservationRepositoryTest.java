@@ -133,12 +133,12 @@ public class LectureReservationRepositoryTest {
         // given
         // 2024년 4월 21일 부터 25일까지 특강이 한 개씩 존재한다고 가정
         for (int i = 1; i <= 5; i++) {
-            Lecture lecture = new Lecture((long) i, "항플 특강" + i, 5, LocalDateTime.of(2024, 4, 20 + i, 13, 0));
+            Lecture lecture = new Lecture((long) i, "항플 특강" + i, 5, LocalDateTime.of(2024, 4, 20 + i, 13, 0, 0));
             repository.saveLecture(lecture);
         }
 
         // 23일까지만
-        LocalDateTime searchToDate = LocalDateTime.of(2024, 4, 23, 23, 59, 59);
+        LocalDateTime searchToDate = LocalDateTime.of(2024, 4, 23, 13, 0, 0);
 
         // when
         List<Lecture> lectureList = repository.findLectureList(null, searchToDate);
@@ -154,7 +154,7 @@ public class LectureReservationRepositoryTest {
         // given
         // 2024년 4월 21일 부터 25일까지 특강이 한 개씩 존재한다고 가정
         for (int i = 1; i <= 5; i++) {
-            Lecture lecture = new Lecture((long) i, "항플 특강" + i, 5, LocalDateTime.of(2024, 4, 20 + i, 13, 0));
+            Lecture lecture = new Lecture((long) i, "항플 특강" + i, 5, LocalDateTime.of(2024, 4, 20 + i, 0, 0, 0));
             repository.saveLecture(lecture);
         }
 
@@ -175,7 +175,7 @@ public class LectureReservationRepositoryTest {
         // given
         // 2024년 4월 21일 부터 25일까지 특강이 한 개씩 존재한다고 가정
         for (int i = 1; i <= 5; i++) {
-            Lecture lecture = new Lecture((long) i, "항플 특강" + i, 5, LocalDateTime.of(2024, 4, 20 + i, 13, 0));
+            Lecture lecture = new Lecture((long) i, "항플 특강" + i, 5, LocalDateTime.of(2024, 4, 20 + i, 13, 0,0));
             repository.saveLecture(lecture);
         }
 
