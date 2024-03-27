@@ -20,7 +20,7 @@ public class InitData {
             Lecture lecture = Lecture.builder()
                     .lectureName("항해플러스 특강" + (i+1))
                     .quantity(30 + i)
-                    .openDate(LocalDateTime.of(2024, 4 + i, 20, 13, 0, 0))
+                    .openDate(LocalDateTime.of(2024, 4 + i, 20, 13, i, i))
                     .build();
             lectureRepository.save(lecture);
         }

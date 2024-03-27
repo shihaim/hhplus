@@ -2,7 +2,7 @@ package io.hhplus.step2.lecture.service.component;
 
 import java.time.LocalDateTime;
 
-public interface LectureReservationWriter {
+public interface LectureReservationStore {
 
     /**
      * 특강 신청

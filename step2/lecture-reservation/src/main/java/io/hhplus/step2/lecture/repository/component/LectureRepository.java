@@ -7,8 +7,6 @@ import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 
 public interface LectureRepository extends JpaRepository<Lecture, Long> {
@@ -16,8 +14,4 @@ public interface LectureRepository extends JpaRepository<Lecture, Long> {
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("select l from Lecture l where l.id = :lectureId")
     Optional<Lecture> findLectureByIdForUpdate(@Param("lectureId") Long lectureId);
-
-    List<Lecture> findLecturesByOpenDateLessThanEqual(@Param("searchToDate") LocalDateTime searchToDate);
-    List<Lecture> findLecturesByOpenDateGreaterThanEqual(@Param("searchFromDate") LocalDateTime searchFromDate);
-    List<Lecture> findLecturesByOpenDateBetween(@Param("searchFromDate") LocalDateTime searchFromDate, @Param("searchToDate") LocalDateTime searchToDate);
 }

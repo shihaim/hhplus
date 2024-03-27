@@ -1,4 +1,4 @@
-package io.hhplus.step2.repository.stub;
+package io.hhplus.step2.repository.fake;
 
 import io.hhplus.step2.lecture.domain.Lecture;
 import io.hhplus.step2.lecture.domain.LectureReservation;

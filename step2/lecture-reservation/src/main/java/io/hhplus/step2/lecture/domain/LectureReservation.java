@@ -20,10 +20,10 @@ public class LectureReservation {
     private Long userId;
 
     @ManyToOne
-    @JoinColumn(name = "lecutre_id")
+    @JoinColumn(name = "lecture_id")
     private Lecture lecture;
 
-    @Builder
+    @Builder(access = AccessLevel.PRIVATE)
     public LectureReservation(Long userId, Lecture lecture) {
         this.userId = userId;
         this.lecture = lecture;
@@ -38,5 +38,12 @@ public class LectureReservation {
         this.id = id;
         this.userId = userId;
         this.lecture = lecture;
+    }
+
+    public static LectureReservation createLectureReservation(Long userId, Lecture lecture) {
+        return LectureReservation.builder()
+                .userId(userId)
+                .lecture(lecture)
+                .build();
     }
 }

@@ -5,7 +5,7 @@ import io.hhplus.step2.lecture.domain.LectureReservation;
 import io.hhplus.step2.lecture.exception.LectureReservationErrorResult;
 import io.hhplus.step2.lecture.exception.LectureReservationException;
 import io.hhplus.step2.lecture.repository.LectureReservationCoreRepository;
-import io.hhplus.step2.lecture.service.util.DateFormattingConverter;
+import io.hhplus.step2.lecture.util.DateFormattingConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Component
 @Transactional
 @RequiredArgsConstructor
-public class LectureReservationWriterImpl implements LectureReservationWriter {
+public class LectureReservationStoreImpl implements LectureReservationStore {
 
     private final LectureReservationCoreRepository repository;
 
@@ -31,9 +31,9 @@ public class LectureReservationWriterImpl implements LectureReservationWriter {
         Lecture lecture = repository.findLectureById(lectureId)
                 .orElseThrow(() -> new LectureReservationException(LectureReservationErrorResult.LECTURE_NOT_FOUND));
 
-        // 0보다 큰 경우
+        // 0보다 큰 경우 (After)
         // (openDate { 2024-04-20 13:00:00 }) compareTo (reservationDate { 2024-04-20 12:59:59 }) = 1
-        // 0보다 작거나 같은 경우
+        // 0보다 같거나 작은 경우 (Equals / Before)
         // (openDate { 2024-04-20 13:00:00 }) compareTo (reservationDate { 2024-04-20 13:59:59 }) = 0
         // (openDate { 2024-04-20 13:00:00 }) compareTo (reservationDate { 2024-04-20 14:00:00 }) = -1
         String convertOpenDate = DateFormattingConverter.convert(lecture.getOpenDate());
@@ -52,11 +52,7 @@ public class LectureReservationWriterImpl implements LectureReservationWriter {
             throw new LectureReservationException(LectureReservationErrorResult.ALREADY_RESERVED_LECTURE);
 
         // 특강 신청 목록 Save
-        LectureReservation lectureReservation = LectureReservation.builder()
-                .userId(userId)
-                .lecture(lecture)
-                .build();
-
+        LectureReservation lectureReservation = LectureReservation.createLectureReservation(userId, lecture);
         return repository.saveLectureReservation(lectureReservation);
     }
 }

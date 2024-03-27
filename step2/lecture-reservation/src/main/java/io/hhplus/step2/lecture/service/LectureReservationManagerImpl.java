@@ -2,7 +2,7 @@ package io.hhplus.step2.lecture.service;
 
 import io.hhplus.step2.lecture.domain.Lecture;
 import io.hhplus.step2.lecture.service.component.LectureReservationReader;
-import io.hhplus.step2.lecture.service.component.LectureReservationWriter;
+import io.hhplus.step2.lecture.service.component.LectureReservationStore;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +14,7 @@ import java.util.List;
 public class LectureReservationManagerImpl implements LectureReservationManager {
 
     private final LectureReservationReader lectureReservationReader;
-    private final LectureReservationWriter lectureReservationWriter;
+    private final LectureReservationStore lectureReservationStore;
 
     /**
      * 특강 신청
@@ -25,7 +25,7 @@ public class LectureReservationManagerImpl implements LectureReservationManager 
      */
     @Override
     public Long lectureReservation(final Long userId, final Long lectureId, final LocalDateTime reservationDate) {
-        return lectureReservationWriter.lectureReservation(userId, lectureId, reservationDate);
+        return lectureReservationStore.lectureReservation(userId, lectureId, reservationDate);
     }
 
     /**

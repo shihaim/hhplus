@@ -2,7 +2,7 @@ package io.hhplus.step2.repository;
 
 import io.hhplus.step2.lecture.domain.Lecture;
 import io.hhplus.step2.lecture.domain.LectureReservation;
-import io.hhplus.step2.repository.stub.FakeLectureReservationCoreRepository;
+import io.hhplus.step2.repository.fake.FakeLectureReservationCoreRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

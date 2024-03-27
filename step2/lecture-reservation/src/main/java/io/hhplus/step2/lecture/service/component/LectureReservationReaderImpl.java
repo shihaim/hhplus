@@ -4,7 +4,7 @@ import io.hhplus.step2.lecture.domain.Lecture;
 import io.hhplus.step2.lecture.exception.LectureReservationErrorResult;
 import io.hhplus.step2.lecture.exception.LectureReservationException;
 import io.hhplus.step2.lecture.repository.LectureReservationCoreRepository;
-import io.hhplus.step2.lecture.service.util.DateFormattingConverter;
+import io.hhplus.step2.lecture.util.DateFormattingConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;

@@ -28,7 +28,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -131,21 +130,6 @@ public class LectureReservationControllerTest {
 
         //then
         resultActions.andExpect(status().isOk());
-    }
-
-    @Test
-    void dateTest() throws Exception {
-        //given
-        LocalDateTime openDate = LocalDateTime.of(2024, 4, 20, 13, 0, 0);
-        LocalDateTime reservationDate = LocalDateTime.of(2024, 4, 20, 14, 0, 0);
-
-        //when
-        String result1 = openDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH"));
-        String result2 = reservationDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH"));
-
-        //then
-        System.out.println(result1.equals(result2));
-        System.out.println(result1.compareTo(result2));
     }
 
     /**

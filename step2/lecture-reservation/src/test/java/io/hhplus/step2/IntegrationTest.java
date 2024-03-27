@@ -3,8 +3,8 @@ package io.hhplus.step2;
 import io.hhplus.step2.lecture.domain.Lecture;
 import io.hhplus.step2.lecture.exception.LectureReservationException;
 import io.hhplus.step2.lecture.repository.component.LectureRepository;
-import io.hhplus.step2.lecture.service.component.LectureReservationWriter;
-import org.assertj.core.api.Assertions;
+import io.hhplus.step2.lecture.service.component.LectureReservationReader;
+import io.hhplus.step2.lecture.service.component.LectureReservationStore;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +18,16 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 @SpringBootTest
 class IntegrationTest {
 
     @Autowired
-    private LectureReservationWriter writer;
+    private LectureReservationReader reader;
+
+    @Autowired
+    private LectureReservationStore writer;
 
     @Autowired
     private LectureRepository lectureRepository;
@@ -65,8 +70,8 @@ class IntegrationTest {
         CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
         executorService.shutdown();
 
-        Assertions.assertThat(successCount.get()).as("성공의 개수는 30").isEqualTo(30);
-        Assertions.assertThat(failCount.get()).as("실패의 개수는 70").isEqualTo(70);
+        assertThat(successCount.get()).as("성공의 개수는 30").isEqualTo(30);
+        assertThat(failCount.get()).as("실패의 개수는 70").isEqualTo(70);
     }
 
     @Test
@@ -108,7 +113,30 @@ class IntegrationTest {
         CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
         executorService.shutdown();
 
-        Assertions.assertThat(successCount.get()).as("성공의 개수는 2").isEqualTo(2);
-        Assertions.assertThat(failCount.get()).as("실패의 개수는 4").isEqualTo(4);
+        assertThat(successCount.get()).as("성공의 개수는 2").isEqualTo(2);
+        assertThat(failCount.get()).as("실패의 개수는 4").isEqualTo(4);
+    }
+
+    @Test
+    void 날짜_검증() throws Exception {
+        //given
+        for (int i = 1; i <= 5; i++) {
+            Lecture lecture = Lecture.builder()
+                    .lectureName("항해플러스 특강" + i)
+                    .quantity(30)
+                    .openDate(LocalDateTime.of(2024, 4, 20, 13 + i, i, i))
+                    .build();
+            lectureRepository.save(lecture);
+        }
+
+        //when
+        LocalDateTime searchFromDate = LocalDateTime.of(2024, 4, 20, 14, 59, 59);
+        LocalDateTime searchToDate = LocalDateTime.of(2024, 4, 20, 15, 0, 0);
+        List<Lecture> result = reader.findLectureList(searchFromDate, searchToDate);
+
+        //then
+        assertThat(result.size()).isEqualTo(2);
+        assertThat(result.get(0).getLectureName()).isEqualTo("항해플러스 특강1");
+        assertThat(result.get(1).getLectureName()).isEqualTo("항해플러스 특강2");
     }
 }

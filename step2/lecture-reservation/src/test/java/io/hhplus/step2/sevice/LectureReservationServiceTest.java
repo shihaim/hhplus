@@ -6,9 +6,9 @@ import io.hhplus.step2.lecture.exception.LectureReservationErrorResult;
 import io.hhplus.step2.lecture.exception.LectureReservationException;
 import io.hhplus.step2.lecture.service.component.LectureReservationReader;
 import io.hhplus.step2.lecture.service.component.LectureReservationReaderImpl;
-import io.hhplus.step2.lecture.service.component.LectureReservationWriter;
-import io.hhplus.step2.lecture.service.component.LectureReservationWriterImpl;
-import io.hhplus.step2.repository.stub.FakeLectureReservationCoreRepository;
+import io.hhplus.step2.lecture.service.component.LectureReservationStore;
+import io.hhplus.step2.lecture.service.component.LectureReservationStoreImpl;
+import io.hhplus.step2.repository.fake.FakeLectureReservationCoreRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -22,7 +22,7 @@ public class LectureReservationServiceTest {
 
     private final FakeLectureReservationCoreRepository repositoryStub = new FakeLectureReservationCoreRepository();
     private final LectureReservationReader readerSut = new LectureReservationReaderImpl(repositoryStub);
-    private final LectureReservationWriter writerSut = new LectureReservationWriterImpl(repositoryStub);
+    private final LectureReservationStore writerSut = new LectureReservationStoreImpl(repositoryStub);
 
     /**
      * [특강 신청]

@@ -1,4 +1,4 @@
-package io.hhplus.step2.lecture.service.util;
+package io.hhplus.step2.lecture.util;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

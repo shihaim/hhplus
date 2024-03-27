@@ -44,7 +44,7 @@ public class LectureReservationController {
         return ResponseEntity.ok(ReservationResponse.create(result, HttpStatus.OK));
     }
 
-    /** 특강 신청 정보 조회 */
+    /** 특강 목록 조회 */
     @GetMapping
     public ResponseEntity<List<FindLectureDto>> lectureList(
             @RequestBody LectureSearchDto searchDto

@@ -58,6 +58,7 @@ public class Lecture {
         quantity -= 1;
     }
 
+    /* 개수 증가를 위한 임시용 */
     public void update(int quantity, LocalDateTime openDate) {
         this.quantity = quantity;
         this.openDate = openDate;

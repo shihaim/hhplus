@@ -4,6 +4,7 @@ import io.hhplus.step2.lecture.domain.Lecture;
 import io.hhplus.step2.lecture.domain.LectureReservation;
 import io.hhplus.step2.lecture.repository.component.LectureRepository;
 import io.hhplus.step2.lecture.repository.component.LectureReservationRepository;
+import io.hhplus.step2.lecture.util.DateFormattingConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -35,14 +36,30 @@ public class LectureReservationCoreRepositoryImpl implements LectureReservationC
 
     @Override
     public List<Lecture> findLectureList(final LocalDateTime searchFromDate, final LocalDateTime searchToDate) {
+
+        return lectureDataFiltering(
+                lectureRepository.findAll(),
+                DateFormattingConverter.convert(searchFromDate),
+                DateFormattingConverter.convert(searchToDate)
+        );
+    }
+
+    private List<Lecture> lectureDataFiltering(final List<Lecture> allLectures, final String searchFromDate, final String searchToDate) {
         if (searchFromDate != null && searchToDate != null) {
-            return lectureRepository.findLecturesByOpenDateBetween(searchFromDate, searchToDate);
+            return allLectures.stream()
+                    .filter(l -> DateFormattingConverter.convert(l.getOpenDate()).compareTo(searchFromDate) >= 0)
+                    .filter(l -> DateFormattingConverter.convert(l.getOpenDate()).compareTo(searchToDate) <= 0)
+                    .toList();
         } else if (searchToDate != null) {
-            return lectureRepository.findLecturesByOpenDateLessThanEqual(searchToDate);
+            return allLectures.stream()
+                    .filter(l -> DateFormattingConverter.convert(l.getOpenDate()).compareTo(searchToDate) <= 0)
+                    .toList();
         } else if (searchFromDate != null) {
-            return lectureRepository.findLecturesByOpenDateGreaterThanEqual(searchFromDate);
+            return allLectures.stream()
+                    .filter(l -> DateFormattingConverter.convert(l.getOpenDate()).compareTo(searchFromDate) >= 0)
+                    .toList();
         } else {
-            return lectureRepository.findAll();
+            return allLectures;
         }
     }
 }
