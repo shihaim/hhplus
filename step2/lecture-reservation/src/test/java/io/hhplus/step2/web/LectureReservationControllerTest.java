@@ -3,12 +3,12 @@ package io.hhplus.step2.web;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import io.hhplus.step2.lecture.common.ReservationResponse;
+import io.hhplus.step2.lecture.controller.LectureReservationController;
+import io.hhplus.step2.lecture.controller.dto.CreateLectureReservationDto;
+import io.hhplus.step2.lecture.controller.dto.LectureSearchDto;
+import io.hhplus.step2.lecture.domain.Lecture;
 import io.hhplus.step2.lecture.exception.GlobalExceptionHandler;
-import io.hhplus.step2.lecture.service.dto.FindLectureDto;
-import io.hhplus.step2.lecture.web.LectureReservationController;
-import io.hhplus.step2.lecture.web.dto.CreateLectureReservationDto;
-import io.hhplus.step2.lecture.web.dto.LectureSearchDto;
-import io.hhplus.step2.sevice.stub.LectureReservationManagerStub;
+import io.hhplus.step2.sevice.stub.StubLectureReservationManager;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -42,7 +42,7 @@ public class LectureReservationControllerTest {
     private LectureReservationController target;
 
     @Mock
-    private LectureReservationManagerStub managerStub;
+    private StubLectureReservationManager managerStub;
 
     private MockMvc mockMvc;
     private Gson gson;
@@ -117,9 +117,9 @@ public class LectureReservationControllerTest {
         Long userId = 1L;
         Long lectureId = 1L;
 
-        LocalDateTime reservationDate = LocalDateTime.now();
+        LocalDateTime reservationDate = LocalDateTime.of(2024, 4, 10, 13, 0, 0);
 
-        doReturn(null).when(managerStub)
+        doReturn(1L).when(managerStub)
                 .lectureReservation(userId, lectureId, reservationDate);
 
         //when
@@ -234,10 +234,10 @@ public class LectureReservationControllerTest {
         // given
         String url = "/api/v1/lectures";
 
-        List<FindLectureDto> result = List.of(
-                new FindLectureDto("항플 특강1", 10, LocalDateTime.of(2024, 4, 20, 13, 0, 0)),
-                new FindLectureDto("항플 특강2", 10, LocalDateTime.of(2024, 4, 21, 13, 0, 0)),
-                new FindLectureDto("항플 특강3", 10, LocalDateTime.of(2024, 4, 22, 13, 0, 0))
+        List<Lecture> result = List.of(
+                new Lecture("항플 특강1", 10, LocalDateTime.of(2024, 4, 20, 13, 0, 0)),
+                new Lecture("항플 특강2", 10, LocalDateTime.of(2024, 4, 21, 13, 0, 0)),
+                new Lecture("항플 특강3", 10, LocalDateTime.of(2024, 4, 22, 13, 0, 0))
         );
 
         LocalDateTime searchFromDate = LocalDateTime.of(2024, 4, 20, 0, 0, 0);

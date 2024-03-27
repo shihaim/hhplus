@@ -1,4 +1,4 @@
-package io.hhplus.step2.lecture.service.dto;
+package io.hhplus.step2.lecture.controller.dto;
 
 import java.time.LocalDateTime;
 

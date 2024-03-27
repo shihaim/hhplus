@@ -2,7 +2,7 @@ package io.hhplus.step2.repository;
 
 import io.hhplus.step2.lecture.domain.Lecture;
 import io.hhplus.step2.lecture.domain.LectureReservation;
-import io.hhplus.step2.repository.stub.LectureReservationCoreRepositoryStub;
+import io.hhplus.step2.repository.stub.FakeLectureReservationCoreRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -14,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class LectureReservationRepositoryTest {
 
-    private final LectureReservationCoreRepositoryStub repository = new LectureReservationCoreRepositoryStub();
+    private final FakeLectureReservationCoreRepository repository = new FakeLectureReservationCoreRepository();
 
     @Test
     void 특강조회실패_빈값() {

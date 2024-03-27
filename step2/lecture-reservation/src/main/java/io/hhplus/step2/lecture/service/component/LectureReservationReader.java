@@ -1,7 +1,6 @@
 package io.hhplus.step2.lecture.service.component;
 
 import io.hhplus.step2.lecture.domain.Lecture;
-import io.hhplus.step2.lecture.service.dto.FindLectureDto;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -21,5 +20,5 @@ public interface LectureReservationReader {
      * @param searchToDate
      * @return
      */
-    List<FindLectureDto> findLectureList(final LocalDateTime searchFromDate, final LocalDateTime searchToDate);
+    List<Lecture> findLectureList(final LocalDateTime searchFromDate, final LocalDateTime searchToDate);
 }

@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 /**
  * Gson LocalDateTime 관련 Type 오류
- * Failed making field 'java.time.LocalDateTime#date' accessible; either increase its visibility or write a custom TypeAdapter for its declaring type.
+ * Error Message : Failed making field 'java.time.LocalDateTime#date' accessible; either increase its visibility or write a custom TypeAdapter for its declaring type.
  * https://stackoverflow.com/questions/75862344/gson-java-time-localdatetime-serialization-error
  */
 public class LocalDateTimeAdapter extends TypeAdapter<LocalDateTime> {

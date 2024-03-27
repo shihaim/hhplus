@@ -1,8 +1,7 @@
-package io.hhplus.step2.lecture.web;
+package io.hhplus.step2.lecture.controller;
 
 import io.hhplus.step2.lecture.domain.Lecture;
 import io.hhplus.step2.lecture.repository.component.LectureRepository;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;

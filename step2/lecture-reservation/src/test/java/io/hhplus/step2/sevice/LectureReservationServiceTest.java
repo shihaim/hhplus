@@ -8,8 +8,7 @@ import io.hhplus.step2.lecture.service.component.LectureReservationReader;
 import io.hhplus.step2.lecture.service.component.LectureReservationReaderImpl;
 import io.hhplus.step2.lecture.service.component.LectureReservationWriter;
 import io.hhplus.step2.lecture.service.component.LectureReservationWriterImpl;
-import io.hhplus.step2.lecture.service.dto.FindLectureDto;
-import io.hhplus.step2.repository.stub.LectureReservationCoreRepositoryStub;
+import io.hhplus.step2.repository.stub.FakeLectureReservationCoreRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -21,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class LectureReservationServiceTest {
 
-    private final LectureReservationCoreRepositoryStub repositoryStub = new LectureReservationCoreRepositoryStub();
+    private final FakeLectureReservationCoreRepository repositoryStub = new FakeLectureReservationCoreRepository();
     private final LectureReservationReader readerSut = new LectureReservationReaderImpl(repositoryStub);
     private final LectureReservationWriter writerSut = new LectureReservationWriterImpl(repositoryStub);
 
@@ -248,7 +247,7 @@ public class LectureReservationServiceTest {
         LocalDateTime searchToDate = LocalDateTime.of(2024, 4, 24, 0, 0, 0);
 
         // when
-        List<FindLectureDto> result = readerSut.findLectureList(searchFromDate, searchToDate);
+        List<Lecture> result = readerSut.findLectureList(searchFromDate, searchToDate);
 
         // then
         assertThat(result.size()).isEqualTo(3);

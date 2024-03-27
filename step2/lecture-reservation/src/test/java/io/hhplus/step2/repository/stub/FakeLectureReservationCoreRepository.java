@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class LectureReservationCoreRepositoryStub implements LectureReservationCoreRepository {
+public class FakeLectureReservationCoreRepository implements LectureReservationCoreRepository {
 
     private final Map<Long, Lecture> lectureDatabase = new HashMap<>();
     private final Map<Long, LectureReservation> lectureReservationDatabase = new HashMap<>();

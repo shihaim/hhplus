@@ -1,10 +1,10 @@
-package io.hhplus.step2.lecture.web;
+package io.hhplus.step2.lecture.controller;
 
 import io.hhplus.step2.lecture.common.ReservationResponse;
+import io.hhplus.step2.lecture.controller.dto.CreateLectureReservationDto;
+import io.hhplus.step2.lecture.controller.dto.FindLectureDto;
+import io.hhplus.step2.lecture.controller.dto.LectureSearchDto;
 import io.hhplus.step2.lecture.service.LectureReservationManager;
-import io.hhplus.step2.lecture.service.dto.FindLectureDto;
-import io.hhplus.step2.lecture.web.dto.CreateLectureReservationDto;
-import io.hhplus.step2.lecture.web.dto.LectureSearchDto;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
@@ -49,6 +49,9 @@ public class LectureReservationController {
     public ResponseEntity<List<FindLectureDto>> lectureList(
             @RequestBody LectureSearchDto searchDto
     ) {
-        return ResponseEntity.status(HttpStatus.OK).body(manager.findLectureList(searchDto.searchFromDate(), searchDto.searchToDate()));
+        List<FindLectureDto> result = manager.findLectureList(searchDto.searchFromDate(), searchDto.searchToDate()).stream()
+                .map(l -> new FindLectureDto(l.getLectureName(), l.getQuantity(), l.getOpenDate()))
+                .toList();
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 }

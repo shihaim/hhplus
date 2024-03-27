@@ -1,9 +1,9 @@
 package io.hhplus.step2.lecture.service.component;
 
+import io.hhplus.step2.lecture.domain.Lecture;
 import io.hhplus.step2.lecture.exception.LectureReservationErrorResult;
 import io.hhplus.step2.lecture.exception.LectureReservationException;
 import io.hhplus.step2.lecture.repository.LectureReservationCoreRepository;
-import io.hhplus.step2.lecture.service.dto.FindLectureDto;
 import io.hhplus.step2.lecture.service.util.DateFormattingConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -40,7 +40,7 @@ public class LectureReservationReaderImpl implements LectureReservationReader {
      * @return
      */
     @Override
-    public List<FindLectureDto> findLectureList(final LocalDateTime searchFromDate, final LocalDateTime searchToDate) {
+    public List<Lecture> findLectureList(final LocalDateTime searchFromDate, final LocalDateTime searchToDate) {
         if (searchFromDate != null && searchToDate != null) {
             String convertFromDate = DateFormattingConverter.convert(searchFromDate);
             String convertToDate = DateFormattingConverter.convert(searchToDate);
@@ -48,9 +48,6 @@ public class LectureReservationReaderImpl implements LectureReservationReader {
                 throw new LectureReservationException(LectureReservationErrorResult.INVALID_PARAMETER);
         }
 
-        return repository.findLectureList(searchFromDate, searchToDate)
-                .stream()
-                .map(l -> new FindLectureDto(l.getLectureName(), l.getQuantity(), l.getOpenDate()))
-                .toList();
+        return repository.findLectureList(searchFromDate, searchToDate);
     }
 }

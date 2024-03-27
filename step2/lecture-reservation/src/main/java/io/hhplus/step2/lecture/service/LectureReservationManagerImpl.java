@@ -1,8 +1,8 @@
 package io.hhplus.step2.lecture.service;
 
+import io.hhplus.step2.lecture.domain.Lecture;
 import io.hhplus.step2.lecture.service.component.LectureReservationReader;
 import io.hhplus.step2.lecture.service.component.LectureReservationWriter;
-import io.hhplus.step2.lecture.service.dto.FindLectureDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -45,7 +45,7 @@ public class LectureReservationManagerImpl implements LectureReservationManager 
      * @return
      */
     @Override
-    public List<FindLectureDto> findLectureList(final LocalDateTime searchFromDate, final LocalDateTime searchToDate) {
+    public List<Lecture> findLectureList(final LocalDateTime searchFromDate, final LocalDateTime searchToDate) {
         return lectureReservationReader.findLectureList(searchFromDate, searchToDate);
     }
 }
