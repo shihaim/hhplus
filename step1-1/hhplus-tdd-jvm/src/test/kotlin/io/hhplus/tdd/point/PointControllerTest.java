@@ -1,7 +1,8 @@
 package io.hhplus.tdd.point;
 
-import io.hhplus.tdd.point.service.PointService;
+import io.hhplus.tdd.point.service.stub.StubPointService;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -25,13 +26,9 @@ public class PointControllerTest {
     PointController target;
 
     @Mock
-    PointService pointService;
+    StubPointService serviceStub;
 
     MockMvc mockMvc;
-
-    Long userId = 1L;
-    Long point = 10000L;
-    Long updateMillis = System.currentTimeMillis();
 
     @BeforeEach
     void setUp() {
@@ -39,15 +36,20 @@ public class PointControllerTest {
     }
 
     /**
-     * 포인트 조회 API에 대한 테스트 작성
+     * case1: 포인트 조회 API 성공
+     * case2: 포인트 충전 API 성공
+     * case3: 포인트 사용 API 성공
+     * case4: 포인트 충전/사용 내역 조회 API 성공
      */
+
     @Test
-    void 포인트조회성공() throws Exception {
+    @DisplayName("포인트 조회 API 성공")
+    void case1() throws Exception {
         //given
         String url = "/point/1";
-        UserPoint userPoint = new UserPoint(userId, point, updateMillis);
+        UserPoint userPoint = new UserPoint(1L, 10000L, System.currentTimeMillis());
 
-        doReturn(userPoint).when(pointService).point(userId);
+        doReturn(userPoint).when(serviceStub).point(1L);
 
         //when
         ResultActions resultActions = mockMvc.perform(
@@ -58,17 +60,15 @@ public class PointControllerTest {
         resultActions.andExpect(status().isOk());
     }
 
-    /**
-     * 포인트 충전 API에 대한 테스트 작성
-     */
     @Test
-    void 포인트충전성공() throws Exception {
+    @DisplayName("포인트 충전 API 성공")
+    void case2() throws Exception {
         //given
         String url = "/point/1/charge";
         Long amount = 5000L;
-        UserPoint userPoint = new UserPoint(userId, point, updateMillis);
+        UserPoint userPoint = new UserPoint(1L, 15000L, System.currentTimeMillis());
 
-        doReturn(userPoint).when(pointService).charge(userId, amount);
+        doReturn(userPoint).when(serviceStub).charge(1L, amount);
 
         //when
         ResultActions resultActions = mockMvc.perform(
@@ -81,17 +81,15 @@ public class PointControllerTest {
         resultActions.andExpect(status().isOk());
     }
 
-    /**
-     * 포인트 사용 API에 대한 테스트 작성
-     */
     @Test
-    void 포인트사용성공() throws Exception {
+    @DisplayName("포인트 사용 API 성공")
+    void case3() throws Exception {
         //given
         String url = "/point/1/use";
         Long amount = 5000L;
-        UserPoint userPoint = new UserPoint(userId, point, updateMillis);
+        UserPoint userPoint = new UserPoint(1L, 15000L, System.currentTimeMillis());
 
-        doReturn(userPoint).when(pointService).use(userId, amount);
+        doReturn(userPoint).when(serviceStub).use(1L, amount);
 
         //when
         ResultActions resultActions = mockMvc.perform(
@@ -104,19 +102,17 @@ public class PointControllerTest {
         resultActions.andExpect(status().isOk());
     }
 
-    /**
-     * 포인트 충전/사용 내역 조회 API에 대한 테스트 작성
-     */
     @Test
-    void 포인트충전및사용내역조회성공() throws Exception {
+    @DisplayName("포인트 충전/사용 내역 조회 API 성공")
+    void case4() throws Exception {
         //given
         String url = "/point/1/histories";
         List<PointHistory> pointHistories = List.of(
-                new PointHistory(-1L, userId, TransactionType.CHARGE, point, updateMillis),
-                new PointHistory(-2L, userId, TransactionType.USE, point, updateMillis)
+                new PointHistory(-1L, 1L, TransactionType.CHARGE, 3000L, System.currentTimeMillis()),
+                new PointHistory(-2L, 1L, TransactionType.USE, 2000L, System.currentTimeMillis())
         );
 
-        doReturn(pointHistories).when(pointService).history(userId);
+        doReturn(pointHistories).when(serviceStub).history(1L);
 
         //when
         ResultActions resultActions = mockMvc.perform(

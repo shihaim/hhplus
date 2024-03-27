@@ -8,11 +8,11 @@ import java.util.List;
 
 public interface PointRepository {
 
-    UserPoint selectById(final Long id);
+    UserPoint findUserPointById(final Long id);
 
-    UserPoint insertOrUpdate(final Long id, final Long amount);
+    UserPoint insertOrUpdateToUserPoint(final Long id, final Long amount);
 
-    PointHistory insert(final Long id, final Long amount, final TransactionType transactionType, final Long updateMillis);
+    PointHistory insertToPointHistory(final Long id, final Long amount, final TransactionType transactionType, final Long updateMillis);
 
-    List<PointHistory> selectAllByUserId(final Long userId);
+    List<PointHistory> findAllPointHistoryByUserId(final Long userId);
 }

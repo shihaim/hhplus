@@ -23,7 +23,7 @@ public class PointServiceImpl implements PointService {
     @Override
     public UserPoint point(final Long userId) {
         logger.info("call point method");
-        return pointRepository.selectById(userId);
+        return pointRepository.findUserPointById(userId);
     }
 
     @Override
@@ -34,12 +34,12 @@ public class PointServiceImpl implements PointService {
         }
 
         // 현재 포인트를 조회하여 포인트를 충전
-        final UserPoint userPoint = pointRepository.selectById(userId);
+        final UserPoint userPoint = pointRepository.findUserPointById(userId);
         final Long chargePoint = userPoint.getPoint() + point;
-        UserPoint result = pointRepository.insertOrUpdate(userId, chargePoint);
+        UserPoint result = pointRepository.insertOrUpdateToUserPoint(userId, chargePoint);
 
         // 충전 내역 저장
-        pointRepository.insert(userId, point, TransactionType.CHARGE, result.getUpdateMillis());
+        pointRepository.insertToPointHistory(userId, point, TransactionType.CHARGE, result.getUpdateMillis());
 
         return result;
     }
@@ -52,15 +52,15 @@ public class PointServiceImpl implements PointService {
         }
 
         // 현재 포인트를 조회하여 포인트를 사용
-        final UserPoint findUserPoint = pointRepository.selectById(userId);
+        final UserPoint findUserPoint = pointRepository.findUserPointById(userId);
         if (findUserPoint.getPoint() - usePoint < 0) {
             throw new IllegalStateException("존재하는 포인트보다 클 수 없습니다.");
         }
         final Long restPoint = findUserPoint.getPoint() - usePoint;
-        UserPoint result = pointRepository.insertOrUpdate(userId, restPoint);
+        UserPoint result = pointRepository.insertOrUpdateToUserPoint(userId, restPoint);
 
         // 사용 내역 저장
-        pointRepository.insert(result.getId(), usePoint, TransactionType.USE, result.getUpdateMillis());
+        pointRepository.insertToPointHistory(result.getId(), usePoint, TransactionType.USE, result.getUpdateMillis());
 
         return result;
     }
@@ -68,6 +68,6 @@ public class PointServiceImpl implements PointService {
     @Override
     public List<PointHistory> history(final Long userId) {
         logger.info("call history method");
-        return pointRepository.selectAllByUserId(userId);
+        return pointRepository.findAllPointHistoryByUserId(userId);
     }
 }

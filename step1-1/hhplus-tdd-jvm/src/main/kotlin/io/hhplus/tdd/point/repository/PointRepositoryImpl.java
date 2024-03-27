@@ -24,25 +24,25 @@ public class PointRepositoryImpl implements PointRepository {
     }
 
     @Override
-    public UserPoint selectById(Long id) {
+    public UserPoint findUserPointById(final Long id) {
         logger.info("call UserPoint.selectById method");
         return userPointTable.selectById(id);
     }
 
     @Override
-    public UserPoint insertOrUpdate(Long id, Long amount) {
+    public UserPoint insertOrUpdateToUserPoint(final Long id, final Long amount) {
         logger.info("call UserPoint.insertOrUpdate method");
         return userPointTable.insertOrUpdate(id, amount);
     }
 
     @Override
-    public PointHistory insert(Long id, Long amount, TransactionType transactionType, Long updateMillis) {
+    public PointHistory insertToPointHistory(final Long id, final Long amount, final TransactionType transactionType, final Long updateMillis) {
         logger.info("call PointHistory.insert method");
         return pointHistoryTable.insert(id, amount, transactionType, updateMillis);
     }
 
     @Override
-    public List<PointHistory> selectAllByUserId(Long userId) {
+    public List<PointHistory> findAllPointHistoryByUserId(final Long userId) {
         logger.info("call PointHistory.selectAllByUserId method");
         return pointHistoryTable.selectAllByUserId(userId);
     }
