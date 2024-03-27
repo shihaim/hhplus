@@ -1,2 +1,3 @@
 # hhplus
-### Step 1-1 [TDD]
+### Step 1 [TDD]
+### Step 2 [Clean Architecture]
