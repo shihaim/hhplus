@@ -32,7 +32,7 @@ public class IntegrationTest {
      */
 
     @Test
-    @DisplayName("")
+    @DisplayName("동시성 테스트 - 여러 건의 포인트 충전/사용 요청이 들어올 경우 순차적으로 처리")
     void case1() throws Exception {
         //given
         ExecutorService service = Executors.newFixedThreadPool(2);

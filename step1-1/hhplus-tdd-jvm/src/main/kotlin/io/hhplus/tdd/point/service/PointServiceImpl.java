@@ -22,13 +22,16 @@ public class PointServiceImpl implements PointService {
 
     @Override
     public UserPoint point(final Long userId) {
-        logger.info("call point method");
+//        logger.info("call point method");
         return pointRepository.findUserPointById(userId);
     }
 
     @Override
     public UserPoint charge(final Long userId, final Long point) {
-        logger.info("call charge method");
+//        logger.info("call charge method");
+
+        /* TODO Map key를 통해 Lock 조회 */
+
         if (point < 0) {
             throw new IllegalArgumentException("충전할 포인트가 음수일 수 없습니다.");
         }
@@ -46,7 +49,7 @@ public class PointServiceImpl implements PointService {
 
     @Override
     public UserPoint use(final Long userId, final Long usePoint) {
-        logger.info("call use method");
+//        logger.info("call use method");
         if (usePoint < 0) {
             throw new IllegalArgumentException("사용할 포인트가 음수일 수 없습니다.");
         }
@@ -67,7 +70,7 @@ public class PointServiceImpl implements PointService {
 
     @Override
     public List<PointHistory> history(final Long userId) {
-        logger.info("call history method");
+//        logger.info("call history method");
         return pointRepository.findAllPointHistoryByUserId(userId);
     }
 }
