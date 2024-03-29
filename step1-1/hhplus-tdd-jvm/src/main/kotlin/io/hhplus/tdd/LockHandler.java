@@ -14,9 +14,9 @@ public class LockHandler {
 
     private final Map<Long, Lock> lockMap = new ConcurrentHashMap<>();
 
-    public void tryLock(Long userId) throws InterruptedException {
+    public boolean tryLock(Long userId) throws InterruptedException {
         Lock lock = lockMap.computeIfAbsent(userId, vLock -> new ReentrantLock());
-        lock.tryLock(5, TimeUnit.SECONDS);
+        return lock.tryLock(5, TimeUnit.SECONDS);
     }
 
     public void unlock(Long userId) {
@@ -24,11 +24,14 @@ public class LockHandler {
         lock.unlock();
     }
 
-    public <T> T lock(Long userId, Callable<T> method) throws Exception {
-        tryLock(userId);
-
+    public <T> T lock(Long userId, Callable<T> task) {
         try {
-            return method.call();
+            if (!tryLock(userId)) {
+                throw new RuntimeException("");
+            }
+            return task.call();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         } finally {
             unlock(userId);
         }

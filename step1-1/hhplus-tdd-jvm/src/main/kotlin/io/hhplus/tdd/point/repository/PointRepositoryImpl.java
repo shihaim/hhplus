@@ -15,7 +15,7 @@ import java.util.List;
 public class PointRepositoryImpl implements PointRepository {
     private final Logger logger = LoggerFactory.getLogger(PointRepositoryImpl.class);
 
-    private final UserPointTable userPointTable;
+    private UserPointTable userPointTable;
     private final PointHistoryTable pointHistoryTable;
 
     public PointRepositoryImpl(UserPointTable userPointTable, PointHistoryTable pointHistoryTable) {
@@ -25,25 +25,25 @@ public class PointRepositoryImpl implements PointRepository {
 
     @Override
     public UserPoint findUserPointById(final Long id) {
-//        logger.info("call UserPoint.selectById method");
+        logger.info("call UserPoint.selectById method");
         return userPointTable.selectById(id);
     }
 
     @Override
     public UserPoint insertOrUpdateToUserPoint(final Long id, final Long amount) {
-//        logger.info("call UserPoint.insertOrUpdate method");
+        logger.info("call UserPoint.insertOrUpdate method");
         return userPointTable.insertOrUpdate(id, amount);
     }
 
     @Override
     public PointHistory insertToPointHistory(final Long id, final Long amount, final TransactionType transactionType, final Long updateMillis) {
-//        logger.info("call PointHistory.insert method");
+        logger.info("call PointHistory.insert method");
         return pointHistoryTable.insert(id, amount, transactionType, updateMillis);
     }
 
     @Override
     public List<PointHistory> findAllPointHistoryByUserId(final Long userId) {
-//        logger.info("call PointHistory.selectAllByUserId method");
+        logger.info("call PointHistory.selectAllByUserId method");
         return pointHistoryTable.selectAllByUserId(userId);
     }
 }

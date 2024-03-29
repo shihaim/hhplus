@@ -1,5 +1,6 @@
 package io.hhplus.tdd.point.service;
 
+import io.hhplus.tdd.LockHandler;
 import io.hhplus.tdd.point.PointHistory;
 import io.hhplus.tdd.point.UserPoint;
 import io.hhplus.tdd.point.repository.stub.StubPointRepository;
@@ -14,7 +15,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 class PointServiceTest {
 
     private StubPointRepository repositoryStub = new StubPointRepository();
-    private PointService sut = new PointServiceImpl(repositoryStub);
+    private LockHandler lockHandler = new LockHandler();
+    private PointService sut = new PointServiceImpl(repositoryStub, lockHandler);
 
     /**
      * case1: 포인트 조회 성공 (pointRepository에서 조회시 null인 경우 새로운 객체를 생성하므로 id 조회 실패에 대한 실패 테스트는 작성 X)

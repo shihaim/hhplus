@@ -1,7 +1,8 @@
 package io.hhplus.tdd.point;
 
 import io.hhplus.tdd.point.repository.PointRepository;
-import io.hhplus.tdd.point.service.PointService;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +28,7 @@ public class IntegrationTest {
 
     /**
      * case1: 동시성 테스트, 여러 건의 포인트 충전/사용 요청이 들어올 경우 순차적으로 처리
-     * case2: 포인트 충전 성공 포인트 충전 내역 저장 성공
-     * case3: 포인트 사용 성공 포인트 이용 내역 저장 성공
+     * case2: 포인트 충전 성공 포인트 충전/이용 내역 저장 성공
      */
 
     @Test
@@ -42,7 +42,7 @@ public class IntegrationTest {
         AtomicInteger failCount = new AtomicInteger();
 
         //when
-        CompletableFuture<Void> future3000L = CompletableFuture.runAsync(() -> {
+        CompletableFuture<Void> futureCharge3000L = CompletableFuture.runAsync(() -> {
             try {
                 pointController.charge(1L, 3000L);
                 successCount.incrementAndGet();
@@ -50,8 +50,19 @@ public class IntegrationTest {
                 failCount.incrementAndGet();
             }
         }, service);
-        futures.add(future3000L);
-        CompletableFuture<Void> future5000L = CompletableFuture.runAsync(() -> {
+        futures.add(futureCharge3000L);
+
+        CompletableFuture<Void> futureUse2000L = CompletableFuture.runAsync(() -> {
+            try {
+                pointController.use(1L, 2000L);
+                successCount.incrementAndGet();
+            } catch (Exception e) {
+                failCount.incrementAndGet();
+            }
+        }, service);
+        futures.add(futureUse2000L);
+
+        CompletableFuture<Void> futureCharge5000L = CompletableFuture.runAsync(() -> {
             try {
                 pointController.charge(1L, 5000L);
                 successCount.incrementAndGet();
@@ -59,35 +70,34 @@ public class IntegrationTest {
                 failCount.incrementAndGet();
             }
         }, service);
-        futures.add(future5000L);
+        futures.add(futureCharge5000L);
 
         CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
         service.shutdown();
 
         UserPoint userPoint = pointRepository.findUserPointById(1L);
-        System.out.println(userPoint.getPoint());
 
         //then
-        assertThat(userPoint.getPoint()).as("동시에 3000원과 5000원으로 충전 요청이 들어오면 총 8000원이여야 함.").isEqualTo(8000L);
+        assertThat(userPoint.getPoint()).as("3000 -2000 +5000").isEqualTo(6000L);
     }
 
     @Test
-    @DisplayName("")
+    @DisplayName("포인트 충전 성공 포인트 충전/이용 내역 저장 성공")
     void case2() throws Exception {
         //given
+        pointController.charge(1L, 2000L);
+        pointController.use(1L, 1000L);
 
         //when
+        List<PointHistory> history = pointController.history(1L);
 
         //then
-    }
+        assertThat(history.size()).isEqualTo(2);
 
-    @Test
-    @DisplayName("")
-    void case3() throws Exception {
-        //given
+        assertThat(history.get(0).getAmount()).isEqualTo(2000L);
+        assertThat(history.get(0).getType()).isEqualTo(TransactionType.CHARGE);
 
-        //when
-
-        //then
+        assertThat(history.get(1).getAmount()).isEqualTo(1000L);
+        assertThat(history.get(1).getType()).isEqualTo(TransactionType.USE);
     }
 }
