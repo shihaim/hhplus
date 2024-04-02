@@ -1,5 +1,6 @@
 # [Chapter2 - 콘서트 예매 서비스]
 ## 1-1. 유저 토큰 발급 API
+![token api](https://github.com/shihaim/hhplus/blob/main/chapter2/sequence_diagram/token_req_api.png)
 ### EndPoint
 | Method | Request URL                         |
 |--------|-------------------------------------|
@@ -19,11 +20,23 @@
 1. 존재하지 않는 콘서트 Code
 2. 존재하지 않는 유저 UUID
 
-## 1-2. 대기열 폴링 API
+### 설계
+- 콘서트(아이유 콘서트 또는 BTS 콘서트)에 따라 대기열 토큰을 발급하고 티켓팅을 시작
+- 순번 결정 방식
+  - Auto Increment를 통해 순번을 결정
+  - 콘서트가 다를 때 ROW NUMBER를 통하여 순번을 결정   
+    (일회성 데이터라면 해당 방식은 의미 X)
+
+## 1-2. 대기열 순번 폴링 API
+구상만 하였고, 아직 생각은 못해봤습니다..
+
+### 설계
+- 클라이언트에서 대기열 순번에 관해 API를 요청
 
 ---
 
-## 2-1. 예약 가능 날짜 조회 API
+## 2-1. 예매 가능 날짜 조회 API
+![date list api](https://github.com/shihaim/hhplus/blob/main/chapter2/sequence_diagram/ticketing_date_list_api.png)
 ### EndPoint
 | Method | Request URL                   |
 |--------|-------------------------------|
@@ -50,6 +63,7 @@
 3. 현재 유저의 대기열 토큰과 일치하지 않음
 
 ## 2-2. 해당 날짜의 좌석 조회 API
+![seat list api](https://github.com/shihaim/hhplus/blob/main/chapter2/sequence_diagram/ticketing_seat_list_api.png)
 ### EndPoint
 | Method | Request URL                         |
 |--------|-------------------------------------|
@@ -78,7 +92,8 @@
 
 ---
 
-## 3-1. 좌석 예약 요청 API
+## 3-1. 좌석 예매 요청 API
+![temp seat api](https://github.com/shihaim/hhplus/blob/main/chapter2/sequence_diagram/ticketing_temp_seat_api.png)
 ### EndPoint
 | Method | Request URL                   |
 |--------|-------------------------------|
@@ -110,11 +125,15 @@
    - 이미 임시 배정된 좌석(동시성) 
    - 현재 배정할 수 없는 좌석(결제가 되지 않은 시점으로 부터)
 
+### 설계
+
+
 ## 3-2. 좌석 배정 상태 폴링 API
 
 ---
 
 ## 4-1. 잔액 조회 API
+![balance api](https://github.com/shihaim/hhplus/blob/main/chapter2/sequence_diagram/balance_api.png)
 ### EndPoint
 | Method | Request URL                 |
 |--------|-----------------------------|
@@ -129,6 +148,7 @@
 1. 존재하지 않는 유저 UUID
 
 ## 4-2. 잔액 충전 API
+![balance charge api](https://github.com/shihaim/hhplus/blob/main/chapter2/sequence_diagram/balance_charge_api.png)
 ### EndPoint
 | Method | Request URL                 |
 |--------|-----------------------------|
@@ -151,6 +171,7 @@
 ---
 
 ## 5. 결제 API
+![payment api](https://github.com/shihaim/hhplus/blob/main/chapter2/sequence_diagram/payment_api.png)
 ### EndPoint
 | Method | Request URL     |
 |--------|-----------------|
@@ -176,3 +197,7 @@
 2. 현재 유저의 대기열 토큰과 일치하지 않음
 3. 배정된 좌석이 존재하지 않음
 4. 콘서트 가격보다 충전한 잔액이 적음
+
+---
+# ERD 설계서
+![Concert ERD](https://github.com/shihaim/hhplus/blob/main/chapter2/erd/concert_erd.png)
