@@ -9,12 +9,13 @@
 ### Request Body
 | Parameter | Type   | Required | Description |
 |-----------|--------|----------|-------------|
-| UUID      | String | O        | 유저 ID       |
+| userUUID  | String | O        | 유저 ID       |
 
 ### Response Body
-| Parameter | Type   | Required | Description |
-|-----------|--------|----------|-------------|
-| token     | String | O        | 대기열 토큰      | 
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| tokenId   | Long | O        | 대기열 순번      | 
+| token     | int  | O        | 대기열 토큰      | 
 
 ### Error
 1. 존재하지 않는 콘서트 Code
@@ -43,19 +44,21 @@
 | GET    | api/v1/concerts/{concertCode} |
 
 ### Request Headers
-| Parameter     | Type   | Required | Description |
-|---------------|--------|----------|-------------|
-| Authorization | String | O        | 대기열 토큰      |
+| Parameter     | Type | Required | Description |
+|---------------|------|----------|-------------|
+| Authorization | int  | O        | 대기열 토큰      |
 
 ### Request Body
 | Parameter | Type   | Required | Description |
 |-----------|--------|----------|-------------|
-| UUID      | String | O        | 유저 ID       |
+| userUUID  | String | O        | 유저 ID       |
 
 ### Response Body
-| Parameter       | Type | Required | Description   |
-|-----------------|------|----------|---------------|
-| concertDateList | List | O        | 예매 가능한 날짜 리스트 | 
+| Parameter   | Type      | Required | Description |
+|-------------|-----------|----------|-------------|
+| concertName | String    | O        | 콘서트 이름      | 
+| concertDate | LocalDate | O        | 예매 가능한 날짜   | 
+- `List<AvailableConcertDate>`로 반환
 
 ### Error
 1. 존재하지 않는 콘서트 Code 
@@ -70,14 +73,14 @@
 | GET    | api/v1/concerts/{concertCode}/seats |
 
 ### Request Headers
-| Parameter     | Type   | Required | Description |
-|---------------|--------|----------|-------------|
-| Authorization | String | O        | 대기열 토큰      |
+| Parameter     | Type | Required | Description |
+|---------------|------|----------|-------------|
+| Authorization | int  | O        | 대기열 토큰      |
 
 ### Request Body
 | Parameter   | Type          | Required | Description |
 |-------------|---------------|----------|-------------|
-| UUID        | String        | O        | 유저 ID       |
+| userUUID    | String        | O        | 유저 ID       |
 | concertDate | LocalDateTime | O        | 콘서트 날짜      |
 
 ### Response Body
@@ -100,14 +103,14 @@
 | PATCH  | api/v1/concerts/{concertCode} |
 
 ### Request Headers
-| Parameter     | Type   | Required | Description |
-|---------------|--------|----------|-------------|
-| Authorization | String | O        | 토큰          |
+| Parameter     | Type | Required | Description |
+|---------------|------|----------|-------------|
+| Authorization | int  | O        | 토큰          |
 
 ### Request Body
 | Parameter   | Type          | Required | Description |
 |-------------|---------------|----------|-------------|
-| UUID        | String        | O        | 유저 ID       | 
+| userUUID    | String        | O        | 유저 ID       | 
 | concertDate | LocalDateTime | O        | 콘서트 날짜      | 
 | seatNumber  | int           | O        | 좌석 번호       | 
 
@@ -150,9 +153,9 @@
 ## 4-2. 잔액 충전 API
 ![balance charge api](https://github.com/shihaim/hhplus/blob/main/chapter2/sequence_diagram/balance_charge_api.png)
 ### EndPoint
-| Method | Request URL                 |
-|--------|-----------------------------|
-| PATCH  | api/v1/users/{UUID}/balance |
+| Method | Request URL                     |
+|--------|---------------------------------|
+| PATCH  | api/v1/users/{userUUID}/balance |
 
 ### Request Body
 | Parameter | Type | Required | Description |
@@ -178,14 +181,14 @@
 | POST   | api/v1/payments |
 
 ### Request Headers
-| Parameter     | Type   | Required | Description |
-|---------------|--------|----------|-------------|
-| Authorization | String | O        | 대기열 토큰      |
+| Parameter     | Type | Required | Description |
+|---------------|------|----------|-------------|
+| Authorization | int  | O        | 대기열 토큰      |
 
 ### Request Body
 | Parameter | Type   | Required | Description |
 |-----------|--------|----------|-------------|
-| UUID      | String | O        | 유저 ID       |
+| userUUID  | String | O        | 유저 ID       |
 
 ### Response Body
 | Parameter | Type       | Required | Description |
