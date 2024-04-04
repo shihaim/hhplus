@@ -56,6 +56,7 @@
 ### Response Body
 | Parameter   | Type      | Required | Description |
 |-------------|-----------|----------|-------------|
+| concertCode | String    | O        | 콘서트 Code    | 
 | concertName | String    | O        | 콘서트 이름      | 
 | concertDate | LocalDate | O        | 예매 가능한 날짜   | 
 - `List<AvailableConcertDate>`로 반환
@@ -198,8 +199,9 @@
 ### Error
 1. 존재하지 않는 유저 UUID
 2. 현재 유저의 대기열 토큰과 일치하지 않음
-3. 배정된 좌석이 존재하지 않음
-4. 콘서트 가격보다 충전한 잔액이 적음
+3. 임시 배정된 좌석이 존재하지 않음
+4. 배정 시간이 만료됨
+5. 충전한 잔액이 콘서트 가격보다 적음
 
 ---
 # ERD 설계서
