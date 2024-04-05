@@ -40,9 +40,14 @@ public class PaymentController {
         // DB에서 현재 유저에게 임시 배정된 좌석을 반환했음을 가정
         WaitSlot findWaitSlot = new WaitSlot(35L, "1e9ebe68-045a-49f1-876e-a6ea6380dd5c", findToken, SlotStatus.NOT_ASSIGNED,
                 LocalDateTime.of(2024, 4, 4, 10, 33, 0), 1L);
+
+        if (findWaitSlot == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ConcertApiResponse.of("임시 배정이 되지 않은 좌석입니다!"));
+        }
+
         if (LocalDateTime.now().minusSeconds(1).isAfter(findWaitSlot.getAssignedAt())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ConcertApiResponse.of("임시 배정된 시간이 만료되었습니다!"));
-        };
+        }
 
         return null;
     }

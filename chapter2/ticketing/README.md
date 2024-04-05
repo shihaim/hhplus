@@ -1,4 +1,13 @@
 # [Chapter2 - 콘서트 예매 서비스]
+## To. 코치님께
+물론 핑계지만, 현업과 병행하다보니 시간적 여유가 너무 없어서 쉽지 않았습니다. ㅠㅠ   
+다음번에 좀 더 열심히 하도록 하겠습니다. :pensive:
+1. ERD 수정 (임시 좌석 배정 테이블 -> 콘서트 예약 테이블)
+2. 토요일까지 컨트롤러 내 비즈니스 로직 모두 걷어내고, 서비스 레이어로 마이그레이션
+3. 완료 못한 Mock API 전부 작성
+4. 이후 발제 내용 및 step7/step8 빠르게 진행   
+
+다음과 같이 진행될 예정입니다!
 ## 1-1. 유저 토큰 발급 API
 ![token api](https://github.com/shihaim/hhplus/blob/main/chapter2/sequence_diagram/token_req_api.png)
 ### EndPoint
