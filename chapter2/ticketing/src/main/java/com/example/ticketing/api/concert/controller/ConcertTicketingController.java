@@ -2,7 +2,6 @@ package com.example.ticketing.api.concert.controller;
 
 import com.example.ticketing.api.concert.dto.*;
 import com.example.ticketing.domain.concert.entity.TicketingStatus;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,20 +20,14 @@ public class ConcertTicketingController {
             @PathVariable("concertCode") String concertCode,
             @RequestBody String userUUID
     ) {
-        if (!"IU_BLUEMING_001".equals(concertCode)) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ConcertApiResponse.of("존재하지 않는 콘서트 입니다!"));
-        }
 
-        if (!"1e9ebe68-045a-49f1-876e-a6ea6380dd5c".equals(userUUID)) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ConcertApiResponse.of("존재하지 않는 유저 입니다!"));
-        }
+        int token = LocalDateTime.of(2024, 4, 10, 13, 30, 0).hashCode();
+        token = 31 * token + userUUID.hashCode();
+        token = 31 * token + concertCode.hashCode();
 
-        // DB에서 Token을 반환했음을 가정
-        int result = LocalDateTime.of(2024, 4, 10, 13, 30, 0).hashCode();
-        result = 31 * result + userUUID.hashCode();
-        result = 31 * result + concertCode.hashCode();
+        IssuedTokenResponse result = IssuedTokenResponse.of(1L, token);
 
-        return ResponseEntity.ok(ConcertApiResponse.of(IssuedTokenResponse.of(1L, result)));
+        return ResponseEntity.ok(ConcertApiResponse.of(result));
     }
 
     @GetMapping("/{concertCode}")
@@ -43,22 +36,6 @@ public class ConcertTicketingController {
             @RequestHeader("Authorization") int token,
             @RequestBody String userUUID
     ) {
-        if (!"IU_BLUEMING_001".equals(concertCode)) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ConcertApiResponse.of("존재하지 않는 콘서트 입니다!"));
-        }
-
-        if (!"1e9ebe68-045a-49f1-876e-a6ea6380dd5c".equals(userUUID)) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ConcertApiResponse.of("존재하지 않는 유저 입니다!"));
-        }
-
-        // DB에서 Token을 반환했음을 가정
-        int findToken = LocalDateTime.of(2024, 4, 10, 13, 30, 0).hashCode();
-        findToken = 31 * findToken + userUUID.hashCode();
-        findToken = 31 * findToken + concertCode.hashCode();
-
-        if (token != findToken) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ConcertApiResponse.of("대기열 토큰이 일치하지 않습니다!"));
-        }
 
         List<AvailableConcertDatesResponse> result = List.of(
                 new AvailableConcertDatesResponse(concertCode, "아이유 블루밍 콘서트",
@@ -76,36 +53,30 @@ public class ConcertTicketingController {
             @RequestHeader("Authorization") int token,
             @RequestBody FindConcertSeatsRequest requestDto
     ) {
-        if (!"IU_BLUEMING_001".equals(concertCode)) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ConcertApiResponse.of("존재하지 않는 콘서트 입니다!"));
-        }
-
-        if (!"1e9ebe68-045a-49f1-876e-a6ea6380dd5c".equals(requestDto.userUUID())) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ConcertApiResponse.of("존재하지 않는 유저 입니다!"));
-        }
-
-        // DB에서 Token을 반환했음을 가정
-        int findToken = LocalDateTime.of(2024, 4, 10, 13, 30, 0).hashCode();
-        findToken = 31 * findToken + requestDto.userUUID().hashCode();
-        findToken = 31 * findToken + concertCode.hashCode();
-
-        if (token != findToken) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ConcertApiResponse.of("대기열 토큰이 일치하지 않습니다!"));
-        }
 
         LocalDateTime availableConcertDate = LocalDateTime.of(2024, 4, 20, 15, 0, 0);
-        List<AvailableConcertSeatsResponse> result;
-        if (availableConcertDate.isEqual(requestDto.concertDate())) {
-            result = List.of(
-                    new AvailableConcertSeatsResponse(concertCode, availableConcertDate.format(formatter), 5, TicketingStatus.NONE),
-                    new AvailableConcertSeatsResponse(concertCode, availableConcertDate.format(formatter), 10, TicketingStatus.NONE),
-                    new AvailableConcertSeatsResponse(concertCode, availableConcertDate.format(formatter), 22, TicketingStatus.NONE),
-                    new AvailableConcertSeatsResponse(concertCode, availableConcertDate.format(formatter), 41, TicketingStatus.NONE),
-                    new AvailableConcertSeatsResponse(concertCode, availableConcertDate.format(formatter), 48, TicketingStatus.NONE)
-            );
-        } else {
-            result = List.of();
-        }
+
+        List<AvailableConcertSeatsResponse> result = List.of(
+                new AvailableConcertSeatsResponse(concertCode, availableConcertDate.format(formatter), 5, TicketingStatus.NONE),
+                new AvailableConcertSeatsResponse(concertCode, availableConcertDate.format(formatter), 10, TicketingStatus.NONE),
+                new AvailableConcertSeatsResponse(concertCode, availableConcertDate.format(formatter), 22, TicketingStatus.NONE),
+                new AvailableConcertSeatsResponse(concertCode, availableConcertDate.format(formatter), 41, TicketingStatus.NONE),
+                new AvailableConcertSeatsResponse(concertCode, availableConcertDate.format(formatter), 48, TicketingStatus.NONE)
+        );
+
+        return ResponseEntity.ok(ConcertApiResponse.of(result));
+    }
+
+    @PatchMapping("/{concertCode}")
+    public ResponseEntity<ConcertApiResponse<?>> reserveSeat(
+            @PathVariable("concertCode") String concertCode,
+            @RequestHeader("Authorization") int token,
+            @RequestBody ReservationRequest requestDto
+    ) {
+
+        String concertDate = LocalDateTime.of(2024, 4, 20, 15, 0, 0).format(formatter);
+        String assignedAt = LocalDateTime.now().plusMinutes(5).format(formatter);
+        ReservationResponse result = new ReservationResponse(concertCode, concertDate, 25, assignedAt);
 
         return ResponseEntity.ok(ConcertApiResponse.of(result));
     }

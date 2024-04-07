@@ -1,13 +1,5 @@
 # [Chapter2 - 콘서트 예매 서비스]
-## To. 코치님께
-물론 핑계지만, 현업과 병행하다보니 시간적 여유가 너무 없어서 쉽지 않았습니다. ㅠㅠ   
-다음번에 좀 더 열심히 하도록 하겠습니다. :pensive:
-1. ERD 수정 (임시 좌석 배정 테이블 -> 콘서트 예약 테이블)
-2. 토요일까지 컨트롤러 내 비즈니스 로직 모두 걷어내고, 서비스 레이어로 마이그레이션
-3. 완료 못한 Mock API 전부 작성
-4. 이후 발제 내용 및 step7/step8 빠르게 진행   
 
-다음과 같이 진행될 예정입니다!
 ## 1-1. 유저 토큰 발급 API
 ![token api](https://github.com/shihaim/hhplus/blob/main/chapter2/sequence_diagram/token_req_api.png)
 ### EndPoint
@@ -20,15 +12,16 @@
 |-----------|--------|----------|-------------|
 | userUUID  | String | O        | 유저 ID       |
 
-### Response Body
+### Response Body `IssuedTokenResponse`
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
 | tokenId   | Long | O        | 대기열 순번      | 
 | token     | int  | O        | 대기열 토큰      | 
 
 ### Error
-1. 존재하지 않는 콘서트 Code
-2. 존재하지 않는 유저 UUID
+- repository
+  1. 존재하지 않는 콘서트 Code
+  2. 존재하지 않는 유저 UUID
 
 ### 설계
 - 콘서트(아이유 콘서트 또는 BTS 콘서트)에 따라 대기열 토큰을 발급하고 티켓팅을 시작
@@ -65,18 +58,19 @@
 |-----------|--------|----------|-------------|
 | userUUID  | String | O        | 유저 ID       |
 
-### Response Body
+### Response Body `List<AvailableConcertDate>`
 | Parameter   | Type      | Required | Description |
 |-------------|-----------|----------|-------------|
 | concertCode | String    | O        | 콘서트 Code    | 
 | concertName | String    | O        | 콘서트 이름      | 
-| concertDate | LocalDate | O        | 예매 가능한 날짜   | 
-- `List<AvailableConcertDate>`로 반환
+| concertDate | LocalDate | O        | 예매 가능한 날짜   |
 
 ### Error
-1. 존재하지 않는 콘서트 Code 
-2. 존재하지 않는 유저 UUID 
-3. 현재 유저의 대기열 토큰과 일치하지 않음
+- repository
+  1. 존재하지 않는 콘서트 Code 
+  2. 존재하지 않는 유저 UUID
+- filter
+  1. 현재 유저의 대기열 토큰과 일치하지 않음
 
 ## 2-2. 해당 날짜의 좌석 조회 API
 ![seat list api](https://github.com/shihaim/hhplus/blob/main/chapter2/sequence_diagram/ticketing_seat_list_api.png)
@@ -90,21 +84,28 @@
 |---------------|------|----------|-------------|
 | Authorization | int  | O        | 대기열 토큰      |
 
-### Request Body
-| Parameter   | Type          | Required | Description |
-|-------------|---------------|----------|-------------|
-| userUUID    | String        | O        | 유저 ID       |
-| concertDate | LocalDateTime | O        | 콘서트 날짜      |
+### Request Body `FindConcertSeatsRequest`
+| Parameter   | Type   | Required | Description |
+|-------------|--------|----------|-------------|
+| userUUID    | String | O        | 유저 ID       |
+| concertDate | String | O        | 콘서트 날짜      |
 
-### Response Body
-| Parameter       | Type | Required | Description   |
-|-----------------|------|----------|---------------|
-| concertSeatList | List | O        | 예매 가능한 좌석 리스트 | 
+
+### Response Body `List<AvailableConcertSeatsResponse>`
+| Parameter   | Type   | Required | Description   |
+|-------------|--------|----------|---------------|
+| concertCode | String | O        | 콘서트 코드        | 
+| concertDate | String | O        | 예매 가능한 날짜     | 
+| seatNumber  | int    | O        | 좌석 번호         | 
+| status      | Enum   | O        | 임시 배정 상태      | 
+
 
 ### Error
-1. 존재하지 않는 콘서트 Code 
-2. 존재하지 않는 유저 UUID 
-3. 현재 유저의 대기열 토큰과 일치하지 않음
+- repository
+  1. 존재하지 않는 콘서트 Code
+  2. 존재하지 않는 유저 UUID
+- filter
+  1. 현재 유저의 대기열 토큰과 일치하지 않음
 
 ---
 
@@ -120,26 +121,31 @@
 |---------------|------|----------|-------------|
 | Authorization | int  | O        | 토큰          |
 
-### Request Body
-| Parameter   | Type          | Required | Description |
-|-------------|---------------|----------|-------------|
-| userUUID    | String        | O        | 유저 ID       | 
-| concertDate | LocalDateTime | O        | 콘서트 날짜      | 
-| seatNumber  | int           | O        | 좌석 번호       | 
+### Request Body `ReservationRequest`
+| Parameter   | Type   | Required | Description |
+|-------------|--------|----------|-------------|
+| userUUID    | String | O        | 유저 ID       | 
+| concertDate | String | O        | 콘서트 날짜      | 
+| seatNumber  | int    | O        | 좌석 번호       | 
 
-### Response Body
-| Parameter | Type       | Required | Description |
-|-----------|------------|----------|-------------|
-| status    | HttpStatus | O        | HTTP 결과값    | 
+### Response Body `ReservationResponse`
+| Parameter   | Type   | Required | Description  |
+|-------------|--------|----------|--------------|
+| concertCode | String | O        | 콘서트 코드       | 
+| concertDate | String | O        | 콘서트 날짜       | 
+| seatNumber  | int    | O        | 임시 배정된 좌석 번호 | 
+| assignedAt  | String | O        | 임시 배정된 시간    | 
 
 ### Error
-1. 존재하지 않는 콘서트 Code
-2. 존재하지 않는 좌석 (-1, 51, etc)
-3. 존재하지 않는 유저 UUID
-4. 현재 유저의 대기열 토큰과 일치하지 않음
-5. 좌석 배정 관련 에러
-   - 이미 임시 배정된 좌석(동시성) 
-   - 현재 배정할 수 없는 좌석(결제가 되지 않은 시점으로 부터)
+- repository
+  1. 존재하지 않는 콘서트 Code
+  2. 존재하지 않는 좌석 (-1, 51, etc)
+  3. 존재하지 않는 유저 UUID
+- filter
+  1. 현재 유저의 대기열 토큰과 일치하지 않음
+- business
+  1. 이미 임시 배정된 좌석(동시성)
+  2. 현재 배정할 수 없는 좌석(결제가 되지 않은 시점으로 부터) 필요X?
 
 ### 설계
 
@@ -161,7 +167,8 @@
 | balance   | int  | O        | 현재 가지고 있는 잔액 |  
 
 ### Error
-1. 존재하지 않는 유저 UUID
+- repository
+  1. 존재하지 않는 유저 UUID
 
 ## 4-2. 잔액 충전 API
 ![balance charge api](https://github.com/shihaim/hhplus/blob/main/chapter2/sequence_diagram/balance_charge_api.png)
@@ -176,13 +183,14 @@
 | amount    | int  | O        | 충전 금액       |
 
 ### Response Body
-| Parameter | Type       | Required | Description |
-|-----------|------------|----------|-------------|
-| status    | HttpStatus | O        | HTTP 결과값    | 
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| balance   | int  | O        | 총 잔액        | 
 
 ### Error
-1. 존재하지 않는 유저 UUID
-2. amount가 음수
+- repository
+  1. 존재하지 않는 유저 UUID
+  2. amount가 음수
 
 ---
 
@@ -203,18 +211,28 @@
 |-----------|--------|----------|-------------|
 | userUUID  | String | O        | 유저 ID       |
 
-### Response Body
-| Parameter | Type       | Required | Description |
-|-----------|------------|----------|-------------|
-| status    | HttpStatus | O        | HTTP 결과값    | 
+### Response Body `PaymentDetailResponse`
+| Parameter   | Type   | Required | Description |
+|-------------|--------|----------|-------------|
+| userUUID    | String | O        | 유저 ID       |
+| concertName | String | O        | 콘서트 코드      |
+| concertDate | String | O        | 콘서트 날짜      |
+| seatNumber  | int    | O        | 좌석 번호       |
+| price       | int    | O        | 가격          |
 
 ### Error
-1. 존재하지 않는 유저 UUID
-2. 현재 유저의 대기열 토큰과 일치하지 않음
-3. 임시 배정된 좌석이 존재하지 않음
-4. 배정 시간이 만료됨
-5. 충전한 잔액이 콘서트 가격보다 적음
+- repository
+  1. 존재하지 않는 유저 UUID
+  2. 임시 배정된 좌석이 존재하지 않음 
+  3. 배정 시간이 만료됨
+  4. 충전한 잔액이 콘서트 가격보다 적음
+- filter
+    1. 현재 유저의 대기열 토큰과 일치하지 않음
 
 ---
 # ERD 설계서
-![Concert ERD](https://github.com/shihaim/hhplus/blob/main/chapter2/erd/concert_erd.png)
+![Ticketing ERD](https://github.com/shihaim/hhplus/blob/main/chapter2/erd/concert_erd.png)
+
+---
+# Swagger
+![Ticketing Swagger](https://github.com/shihaim/hhplus/blob/main/chapter2/swagger/ticketing_swagger.png)

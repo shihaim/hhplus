@@ -1,6 +1,5 @@
 package com.example.ticketing.api.payment.controller;
 
-import com.example.ticketing.api.payment.usecase.StubPaymentAssignedSeatUseCase;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.junit.jupiter.api.BeforeEach;
@@ -8,8 +7,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -27,9 +24,6 @@ public class PaymentControllerTest {
 
     @InjectMocks
     private PaymentController target;
-
-    @Mock
-    private StubPaymentAssignedSeatUseCase paymentUseCaseStub;
 
     private MockMvc mockMvc;
     private Gson gson;
