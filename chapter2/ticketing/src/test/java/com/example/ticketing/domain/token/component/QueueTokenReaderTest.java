@@ -45,8 +45,13 @@ class QueueTokenReaderTest {
     @DisplayName("대기열 토큰 조회 성공")
     void case2() throws Exception {
         //given
+        String concertCode = "IU_BLUEMING_001";
         String userUUID = "1e9ebe68-045a-49f1-876e-a6ea6380dd5c";
         LocalDateTime expiredAt = LocalDateTime.of(2024, 4, 11, 13, 20, 35).plusMinutes(10);
+
+        int token = userUUID.hashCode();
+        token = 31 * token + expiredAt.hashCode();
+        token = 31 * token + concertCode.hashCode();
 
         //when
         QueueToken findQueueToken = sut.findQueueToken(userUUID);
@@ -55,6 +60,7 @@ class QueueTokenReaderTest {
         assertThat(findQueueToken.getQueueTokenId()).isEqualTo(1L);
         assertThat(findQueueToken.getUser().getUserUUID()).isEqualTo(userUUID);
         assertThat(findQueueToken.getConcertCode()).isEqualTo("IU_BLUEMING_001");
+        assertThat(findQueueToken.getToken()).isEqualTo(token);
         assertThat(findQueueToken.getStatus()).isEqualTo(QueueStatus.IN_PROGRESS);
         assertThat(findQueueToken.getExpiredAt()).isEqualTo(expiredAt);
     }

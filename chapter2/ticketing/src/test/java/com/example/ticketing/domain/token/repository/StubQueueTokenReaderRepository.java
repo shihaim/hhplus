@@ -15,8 +15,9 @@ public class StubQueueTokenReaderRepository implements QueueTokenReaderRepositor
         String concertCode = "IU_BLUEMING_001";
         LocalDateTime expiredAt = LocalDateTime.of(2024, 4, 11, 13, 20, 35).plusMinutes(10);
 
-        int token = expiredAt.hashCode();
-        token = 31 * token + userUUID.hashCode();
+
+        int token = userUUID.hashCode();
+        token = 31 * token + expiredAt.hashCode();
         token = 31 * token + concertCode.hashCode();
 
         return Optional.of(
