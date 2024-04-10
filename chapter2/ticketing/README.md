@@ -232,6 +232,11 @@
 ---
 # ERD 설계서
 ![Ticketing ERD](https://github.com/shihaim/hhplus/blob/main/chapter2/erd/concert_erd.png)
+### 보완사항
+- 콘서트는 어떠한 장소에서 이루어짐(ex. 잠실구장).
+- 좌석이 고정되어 있고, 콘서트마다 좌석 관련 데이터가 만들어지는 것은 비효율적.
+- `ConcertOption`을 통해서 `Concert` 1:N `ConcertOption` N:1 `Seat`로 나눠 관리 필요
+- 만약 콘서트를 개최하는 장소가 동적으로 늘어나게 되는 경우 ConcertOption의 중요성이 증가
 
 ---
 # Swagger
