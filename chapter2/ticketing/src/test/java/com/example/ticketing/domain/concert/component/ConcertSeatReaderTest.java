@@ -28,7 +28,7 @@ class ConcertSeatReaderTest {
         LocalDateTime concertDate = LocalDateTime.of(2024, 4, 30, 15, 0, 0);
 
         //when
-        List<Seat> findSeats = sut.findConcertSeats(concertCode, concertDate);
+        List<Seat> findSeats = sut.findAvailableSeats(concertCode, concertDate);
 
         //then
         Assertions.assertThat(findSeats.size()).isEqualTo(10);

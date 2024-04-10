@@ -5,4 +5,5 @@ public interface UserReader {
     /**
      * 잔액 조회
      */
+    int findBalance(String userUUID);
 }

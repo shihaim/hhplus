@@ -7,4 +7,9 @@ import lombok.Getter;
 @Builder
 public class User {
     private String userUUID;
+    private int balance;
+
+    public int chargeBalance(int amount) {
+        return balance += amount;
+    }
 }
