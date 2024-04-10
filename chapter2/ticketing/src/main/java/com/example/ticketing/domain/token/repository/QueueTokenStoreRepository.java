@@ -4,5 +4,5 @@ import com.example.ticketing.domain.token.entity.QueueToken;
 
 public interface QueueTokenStoreRepository {
 
-    Long save(QueueToken createQueueToken);
+    QueueToken save(QueueToken createQueueToken);
 }

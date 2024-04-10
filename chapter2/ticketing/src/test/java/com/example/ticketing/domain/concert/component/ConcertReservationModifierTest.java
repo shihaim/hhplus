@@ -17,12 +17,12 @@ class ConcertReservationModifierTest {
     private final ConcertReservationModifier sut = new ConcertReservationModifierImpl(stubReaderRepository);
 
     /**
-     * [좌석 예매 요청]
-     * case1: 좌석 예매 요청
+     * [좌석 임시 배정]
+     * case1: 좌석 임시 배정
      */
 
     @Test
-    @DisplayName("좌석 예매 요청")
+    @DisplayName("좌석 임시 배정")
     void case1() throws Exception {
         //given
         long seatId = 1L;

@@ -7,5 +7,5 @@ public interface QueueTokenStore {
     /**
      * 대기열 토큰 생성
      */
-    Long createQueueToken(QueueToken createQueueToken);
+    QueueToken saveQueueToken(QueueToken createQueueToken);
 }

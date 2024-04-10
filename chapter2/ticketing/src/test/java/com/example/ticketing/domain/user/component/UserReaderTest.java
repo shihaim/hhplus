@@ -2,15 +2,14 @@ package com.example.ticketing.domain.user.component;
 
 import com.example.ticketing.domain.user.repository.StubUserReaderRepository;
 import com.example.ticketing.domain.user.repository.UserReaderRepository;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.NoSuchElementException;
 import java.util.UUID;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class UserReaderTest {
 

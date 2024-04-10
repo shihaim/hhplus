@@ -12,7 +12,7 @@ public class QueueTokenStoreImpl implements QueueTokenStore {
     }
 
     @Override
-    public Long createQueueToken(QueueToken createQueueToken) {
+    public QueueToken saveQueueToken(QueueToken createQueueToken) {
         return storeRepository.save(createQueueToken);
     }
 }

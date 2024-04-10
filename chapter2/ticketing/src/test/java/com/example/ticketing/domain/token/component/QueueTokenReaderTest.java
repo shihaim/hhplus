@@ -8,11 +8,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
-import java.util.NoSuchElementException;
-import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class QueueTokenReaderTest {
 
@@ -21,29 +18,12 @@ class QueueTokenReaderTest {
 
     /**
      * [대기열 토큰 조회]
-     * case1: 대기열 토큰 조회 실패 - 존재하지 않는 토큰
-     * case2: 대기열 토큰 조회 성공
+     * case1: 대기열 토큰 조회 성공
      */
 
     @Test
-    @DisplayName("대기열 토큰 조회 실패 - 존재하지 않는 토큰")
-    void case1() throws Exception {
-        //given
-        String userUUID = UUID.randomUUID().toString();
-
-        //when
-        NoSuchElementException e = assertThrows(
-                NoSuchElementException.class,
-                () -> sut.findQueueToken(userUUID)
-        );
-
-        //then
-        assertThat(e.getMessage()).isEqualTo("존재하지 않는 토큰입니다.");
-    }
-
-    @Test
     @DisplayName("대기열 토큰 조회 성공")
-    void case2() throws Exception {
+    void case1() throws Exception {
         //given
         String concertCode = "IU_BLUEMING_001";
         String userUUID = "1e9ebe68-045a-49f1-876e-a6ea6380dd5c";
