@@ -2,26 +2,25 @@ package com.example.ticketing.domain.concert.component;
 
 import com.example.ticketing.domain.concert.entity.Seat;
 import com.example.ticketing.domain.concert.entity.TicketingStatus;
-import com.example.ticketing.domain.concert.repository.ConcertSeatReaderRepository;
+import com.example.ticketing.domain.concert.repository.SeatReaderRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @Component
+@RequiredArgsConstructor
 public class ConcertSeatReader {
 
-    private final ConcertSeatReaderRepository readerRepository;
-
-    public ConcertSeatReader(ConcertSeatReaderRepository readerRepository) {
-        this.readerRepository = readerRepository;
-    }
+    private final SeatReaderRepository readerRepository;
 
     /**
      * 해당 날짜의 예매 가능한 좌석 조회
      */
+    @Transactional(readOnly = true)
     public List<Seat> findAvailableSeats(String concertCode, LocalDateTime concertDate) {
         return readerRepository.findAllByCodeAndDate(concertCode, concertDate);
     }

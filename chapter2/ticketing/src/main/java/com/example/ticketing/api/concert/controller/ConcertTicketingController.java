@@ -37,11 +37,11 @@ public class ConcertTicketingController {
             @RequestBody String userUUID
     ) {
 
-        List<AvailableConcertDatesResponse> result = List.of(
-                new AvailableConcertDatesResponse(concertCode, "아이유 블루밍 콘서트",
-                        LocalDateTime.of(2024, 4, 20, 15, 0, 0).format(formatter)),
-                new AvailableConcertDatesResponse(concertCode, "아이유 블루밍 콘서트",
-                        LocalDateTime.of(2024, 4, 21, 15, 0, 0).format(formatter))
+        List<AvailableConcertDateResponse> result = List.of(
+                new AvailableConcertDateResponse(concertCode, "아이유 블루밍 콘서트",
+                        LocalDateTime.of(2024, 4, 20, 15, 0, 0)),
+                new AvailableConcertDateResponse(concertCode, "아이유 블루밍 콘서트",
+                        LocalDateTime.of(2024, 4, 21, 15, 0, 0))
         );
 
         return ResponseEntity.ok(ConcertApiResponse.of(result));
@@ -56,12 +56,12 @@ public class ConcertTicketingController {
 
         LocalDateTime availableConcertDate = LocalDateTime.of(2024, 4, 20, 15, 0, 0);
 
-        List<AvailableConcertSeatsResponse> result = List.of(
-                new AvailableConcertSeatsResponse(concertCode, availableConcertDate.format(formatter), 5, TicketingStatus.NONE),
-                new AvailableConcertSeatsResponse(concertCode, availableConcertDate.format(formatter), 10, TicketingStatus.NONE),
-                new AvailableConcertSeatsResponse(concertCode, availableConcertDate.format(formatter), 22, TicketingStatus.NONE),
-                new AvailableConcertSeatsResponse(concertCode, availableConcertDate.format(formatter), 41, TicketingStatus.NONE),
-                new AvailableConcertSeatsResponse(concertCode, availableConcertDate.format(formatter), 48, TicketingStatus.NONE)
+        List<AvailableConcertSeatResponse> result = List.of(
+                new AvailableConcertSeatResponse(concertCode, availableConcertDate, 5, TicketingStatus.NONE),
+                new AvailableConcertSeatResponse(concertCode, availableConcertDate, 10, TicketingStatus.NONE),
+                new AvailableConcertSeatResponse(concertCode, availableConcertDate, 22, TicketingStatus.NONE),
+                new AvailableConcertSeatResponse(concertCode, availableConcertDate, 41, TicketingStatus.NONE),
+                new AvailableConcertSeatResponse(concertCode, availableConcertDate, 48, TicketingStatus.NONE)
         );
 
         return ResponseEntity.ok(ConcertApiResponse.of(result));

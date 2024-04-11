@@ -6,5 +6,7 @@ import java.util.Optional;
 
 public interface UserReaderRepository {
 
+    Optional<User> findByUserUUID(String userUUID);
+
     Optional<User> findBalanceByUserUUID(String userUUID);
 }

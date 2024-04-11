@@ -2,18 +2,16 @@ package com.example.ticketing.domain.token.component;
 
 import com.example.ticketing.domain.token.entity.QueueToken;
 import com.example.ticketing.domain.token.repository.QueueTokenReaderRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.NoSuchElementException;
 
 @Component
+@RequiredArgsConstructor
 public class QueueTokenReader {
 
     private final QueueTokenReaderRepository readerRepository;
-
-    public QueueTokenReader(QueueTokenReaderRepository readerRepository) {
-        this.readerRepository = readerRepository;
-    }
 
     /**
      * 대기열 토큰 조회

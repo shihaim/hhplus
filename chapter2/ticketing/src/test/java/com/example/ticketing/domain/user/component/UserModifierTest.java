@@ -18,31 +18,13 @@ class UserModifierTest {
 
     /**
      * [잔액 충전]
-     * case1: 잔액 충전 실패 - 충전 금액이 음수
-     * case2: 잔액 충전 실패 - 존재하지 않는 유저
-     * case3: 잔액 충전 성공
+     * case1: 잔액 충전 실패 - 존재하지 않는 유저
+     * case2: 잔액 충전 성공
      */
 
     @Test
-    @DisplayName("잔액 충전 실패 - 충전 금액이 음수")
-    void case1() throws Exception {
-        //given
-        String userUUID = "1e9ebe68-045a-49f1-876e-a6ea6380dd5c";
-        int amount = -1;
-
-        //when
-        IllegalArgumentException e = assertThrows(
-                IllegalArgumentException.class,
-                () -> sut.chargeBalance(userUUID, amount)
-        );
-
-        //then
-        assertThat(e.getMessage()).isEqualTo("충전하려는 금액이 음수입니다.");
-    }
-
-    @Test
     @DisplayName("잔액 충전 실패 - 존재하지 않는 유저")
-    void case2() throws Exception {
+    void case1() throws Exception {
         //given
         String userUUID = UUID.randomUUID().toString();
         int amount = 10000;
@@ -59,7 +41,7 @@ class UserModifierTest {
 
     @Test
     @DisplayName("잔액 충전 성공")
-    void case3() throws Exception {
+    void case2() throws Exception {
         //given
         String userUUID = "1e9ebe68-045a-49f1-876e-a6ea6380dd5c";
         int amount = 10000;

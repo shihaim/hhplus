@@ -1,8 +1,8 @@
 package com.example.ticketing.domain.concert.component;
 
 import com.example.ticketing.domain.concert.entity.Seat;
-import com.example.ticketing.domain.concert.repository.ConcertSeatReaderRepository;
-import com.example.ticketing.domain.concert.repository.StubConcertSeatReaderRepository;
+import com.example.ticketing.domain.concert.repository.SeatReaderRepository;
+import com.example.ticketing.domain.concert.repository.StubSeatReaderRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,7 +12,7 @@ import java.util.List;
 
 class ConcertSeatReaderTest {
 
-    private final ConcertSeatReaderRepository stubReaderRepository = new StubConcertSeatReaderRepository();
+    private final SeatReaderRepository stubReaderRepository = new StubSeatReaderRepository();
     private final ConcertSeatReader sut = new ConcertSeatReader(stubReaderRepository);
 
     /**

@@ -8,20 +8,20 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-public class StubConcertSeatReaderRepository implements ConcertSeatReaderRepository {
+public class StubSeatReaderRepository implements SeatReaderRepository {
     @Override
     public List<Seat> findAllByCodeAndDate(String concertCode, LocalDateTime concertDate) {
         return List.of(
-                Seat.builder().build(),
-                Seat.builder().build(),
-                Seat.builder().build(),
-                Seat.builder().build(),
-                Seat.builder().build(),
-                Seat.builder().build(),
-                Seat.builder().build(),
-                Seat.builder().build(),
-                Seat.builder().build(),
-                Seat.builder().build()
+                Seat.builder().seatNumber(1).build(),
+                Seat.builder().seatNumber(2).build(),
+                Seat.builder().seatNumber(3).build(),
+                Seat.builder().seatNumber(4).build(),
+                Seat.builder().seatNumber(5).build(),
+                Seat.builder().seatNumber(6).build(),
+                Seat.builder().seatNumber(7).build(),
+                Seat.builder().seatNumber(8).build(),
+                Seat.builder().seatNumber(9).build(),
+                Seat.builder().seatNumber(10).build()
         );
     }
 

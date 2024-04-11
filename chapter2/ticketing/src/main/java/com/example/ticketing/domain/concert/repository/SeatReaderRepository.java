@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-public interface ConcertSeatReaderRepository {
+public interface SeatReaderRepository {
 
     List<Seat> findAllByCodeAndDate(String concertCode, LocalDateTime concertDate);
 

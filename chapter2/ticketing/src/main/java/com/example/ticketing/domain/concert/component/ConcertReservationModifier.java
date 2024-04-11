@@ -2,20 +2,18 @@ package com.example.ticketing.domain.concert.component;
 
 import com.example.ticketing.domain.concert.entity.AssignmentStatus;
 import com.example.ticketing.domain.concert.entity.Reservation;
-import com.example.ticketing.domain.concert.repository.ConcertReservationReaderRepository;
+import com.example.ticketing.domain.concert.repository.ReservationReaderRepository;
 import jakarta.persistence.OptimisticLockException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.NoSuchElementException;
 
 @Component
+@RequiredArgsConstructor
 public class ConcertReservationModifier {
 
-    private final ConcertReservationReaderRepository readerRepository;
-
-    public ConcertReservationModifier(ConcertReservationReaderRepository readerRepository) {
-        this.readerRepository = readerRepository;
-    }
+    private final ReservationReaderRepository readerRepository;
 
     /**
      * 좌석 예매 요청 - 좌석 임시 배정

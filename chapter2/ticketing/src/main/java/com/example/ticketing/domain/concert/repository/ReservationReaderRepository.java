@@ -5,6 +5,6 @@ import com.example.ticketing.domain.concert.entity.Reservation;
 
 import java.util.Optional;
 
-public interface ConcertReservationReaderRepository {
+public interface ReservationReaderRepository {
     Optional<Reservation> findNotAssignedBySeatId(Long seatId, AssignmentStatus status);
 }

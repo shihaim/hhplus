@@ -2,8 +2,8 @@ package com.example.ticketing.domain.concert.component;
 
 import com.example.ticketing.domain.concert.entity.AssignmentStatus;
 import com.example.ticketing.domain.concert.entity.Reservation;
-import com.example.ticketing.domain.concert.repository.ConcertReservationReaderRepository;
-import com.example.ticketing.domain.concert.repository.StubConcertReservationReaderRepository;
+import com.example.ticketing.domain.concert.repository.ReservationReaderRepository;
+import com.example.ticketing.domain.concert.repository.StubReservationReaderRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class ConcertReservationModifierTest {
 
-    private final ConcertReservationReaderRepository stubReaderRepository = new StubConcertReservationReaderRepository();
+    private final ReservationReaderRepository stubReaderRepository = new StubReservationReaderRepository();
     private final ConcertReservationModifier sut = new ConcertReservationModifier(stubReaderRepository);
 
     /**

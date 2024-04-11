@@ -38,4 +38,20 @@ public class QueueToken {
         this.status = status;
         this.expiredAt = expiredAt;
     }
+
+    public static QueueToken createQueueToken(String concertCode, User user) {
+        LocalDateTime expiredAt = LocalDateTime.now().plusMinutes(10);
+
+        int token = user.getUserUUID().hashCode();
+        token = 31 * token + expiredAt.hashCode();
+        token = 31 * token + concertCode.hashCode();
+
+        return QueueToken.builder()
+                .user(user)
+                .concertCode(concertCode)
+                .token(token)
+                .status(QueueStatus.WAITING)
+                .expiredAt(expiredAt)
+                .build();
+    }
 }
