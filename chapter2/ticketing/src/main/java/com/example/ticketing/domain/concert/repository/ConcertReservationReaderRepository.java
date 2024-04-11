@@ -7,6 +7,4 @@ import java.util.Optional;
 
 public interface ConcertReservationReaderRepository {
     Optional<Reservation> findNotAssignedBySeatId(Long seatId, AssignmentStatus status);
-
-    int findVersion(Long reservationId);
 }

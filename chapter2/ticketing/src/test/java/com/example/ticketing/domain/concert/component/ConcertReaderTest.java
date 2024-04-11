@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class ConcertReaderTest {
 
     private final ConcertReaderRepository stubReaderRepository = new StubConcertReaderRepository();
-    private final ConcertReader sut = new ConcertReaderImpl(stubReaderRepository);
+    private final ConcertReader sut = new ConcertReader(stubReaderRepository);
 
     /**
      * [콘서트 예매 가능한 날짜 조회]

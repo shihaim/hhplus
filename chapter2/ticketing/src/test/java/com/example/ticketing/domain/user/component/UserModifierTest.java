@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class UserModifierTest {
 
     private final UserReaderRepository stubStoreRepository = new StubUserReaderRepository();
-    private final UserModifier sut = new UserModifierImpl(stubStoreRepository);
+    private final UserModifier sut = new UserModifier(stubStoreRepository);
 
     /**
      * [잔액 충전]

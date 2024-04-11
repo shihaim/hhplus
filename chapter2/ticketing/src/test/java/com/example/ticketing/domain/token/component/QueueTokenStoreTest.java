@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class QueueTokenStoreTest {
 
     private final QueueTokenStoreRepository stubStoreRepository = new StubQueueTokenStoreRepository();
-    private final QueueTokenStore sut = new QueueTokenStoreImpl(stubStoreRepository);
+    private final QueueTokenStore sut = new QueueTokenStore(stubStoreRepository);
 
     /**
      * [대기열 토큰 생성]

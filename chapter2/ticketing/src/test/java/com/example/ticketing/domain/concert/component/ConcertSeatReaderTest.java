@@ -13,7 +13,7 @@ import java.util.List;
 class ConcertSeatReaderTest {
 
     private final ConcertSeatReaderRepository stubReaderRepository = new StubConcertSeatReaderRepository();
-    private final ConcertSeatReader sut = new ConcertSeatReaderImpl(stubReaderRepository);
+    private final ConcertSeatReader sut = new ConcertSeatReader(stubReaderRepository);
 
     /**
      * [해당 날짜의 좌석 조회]

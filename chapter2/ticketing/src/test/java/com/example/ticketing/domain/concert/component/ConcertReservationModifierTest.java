@@ -14,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class ConcertReservationModifierTest {
 
     private final ConcertReservationReaderRepository stubReaderRepository = new StubConcertReservationReaderRepository();
-    private final ConcertReservationModifier sut = new ConcertReservationModifierImpl(stubReaderRepository);
+    private final ConcertReservationModifier sut = new ConcertReservationModifier(stubReaderRepository);
 
     /**
      * [좌석 임시 배정]
@@ -44,6 +44,5 @@ class ConcertReservationModifierTest {
         assertThat(result.getUserUUID()).isEqualTo(userUUID);
         assertThat(result.getStatus()).isEqualTo(AssignmentStatus.ASSIGNED);
         assertThat(result.getAssignedAt().withNano(0)).isEqualTo(LocalDateTime.now().plusMinutes(5).withNano(0));
-        assertThat(result.getVersion()).isEqualTo(1);
     }
 }

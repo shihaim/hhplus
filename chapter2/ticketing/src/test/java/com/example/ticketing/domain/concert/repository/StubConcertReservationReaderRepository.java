@@ -16,9 +16,4 @@ public class StubConcertReservationReaderRepository implements ConcertReservatio
                         .build()
         );
     }
-
-    @Override
-    public int findVersion(Long reservationId) {
-        return 0;
-    }
 }

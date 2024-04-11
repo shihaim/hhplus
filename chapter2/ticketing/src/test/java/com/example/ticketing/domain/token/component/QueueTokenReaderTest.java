@@ -14,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class QueueTokenReaderTest {
 
     private final QueueTokenReaderRepository stubReaderRepository = new StubQueueTokenReaderRepository();
-    private final QueueTokenReader sut = new QueueTokenReaderImpl(stubReaderRepository);
+    private final QueueTokenReader sut = new QueueTokenReader(stubReaderRepository);
 
     /**
      * [대기열 토큰 조회]

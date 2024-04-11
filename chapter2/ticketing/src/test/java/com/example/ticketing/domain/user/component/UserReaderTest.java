@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class UserReaderTest {
 
     private final UserReaderRepository stubReaderRepository = new StubUserReaderRepository();
-    private final UserReader sut = new UserReaderImpl(stubReaderRepository);
+    private final UserReader sut = new UserReader(stubReaderRepository);
 
     /**
      * [잔액 조회]

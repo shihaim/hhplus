@@ -14,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class PaymentDetailStoreTest {
 
     private final PaymentDetailStoreRepository stubStoreRepository = new StubPaymentDetailStoreRepository();
-    private final PaymentDetailStore sut = new PaymentDetailStoreImpl(stubStoreRepository);
+    private final PaymentDetailStore sut = new PaymentDetailStore(stubStoreRepository);
 
     /**
      * [결제 내역 저장]
