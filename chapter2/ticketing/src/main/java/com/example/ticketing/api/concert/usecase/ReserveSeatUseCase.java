@@ -17,7 +17,6 @@ public class ReserveSeatUseCase {
 
     private final ConcertReader concertReader;
     private final ConcertSeatReader concertSeatReader;
-//    private final UserReader userReader;
 
     /**
      * 좌석 임시 배정

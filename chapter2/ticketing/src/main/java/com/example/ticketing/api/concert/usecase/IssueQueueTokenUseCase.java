@@ -25,7 +25,9 @@ public class IssueQueueTokenUseCase {
      * 유저 토큰 발급
      */
     public IssuedTokenResponse execute(String concertCode, String userUUID) {
+        // 1. 콘서트 존재 여부 확인
         concertValidator.isExist(concertReader.findConcertDates(concertCode).size());
+        // 2. 유저 존재 여부 확인후 토큰 발급
         User user = userReader.findUser(userUUID);
         return IssuedTokenResponse.convert(queueTokenStore.saveQueueToken(QueueToken.createQueueToken(concertCode, user)));
     }

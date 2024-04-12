@@ -1,5 +1,7 @@
 package com.example.ticketing.domain.payment.entity;
 
+import com.example.ticketing.domain.concert.entity.Concert;
+import com.example.ticketing.domain.concert.entity.Reservation;
 import com.example.ticketing.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -44,5 +46,16 @@ public class PaymentDetail {
         this.concertName = concertName;
         this.price = price;
         this.seatNumber = seatNumber;
+    }
+
+    public static PaymentDetail createPaymentDetail(User user, Concert concert, Reservation reservation) {
+        return PaymentDetail.builder()
+                .user(user)
+                .concertCode(concert.getConcertPK().getConcertCode())
+                .concertDate(concert.getConcertPK().getConcertDate())
+                .concertName(concert.getConcertName())
+                .price(concert.getPrice())
+                .seatNumber(reservation.getSeat().getSeatNumber())
+                .build();
     }
 }

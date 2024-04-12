@@ -7,4 +7,6 @@ import java.util.Optional;
 
 public interface ReservationReaderRepository {
     Optional<Reservation> findNotAssignedBySeatId(Long seatId, AssignmentStatus status);
+
+    Optional<Reservation> findAssignedByUserUUID(String userUUID);
 }
