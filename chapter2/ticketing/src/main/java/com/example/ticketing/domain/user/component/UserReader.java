@@ -4,6 +4,7 @@ import com.example.ticketing.domain.user.entity.User;
 import com.example.ticketing.domain.user.repository.UserReaderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.NoSuchElementException;
 
@@ -25,6 +26,7 @@ public class UserReader {
     /**
      * 잔액 조회
      */
+    @Transactional(readOnly = true)
     public int findBalance(String userUUID) {
         return readerRepository.findBalanceByUserUUID(userUUID)
                 .orElseThrow(() -> new NoSuchElementException("존재하지 않는 유저입니다."))
