@@ -16,17 +16,23 @@ public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long reservationId;
+
     @OneToOne(fetch = FetchType.LAZY)
     private Seat seat;
-    @Column
+
+    @Column(name = "user_uuid")
     private String userUUID;
+
     @Column
     private int token;
+
     @Column
     @Enumerated(value = EnumType.STRING)
     private AssignmentStatus status;
+
     @Column
     private LocalDateTime assignedAt;
+
     @Version
     private int version;
 
@@ -44,10 +50,10 @@ public class Reservation {
     /**
      * 좌석 임시 배정
      */
-    public void assignment(String userUUID, int token) {
+    public LocalDateTime assignment(String userUUID, int token) {
         this.userUUID = userUUID;
         this.token = token;
         this.status = AssignmentStatus.ASSIGNED;
-        this.assignedAt = LocalDateTime.now().plusMinutes(5);
+        return this.assignedAt = LocalDateTime.now().plusMinutes(5);
     }
 }

@@ -1,12 +1,9 @@
 package com.example.ticketing.domain.concert.entity;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -16,19 +13,18 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Concert {
 
-    @Id
-    private String concertCode;
-    @Id
-    private LocalDateTime concertDate;
+    @EmbeddedId
+    private ConcertPK concertPK;
+
     @Column
     private String concertName;
+
     @Column
     private int price;
 
     @Builder
     public Concert(String concertCode, LocalDateTime concertDate, String concertName, int price) {
-        this.concertCode = concertCode;
-        this.concertDate = concertDate;
+        this.concertPK = new ConcertPK(concertCode, concertDate);
         this.concertName = concertName;
         this.price = price;
     }

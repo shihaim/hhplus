@@ -1,4 +1,7 @@
 package com.example.ticketing.domain.payment.infrastructure;
 
-public interface PaymentDetailJpaRepository {
+import com.example.ticketing.domain.payment.entity.PaymentDetail;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface PaymentDetailJpaRepository extends JpaRepository<PaymentDetail, Long> {
 }

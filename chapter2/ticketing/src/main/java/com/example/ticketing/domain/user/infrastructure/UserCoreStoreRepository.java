@@ -1,4 +1,8 @@
 package com.example.ticketing.domain.user.infrastructure;
 
-public class UserCoreStoreRepository {
+import com.example.ticketing.domain.user.repository.UserStoreRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public class UserCoreStoreRepository implements UserStoreRepository {
 }

@@ -16,16 +16,22 @@ public class PaymentDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long paymentDetailId;
+
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
+
     @Column
     private String concertCode;
+
     @Column
     private LocalDateTime concertDate;
+
     @Column
     private String concertName;
+
     @Column
     private int price;
+
     @Column
     private int seatNumber;
 

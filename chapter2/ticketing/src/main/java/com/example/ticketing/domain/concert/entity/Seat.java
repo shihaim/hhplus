@@ -14,13 +14,19 @@ public class Seat {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long seatId;
+
     @ManyToOne(fetch = FetchType.LAZY)
     private Concert concert;
+
     @Column
     private int seatNumber;
+
     @Column
     @Enumerated(value = EnumType.STRING)
     private TicketingStatus status;
+
+    @OneToOne(mappedBy = "seat")
+    private Reservation reservation;
 
     @Builder
     public Seat(Long seatId, Concert concert, int seatNumber, TicketingStatus status) {

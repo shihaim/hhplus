@@ -13,6 +13,6 @@ public record AvailableConcertSeatResponse(
 ) {
 
     public static AvailableConcertSeatResponse convert(Seat seat) {
-        return new AvailableConcertSeatResponse(seat.getConcert().getConcertCode(), seat.getConcert().getConcertDate(), seat.getSeatNumber(), seat.getStatus());
+        return new AvailableConcertSeatResponse(seat.getConcert().getConcertPK().getConcertCode(), seat.getConcert().getConcertPK().getConcertDate(), seat.getSeatNumber(), seat.getStatus());
     }
 }

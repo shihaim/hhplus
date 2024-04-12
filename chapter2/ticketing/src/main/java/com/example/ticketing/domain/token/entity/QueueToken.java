@@ -19,13 +19,17 @@ public class QueueToken {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
+
     @Column
     private String concertCode;
+
     @Column
     private int token;
+
     @Column
     @Enumerated(value = EnumType.STRING)
     private QueueStatus status;
+    
     @Column
     private LocalDateTime expiredAt;
 

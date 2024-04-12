@@ -11,6 +11,6 @@ public record AvailableConcertDateResponse(
 ) {
 
     public static AvailableConcertDateResponse convert(Concert concert) {
-        return new AvailableConcertDateResponse(concert.getConcertCode(), concert.getConcertName(), concert.getConcertDate());
+        return new AvailableConcertDateResponse(concert.getConcertPK().getConcertCode(), concert.getConcertName(), concert.getConcertPK().getConcertDate());
     }
 }

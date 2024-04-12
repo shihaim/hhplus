@@ -6,14 +6,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/concerts")
 public class ConcertTicketingController {
-
-    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     @PostMapping("/{concertCode}/token")
     public ResponseEntity<ConcertApiResponse<?>> issueToken(
@@ -74,8 +71,8 @@ public class ConcertTicketingController {
             @RequestBody ReservationRequest requestDto
     ) {
 
-        String concertDate = LocalDateTime.of(2024, 4, 20, 15, 0, 0).format(formatter);
-        String assignedAt = LocalDateTime.now().plusMinutes(5).format(formatter);
+        LocalDateTime concertDate = LocalDateTime.of(2024, 4, 20, 15, 0, 0);
+        LocalDateTime assignedAt = LocalDateTime.now().plusMinutes(5);
         ReservationResponse result = new ReservationResponse(concertCode, concertDate, 25, assignedAt);
 
         return ResponseEntity.ok(ConcertApiResponse.of(result));

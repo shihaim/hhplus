@@ -3,14 +3,13 @@ package com.example.ticketing.domain.concert.component;
 import com.example.ticketing.domain.concert.entity.Concert;
 import com.example.ticketing.domain.concert.repository.ConcertReaderRepository;
 import com.example.ticketing.domain.concert.repository.StubConcertReaderRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ConcertValidatorTest {
