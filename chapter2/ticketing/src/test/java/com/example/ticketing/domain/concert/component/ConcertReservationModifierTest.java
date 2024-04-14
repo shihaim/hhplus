@@ -29,10 +29,10 @@ class ConcertReservationModifierTest {
 
         String userUUID = "1e9ebe68-045a-49f1-876e-a6ea6380dd5c";
         String concertCode = "IU_BLUEMING_001";
-        LocalDateTime expiredAt = LocalDateTime.of(2024, 4, 11, 13, 20, 35).plusMinutes(10);
+        LocalDateTime issuedAt = LocalDateTime.of(2024, 4, 11, 13, 20, 35);
 
         int token = userUUID.hashCode();
-        token = 31 * token + expiredAt.hashCode();
+        token = 31 * token + issuedAt.hashCode();
         token = 31 * token + concertCode.hashCode();
 
         //when

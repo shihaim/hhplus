@@ -11,10 +11,10 @@ public class StubQueueTokenStoreRepository implements QueueTokenStoreRepository 
     public QueueToken save(QueueToken createQueueToken) {
         String concertCode = "IU_BLUEMING_001";
         String userUUID = "1e9ebe68-045a-49f1-876e-a6ea6380dd5c";
-        LocalDateTime expiredAt = createQueueToken.getExpiredAt();
+        LocalDateTime issuedAt = createQueueToken.getIssuedAt();
 
         int token = userUUID.hashCode();
-        token = 31 * token + expiredAt.hashCode();
+        token = 31 * token + issuedAt.hashCode();
         token = 31 * token + concertCode.hashCode();
 
 
@@ -24,7 +24,12 @@ public class StubQueueTokenStoreRepository implements QueueTokenStoreRepository 
                 .concertCode(concertCode)
                 .token(token)
                 .status(QueueStatus.WAITING)
-                .expiredAt(expiredAt)
+                .issuedAt(issuedAt)
                 .build();
+    }
+
+    @Override
+    public void delete(QueueToken target) {
+
     }
 }

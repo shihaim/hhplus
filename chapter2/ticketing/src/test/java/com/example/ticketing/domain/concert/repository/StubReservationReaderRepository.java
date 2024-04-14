@@ -17,4 +17,9 @@ public class StubReservationReaderRepository implements ReservationReaderReposit
                         .build()
         );
     }
+
+    @Override
+    public Optional<Reservation> findAssignedByUserUUID(String userUUID) {
+        return Optional.empty();
+    }
 }

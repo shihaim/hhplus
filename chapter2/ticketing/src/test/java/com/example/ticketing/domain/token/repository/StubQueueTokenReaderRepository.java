@@ -13,11 +13,11 @@ public class StubQueueTokenReaderRepository implements QueueTokenReaderRepositor
         if (!userUUID.equals("1e9ebe68-045a-49f1-876e-a6ea6380dd5c")) return Optional.empty(); // fake 일까?
 
         String concertCode = "IU_BLUEMING_001";
-        LocalDateTime expiredAt = LocalDateTime.of(2024, 4, 11, 13, 20, 35).plusMinutes(10);
+        LocalDateTime issuedAt = LocalDateTime.of(2024, 4, 11, 13, 20, 35);
 
 
         int token = userUUID.hashCode();
-        token = 31 * token + expiredAt.hashCode();
+        token = 31 * token + issuedAt.hashCode();
         token = 31 * token + concertCode.hashCode();
 
         return Optional.of(
@@ -27,7 +27,7 @@ public class StubQueueTokenReaderRepository implements QueueTokenReaderRepositor
                         .concertCode(concertCode)
                         .token(token)
                         .status(QueueStatus.IN_PROGRESS)
-                        .expiredAt(expiredAt)
+                        .issuedAt(issuedAt)
                         .build()
         );
     }

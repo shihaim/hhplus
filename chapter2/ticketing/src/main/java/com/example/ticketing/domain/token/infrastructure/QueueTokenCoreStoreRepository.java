@@ -15,4 +15,9 @@ public class QueueTokenCoreStoreRepository implements QueueTokenStoreRepository 
     public QueueToken save(QueueToken createQueueToken) {
         return null;
     }
+
+    @Override
+    public void delete(QueueToken target) {
+
+    }
 }

@@ -17,6 +17,7 @@ public class ConcertReservationModifier {
 
     /**
      * 좌석 예매 요청 - 좌석 임시 배정
+     * TODO [AssignmentStatus 제거 및 Validator의 isAvaliableReservation 활용]
      */
     public Reservation reserveSeat(Long seatId, String userUUID, int token) {
         Reservation findReservation = readerRepository.findNotAssignedBySeatId(seatId, AssignmentStatus.NOT_BE_ASSIGNED)

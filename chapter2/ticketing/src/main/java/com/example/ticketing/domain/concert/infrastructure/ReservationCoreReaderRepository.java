@@ -18,4 +18,9 @@ public class ReservationCoreReaderRepository implements ReservationReaderReposit
     public Optional<Reservation> findNotAssignedBySeatId(Long seatId, AssignmentStatus status) {
         return Optional.empty();
     }
+
+    @Override
+    public Optional<Reservation> findAssignedByUserUUID(String userUUID) {
+        return Optional.empty();
+    }
 }

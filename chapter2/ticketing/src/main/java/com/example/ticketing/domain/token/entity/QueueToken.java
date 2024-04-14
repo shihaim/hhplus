@@ -17,7 +17,7 @@ public class QueueToken {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long queueTokenId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     private User user;
 
     @Column
@@ -29,25 +29,29 @@ public class QueueToken {
     @Column
     @Enumerated(value = EnumType.STRING)
     private QueueStatus status;
-    
+
+    @Column
+    private LocalDateTime issuedAt;
+
     @Column
     private LocalDateTime expiredAt;
 
     @Builder
-    public QueueToken(Long queueTokenId, User user, String concertCode, int token, QueueStatus status, LocalDateTime expiredAt) {
+    public QueueToken(Long queueTokenId, User user, String concertCode, int token, QueueStatus status, LocalDateTime issuedAt, LocalDateTime expiredAt) {
         this.queueTokenId = queueTokenId;
         this.user = user;
         this.concertCode = concertCode;
         this.token = token;
         this.status = status;
+        this.issuedAt = issuedAt;
         this.expiredAt = expiredAt;
     }
 
     public static QueueToken createQueueToken(String concertCode, User user) {
-        LocalDateTime expiredAt = LocalDateTime.now().plusMinutes(10);
+        LocalDateTime issuedAt = LocalDateTime.now();
 
         int token = user.getUserUUID().hashCode();
-        token = 31 * token + expiredAt.hashCode();
+        token = 31 * token + issuedAt.hashCode();
         token = 31 * token + concertCode.hashCode();
 
         return QueueToken.builder()
@@ -55,7 +59,7 @@ public class QueueToken {
                 .concertCode(concertCode)
                 .token(token)
                 .status(QueueStatus.WAITING)
-                .expiredAt(expiredAt)
+                .issuedAt(issuedAt)
                 .build();
     }
 }

@@ -35,4 +35,8 @@ public class Seat {
         this.seatNumber = seatNumber;
         this.status = status;
     }
+
+    public void ticketingComplete() {
+        this.status = TicketingStatus.COMPLETE;
+    }
 }

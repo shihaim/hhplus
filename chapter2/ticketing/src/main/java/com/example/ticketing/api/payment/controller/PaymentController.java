@@ -14,14 +14,12 @@ import java.time.format.DateTimeFormatter;
 @RequestMapping("/api/v1/payments")
 public class PaymentController {
 
-    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
     @PostMapping
     public ResponseEntity<ConcertApiResponse<?>> payment(
             @RequestHeader("Authorization") int token,
             @RequestBody String userUUID
     ) {
-        String concertDate = LocalDateTime.of(2024, 4, 20, 15, 0, 0).format(formatter);
+        LocalDateTime concertDate = LocalDateTime.of(2024, 4, 20, 15, 0, 0);
         PaymentDetailResponse result = new PaymentDetailResponse(userUUID, "아이유 블루밍 콘서트", concertDate, 25, 50000);
 
         return ResponseEntity.ok(ConcertApiResponse.of(result));

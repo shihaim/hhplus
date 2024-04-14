@@ -1,9 +1,7 @@
 package com.example.ticketing.domain.user.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.example.ticketing.domain.token.entity.QueueToken;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,6 +19,9 @@ public class User {
 
     @Column
     private int balance;
+
+    @OneToOne(mappedBy = "user")
+    private QueueToken queueToken;
 
     @Builder
     public User(String userUUID, int balance) {

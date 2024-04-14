@@ -27,10 +27,10 @@ class QueueTokenStoreTest {
         //given
         String concertCode = "IU_BLUEMING_001";
         String userUUID = "1e9ebe68-045a-49f1-876e-a6ea6380dd5c";
-        LocalDateTime expiredAt = LocalDateTime.now().plusMinutes(10);
+        LocalDateTime issuedAt = LocalDateTime.now();
 
         int token = userUUID.hashCode();
-        token = 31 * token + expiredAt.hashCode();
+        token = 31 * token + issuedAt.hashCode();
         token = 31 * token + concertCode.hashCode();
 
         QueueToken createQueueToken = QueueToken.builder()
@@ -39,7 +39,7 @@ class QueueTokenStoreTest {
                 .concertCode(concertCode)
                 .token(token)
                 .status(QueueStatus.WAITING)
-                .expiredAt(expiredAt)
+                .issuedAt(issuedAt)
                 .build();
 
         //when
@@ -51,6 +51,6 @@ class QueueTokenStoreTest {
         assertThat(result.getConcertCode()).isEqualTo(concertCode);
         assertThat(result.getToken()).isEqualTo(token);
         assertThat(result.getStatus()).isEqualTo(QueueStatus.WAITING);
-        assertThat(result.getExpiredAt()).isEqualTo(expiredAt);
+        assertThat(result.getIssuedAt()).isEqualTo(issuedAt);
     }
 }

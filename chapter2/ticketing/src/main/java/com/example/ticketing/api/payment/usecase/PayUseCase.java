@@ -5,8 +5,10 @@ import com.example.ticketing.domain.concert.component.ConcertReservationReader;
 import com.example.ticketing.domain.concert.component.ConcertReservationValidator;
 import com.example.ticketing.domain.concert.entity.Concert;
 import com.example.ticketing.domain.concert.entity.Reservation;
+import com.example.ticketing.domain.concert.entity.Seat;
 import com.example.ticketing.domain.payment.component.PaymentDetailStore;
 import com.example.ticketing.domain.payment.entity.PaymentDetail;
+import com.example.ticketing.domain.token.component.QueueTokenStore;
 import com.example.ticketing.domain.user.component.UserReader;
 import com.example.ticketing.domain.user.component.UserValidator;
 import com.example.ticketing.domain.user.entity.User;
@@ -24,6 +26,7 @@ public class PayUseCase {
     private final ConcertReservationReader concertReservationReader;
     private final ConcertReservationValidator concertReservationValidator;
     private final PaymentDetailStore paymentDetailStore;
+    private final QueueTokenStore queueTokenStore;
 
     public PaymentDetailResponse execute(String userUUID) {
         // 1. 유저 존재 여부 체크
@@ -33,10 +36,15 @@ public class PayUseCase {
         // 3. 임시 배정된 시간이 만료되었는지 체크
         concertReservationValidator.isExpired(findReservation.getAssignedAt());
         // 4. 콘서트 가격과 잔액 비교
-        Concert findConcert = findReservation.getSeat().getConcert();
+        Seat findSeat = findReservation.getSeat();
+        Concert findConcert = findSeat.getConcert();
         userValidator.isLessThanPrice(findConcert.getPrice(), findUser.getBalance());
         // 5. 결제 진행
         PaymentDetail savePaymentDetail = paymentDetailStore.savePaymentDetail(PaymentDetail.createPaymentDetail(findUser, findConcert, findReservation));
+        // 6. 좌석 예매 완료 처리
+        findSeat.ticketingComplete();
+        // 7. 대기열 토큰 제거
+        queueTokenStore.removeQueueToken(findUser.getQueueToken());
 
         return PaymentDetailResponse.convert(savePaymentDetail);
     }
