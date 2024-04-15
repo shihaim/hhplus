@@ -54,6 +54,6 @@ public class Reservation {
         this.userUUID = userUUID;
         this.token = token;
         this.status = AssignmentStatus.ASSIGNED;
-        return this.assignedAt = LocalDateTime.now().plusMinutes(5);
+        return this.assignedAt = LocalDateTime.now().plusMinutes(2);
     }
 }

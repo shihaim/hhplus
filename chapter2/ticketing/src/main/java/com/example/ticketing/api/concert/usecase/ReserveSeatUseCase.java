@@ -2,6 +2,7 @@ package com.example.ticketing.api.concert.usecase;
 
 import com.example.ticketing.api.concert.dto.ReservationResponse;
 import com.example.ticketing.domain.concert.component.ConcertReader;
+import com.example.ticketing.domain.concert.component.ConcertReservationModifier;
 import com.example.ticketing.domain.concert.component.ConcertReservationValidator;
 import com.example.ticketing.domain.concert.component.ConcertSeatReader;
 import com.example.ticketing.domain.concert.entity.Reservation;
@@ -19,6 +20,7 @@ public class ReserveSeatUseCase {
 
     private final ConcertReader concertReader;
     private final ConcertSeatReader concertSeatReader;
+    private final ConcertReservationModifier concertReservationModifier;
     private final ConcertReservationValidator concertReservationValidator;
 
     /**
@@ -30,10 +32,12 @@ public class ReserveSeatUseCase {
         // 2. 좌석 존재 여부 및 예매 가능한 좌석인지 체크
         Seat findNotCompletedSeat = concertSeatReader.findNotCompletedSeat(concertCode, concertDate, seatNumber);
         // 3. 예약이 가능한 좌석인지 체크
+        // Getter vs ConcertReservationReader를 통해 조회 (둘 다 DB를 탐.) -> Getter는 객체 null 여부를 확인해야할 듯?
         Reservation findReservation = findNotCompletedSeat.getReservation();
         concertReservationValidator.isAvailableReservation(findReservation.getAssignedAt());
-        // 3. 좌석 임시 배정
+        // 4. 좌석 임시 배정
         LocalDateTime assignedAt = findReservation.assignment(userUUID, token); // Transaction 종료시 OptimisticLockException 발생 -> try-catch 필요
+        // throw new OptimisticLockException("이미 임시 배정된 좌석입니다.");
 
         return ReservationResponse.convert(concertCode, concertDate, seatNumber, assignedAt);
     }

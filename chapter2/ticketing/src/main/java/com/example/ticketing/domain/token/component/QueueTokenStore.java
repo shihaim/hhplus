@@ -19,7 +19,7 @@ public class QueueTokenStore {
     }
 
     /**
-     * TODO [TC 작성 필요]
+     * TODO [단위 테스트]
      * 대기열 토큰 삭제
      */
     public void removeQueueToken(QueueToken target) {

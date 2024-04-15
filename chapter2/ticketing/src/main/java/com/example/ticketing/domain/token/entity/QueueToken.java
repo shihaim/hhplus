@@ -62,4 +62,9 @@ public class QueueToken {
                 .issuedAt(issuedAt)
                 .build();
     }
+
+    public void changeTokenToInProgress() {
+        this.status = QueueStatus.IN_PROGRESS;
+        this.expiredAt = LocalDateTime.now().plusMinutes(10);
+    }
 }

@@ -14,7 +14,7 @@ public class ConcertReservationReader {
     private final ReservationReaderRepository readerRepository;
 
     /**
-     * TODO [TC 작성 필요]
+     * TODO [단위 테스트]
      * 좌석 예매 요청 - 임시 배정된 좌석 조회
      */
     public Reservation findAssignedSeat(String userUUID) {

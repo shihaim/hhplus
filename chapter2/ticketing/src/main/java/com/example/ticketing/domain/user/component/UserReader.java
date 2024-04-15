@@ -15,7 +15,7 @@ public class UserReader {
     private final UserReaderRepository readerRepository;
 
     /**
-     * TODO [TC 작성 필요]
+     * TODO [단위 테스트]
      * 유저 조회
      */
     public User findUser(String userUUID) {

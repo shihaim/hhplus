@@ -25,7 +25,7 @@ public class ConcertReader {
     }
 
     /**
-     * TODO [TC 작성 필요]
+     * TODO [단위 테스트]
      * 콘서트 예매 가능한 날짜 조회
      */
     public Concert findByConcertCodeAndDate(String concertCode, LocalDateTime concertDate) {
