@@ -1,11 +1,12 @@
-package com.example.ticketing.schedule.token.infrastructure;
+package com.example.ticketing.server.schedule.token.infrastructure;
 
 import com.example.ticketing.domain.concert.entity.TicketingStatus;
 import com.example.ticketing.domain.token.entity.QueueStatus;
 import com.example.ticketing.domain.token.entity.QueueToken;
-import com.example.ticketing.schedule.token.entity.ConcertGroup;
+import com.example.ticketing.server.schedule.token.entity.ConcertGroup;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -25,5 +26,5 @@ public interface QueueSchedulerJpaRepository extends JpaRepository<QueueToken, L
     List<QueueToken> findWaitTokens(String concertCode, QueueStatus status);
 
     @Query("select qt from QueueToken qt where qt.expiredAt <= :now")
-    List<QueueToken> findExpiredTokens(LocalDateTime now);
+    List<QueueToken> findExpiredTokens(@Param("now") LocalDateTime now);
 }

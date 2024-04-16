@@ -2,12 +2,14 @@ package com.example.ticketing.api.concert.controller;
 
 import com.example.ticketing.api.concert.dto.*;
 import com.example.ticketing.domain.concert.entity.TicketingStatus;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/v1/concerts")
 public class ConcertTicketingController {
@@ -50,7 +52,7 @@ public class ConcertTicketingController {
             @RequestHeader("Authorization") int token,
             @RequestBody FindConcertSeatsRequest requestDto
     ) {
-
+        log.info("findAvailableConcertSeats start");
         LocalDateTime availableConcertDate = LocalDateTime.of(2024, 4, 20, 15, 0, 0);
 
         List<AvailableConcertSeatResponse> result = List.of(

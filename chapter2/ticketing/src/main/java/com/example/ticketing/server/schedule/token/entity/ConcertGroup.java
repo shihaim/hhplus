@@ -1,4 +1,4 @@
-package com.example.ticketing.schedule.token.entity;
+package com.example.ticketing.server.schedule.token.entity;
 
 import lombok.AccessLevel;
 import lombok.Getter;

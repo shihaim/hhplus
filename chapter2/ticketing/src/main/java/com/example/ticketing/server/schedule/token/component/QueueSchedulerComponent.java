@@ -1,13 +1,12 @@
-package com.example.ticketing.schedule.token.component;
+package com.example.ticketing.server.schedule.token.component;
 
 import com.example.ticketing.domain.concert.entity.TicketingStatus;
 import com.example.ticketing.domain.token.entity.QueueStatus;
 import com.example.ticketing.domain.token.entity.QueueToken;
-import com.example.ticketing.schedule.token.entity.ConcertGroup;
-import com.example.ticketing.schedule.token.infrastructure.QueueSchedulerJpaRepository;
+import com.example.ticketing.server.schedule.token.entity.ConcertGroup;
+import com.example.ticketing.server.schedule.token.infrastructure.QueueSchedulerJpaRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,7 +28,7 @@ public class QueueSchedulerComponent {
      * 2. 토큰 상태가 IN_PROGRESS인 데이터 Count 조회
      * 3. (1번 - 2번)값이 양수인 경우 Wait의 상태의 토큰 대기열 상태와 유효 시간 변경
      */
-    @Scheduled(cron = "2/2 * * * * ?")
+//    @Scheduled(cron = "5/5 * * * * ?")
     public void queueNumberScheduleTask() {
         log.info("queueNumberScheduleTask start");
         List<ConcertGroup> concertGroup = repository.findConcertGroup();
@@ -53,7 +52,7 @@ public class QueueSchedulerComponent {
      * [대기열 만료 Scheduler]
      * 만료된 토큰을 삭제
      */
-    @Scheduled(cron = "10/10 * * * * ?")
+//    @Scheduled(cron = "10/10 * * * * ?")
     public void queueExpirationScheduleTask() {
         log.info("queueExpirationScheduleTask start");
         List<QueueToken> expiredTokens = repository.findExpiredTokens(LocalDateTime.now());
