@@ -28,7 +28,7 @@ public class UserReader {
      */
     @Transactional(readOnly = true)
     public int findBalance(String userUUID) {
-        return readerRepository.findBalanceByUserUUID(userUUID)
+        return readerRepository.findByUserUUID(userUUID)
                 .orElseThrow(() -> new NoSuchElementException("존재하지 않는 유저입니다."))
                 .getBalance();
     }

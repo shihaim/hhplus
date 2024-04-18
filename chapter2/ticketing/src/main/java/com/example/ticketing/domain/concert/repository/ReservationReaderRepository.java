@@ -8,5 +8,5 @@ import java.util.Optional;
 public interface ReservationReaderRepository {
     Optional<Reservation> findNotAssignedBySeatId(Long seatId, AssignmentStatus status);
 
-    Optional<Reservation> findAssignedByUserUUID(String userUUID);
+    Optional<Reservation> findAssignedByUserUUID(String userUUID, int token);
 }

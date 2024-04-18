@@ -15,11 +15,6 @@ public class UserCoreReaderRepository implements UserReaderRepository {
 
     @Override
     public Optional<User> findByUserUUID(String userUUID) {
-        return Optional.empty();
-    }
-
-    @Override
-    public Optional<User> findBalanceByUserUUID(String userUUID) {
-        return Optional.empty();
+        return userJpaRepository.findById(userUUID);
     }
 }

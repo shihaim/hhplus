@@ -1,5 +1,6 @@
 package com.example.ticketing.domain.concert.component;
 
+import com.example.ticketing.domain.concert.entity.ConcertPK;
 import com.example.ticketing.domain.concert.entity.Seat;
 import com.example.ticketing.domain.concert.entity.TicketingStatus;
 import com.example.ticketing.domain.concert.repository.SeatReaderRepository;
@@ -22,14 +23,14 @@ public class ConcertSeatReader {
      */
     @Transactional(readOnly = true)
     public List<Seat> findAvailableSeats(String concertCode, LocalDateTime concertDate) {
-        return readerRepository.findAllByCodeAndDate(concertCode, concertDate);
+        return readerRepository.findAllByConcertPk(ConcertPK.of(concertCode, concertDate));
     }
 
     /**
      * 예매가 되지 않은 좌석 조회
      */
     public Seat findNotCompletedSeat(String concertCode, LocalDateTime concertDate, int seatNumber) {
-        return readerRepository.findByCodeAndDateAndStatus(concertCode, concertDate, seatNumber, TicketingStatus.NONE)
+        return readerRepository.findByConcertPKAndSeatNumberAndStatus(ConcertPK.of(concertCode, concertDate), seatNumber, TicketingStatus.NONE)
                 .orElseThrow(() -> new NoSuchElementException("이미 예매가 완료된 좌석입니다."));
     }
 }

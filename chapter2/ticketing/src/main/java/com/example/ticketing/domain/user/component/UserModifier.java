@@ -17,7 +17,7 @@ public class UserModifier {
      * 잔액 충전
      */
     public int chargeBalance(String userUUID, int amount) {
-        User findUser = readerRepository.findBalanceByUserUUID(userUUID)
+        User findUser = readerRepository.findByUserUUID(userUUID)
                 .orElseThrow(() -> new NoSuchElementException("존재하지 않는 유저입니다."));
 
         return findUser.chargeBalance(amount);

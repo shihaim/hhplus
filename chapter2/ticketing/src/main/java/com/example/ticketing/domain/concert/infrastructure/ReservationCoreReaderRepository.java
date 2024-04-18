@@ -16,11 +16,11 @@ public class ReservationCoreReaderRepository implements ReservationReaderReposit
 
     @Override
     public Optional<Reservation> findNotAssignedBySeatId(Long seatId, AssignmentStatus status) {
-        return Optional.empty();
+        return reservationJpaRepository.findBySeatSeatIdAndStatus(seatId, status);
     }
 
     @Override
-    public Optional<Reservation> findAssignedByUserUUID(String userUUID) {
-        return Optional.empty();
+    public Optional<Reservation> findAssignedByUserUUID(String userUUID, int token) {
+        return reservationJpaRepository.findByUserUUIDAndToken(userUUID, token);
     }
 }

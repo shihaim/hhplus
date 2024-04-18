@@ -8,10 +8,9 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ConcertSeatValidatorTest {
 
@@ -28,7 +27,7 @@ class ConcertSeatValidatorTest {
     void case1() throws Exception {
         //given
         int seatNumber = -1;
-        List<Seat> findSeats = stubReaderRepository.findAllByCodeAndDate(Mockito.any(), Mockito.any());
+        List<Seat> findSeats = stubReaderRepository.findAllByConcertPk(Mockito.any());
 
         //when
         IllegalArgumentException e = assertThrows(

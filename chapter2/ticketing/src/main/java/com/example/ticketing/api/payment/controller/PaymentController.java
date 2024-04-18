@@ -19,7 +19,7 @@ public class PaymentController {
             @RequestHeader("Authorization") int token,
             @RequestBody String userUUID
     ) {
-        PaymentDetailResponse response = payUseCase.execute(userUUID);
+        PaymentDetailResponse response = payUseCase.execute(userUUID, token);
 
         return ResponseEntity.ok(ConcertApiResponse.of(response));
     }

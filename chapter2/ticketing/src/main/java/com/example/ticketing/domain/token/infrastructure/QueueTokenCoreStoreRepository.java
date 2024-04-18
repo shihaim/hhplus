@@ -13,11 +13,6 @@ public class QueueTokenCoreStoreRepository implements QueueTokenStoreRepository 
 
     @Override
     public QueueToken save(QueueToken createQueueToken) {
-        return null;
-    }
-
-    @Override
-    public void delete(QueueToken target) {
-
+        return queueTokenJpaRepository.save(createQueueToken);
     }
 }

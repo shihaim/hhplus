@@ -43,8 +43,8 @@ class UserValidatorTest {
     @DisplayName("충전하려는 금액이 음수일 경우 Error Throw")
     void case2() throws Exception {
         //given
-        int price = stubConcertReaderRepository.findByConcertCodeAndDate(Mockito.any(), Mockito.any()).get().getPrice();
-        int balance = stubUserReaderRepository.findBalanceByUserUUID("1e9ebe68-045a-49f1-876e-a6ea6380dd5c").get().getBalance();
+        int price = stubConcertReaderRepository.findByConcertPK(Mockito.any()).get().getPrice();
+        int balance = stubUserReaderRepository.findByUserUUID("1e9ebe68-045a-49f1-876e-a6ea6380dd5c").get().getBalance();
 
         //when
         IllegalArgumentException e = assertThrows(

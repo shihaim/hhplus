@@ -13,6 +13,6 @@ public class PaymentCoreStoreRepository implements PaymentDetailStoreRepository 
 
     @Override
     public PaymentDetail save(PaymentDetail createPaymentDetail) {
-        return null;
+        return paymentDetailJpaRepository.save(createPaymentDetail);
     }
 }

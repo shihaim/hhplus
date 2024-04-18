@@ -16,11 +16,11 @@ public class QueueTokenCoreReaderRepository implements QueueTokenReaderRepositor
 
     @Override
     public Optional<QueueToken> findByUserUUIDAndToken(String userUUID, int token) {
-        return Optional.empty();
+        return queueTokenJpaRepository.findByUser_UserUUIDAndToken(userUUID, token);
     }
 
     @Override
-    public long findLastQueueNumber(QueueStatus inProgress, QueueStatus expired) {
-        return 0;
+    public long findLastQueueNumber(String concertCode, QueueStatus inProgress, QueueStatus expired) {
+        return queueTokenJpaRepository.findLastQueueNumber(concertCode, inProgress, expired);
     }
 }

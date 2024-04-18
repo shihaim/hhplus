@@ -26,10 +26,10 @@ public class QueueTokenReader {
      * TODO [단위 테스트 작성]
      * 대기열을 진입한 마지막 토큰 순번 조회
      */
-    public long findLastEnteredToken(long tokenId, QueueStatus status) {
+    public long findLastEnteredToken(String concertCode, long tokenId, QueueStatus status) {
         switch (status) {
             case WAITING -> {
-                long lastQueueNumber = readerRepository.findLastQueueNumber(QueueStatus.IN_PROGRESS, QueueStatus.EXPIRED);
+                long lastQueueNumber = readerRepository.findLastQueueNumber(concertCode, QueueStatus.IN_PROGRESS, QueueStatus.EXPIRED);
                 return tokenId - lastQueueNumber ;
             }
             // EXPIRED인 경우는 Interceptor에서 터지므로 없는 경우라고 봐도 무방

@@ -19,7 +19,7 @@ public class StubReservationReaderRepository implements ReservationReaderReposit
     }
 
     @Override
-    public Optional<Reservation> findAssignedByUserUUID(String userUUID) {
+    public Optional<Reservation> findAssignedByUserUUID(String userUUID, int token) {
         return Optional.empty();
     }
 }

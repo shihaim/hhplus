@@ -12,5 +12,5 @@ public interface QueueTokenReaderRepository {
     /**
      * IN_PROGRESS와 EXPIRED 사이의 max 값 조회하기(IN_PROGRESS가 없을 수도 있으므로)
      */
-    long findLastQueueNumber(QueueStatus inProgress, QueueStatus expired);
+    long findLastQueueNumber(String concertCode, QueueStatus inProgress, QueueStatus expired);
 }

@@ -17,9 +17,9 @@ public class QueuePollingUseCase {
     /**
      * 현재 대기열 순번 조회
      */
-    public QueuePollingResponse execute(String userUUID, int token) {
+    public QueuePollingResponse execute(String concertCode, String userUUID, int token) {
         QueueToken findQueueToken = queueTokenReader.findQueueToken(userUUID, token);
-        long findLastQueueNumber = queueTokenReader.findLastEnteredToken(findQueueToken.getQueueTokenId(), findQueueToken.getStatus());
+        long findLastQueueNumber = queueTokenReader.findLastEnteredToken(concertCode, findQueueToken.getQueueTokenId(), findQueueToken.getStatus());
 
         return QueuePollingResponse.convert(findLastQueueNumber, findQueueToken.getToken(), findQueueToken.getStatus());
     }

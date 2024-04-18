@@ -27,7 +27,7 @@ public class ConcertTicketingController {
             @RequestHeader("Authorization") int token,
             @RequestBody String userUUID
     ) {
-        QueuePollingResponse response = queuePollingUseCase.execute(userUUID, token);
+        QueuePollingResponse response = queuePollingUseCase.execute(concertCode, userUUID, token);
 
         return ResponseEntity.ok(ConcertApiResponse.of(response));
     }

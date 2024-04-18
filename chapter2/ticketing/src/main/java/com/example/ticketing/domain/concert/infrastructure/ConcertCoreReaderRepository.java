@@ -1,6 +1,7 @@
 package com.example.ticketing.domain.concert.infrastructure;
 
 import com.example.ticketing.domain.concert.entity.Concert;
+import com.example.ticketing.domain.concert.entity.ConcertPK;
 import com.example.ticketing.domain.concert.repository.ConcertReaderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -17,11 +18,11 @@ public class ConcertCoreReaderRepository implements ConcertReaderRepository {
 
     @Override
     public List<Concert> findAllByConcertCode(String concertCode) {
-        return null;
+        return concertJpaRepository.findAllByConcertCode(concertCode);
     }
 
     @Override
-    public Optional<Concert> findByConcertCodeAndDate(String concertCode, LocalDateTime concertDate) {
-        return Optional.empty();
+    public Optional<Concert> findByConcertPK(ConcertPK concertPK) {
+        return concertJpaRepository.findById(concertPK);
     }
 }

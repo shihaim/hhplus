@@ -2,16 +2,14 @@ package com.example.ticketing.domain.concert.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-import lombok.AccessLevel;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Getter
 @Embeddable
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode
 public class ConcertPK implements Serializable {
@@ -21,8 +19,7 @@ public class ConcertPK implements Serializable {
     @Column
     private LocalDateTime concertDate;
 
-    public ConcertPK(String concertCode, LocalDateTime concertDate) {
-        this.concertCode = concertCode;
-        this.concertDate = concertDate;
+    public static ConcertPK of(String concertCode, LocalDateTime concertDate) {
+        return new ConcertPK(concertCode, concertDate);
     }
 }

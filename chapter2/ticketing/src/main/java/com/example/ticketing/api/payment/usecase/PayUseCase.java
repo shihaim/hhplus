@@ -8,7 +8,6 @@ import com.example.ticketing.domain.concert.entity.Reservation;
 import com.example.ticketing.domain.concert.entity.Seat;
 import com.example.ticketing.domain.payment.component.PaymentDetailStore;
 import com.example.ticketing.domain.payment.entity.PaymentDetail;
-import com.example.ticketing.domain.token.component.QueueTokenStore;
 import com.example.ticketing.domain.user.component.UserReader;
 import com.example.ticketing.domain.user.component.UserValidator;
 import com.example.ticketing.domain.user.entity.User;
@@ -26,13 +25,12 @@ public class PayUseCase {
     private final ConcertReservationReader concertReservationReader;
     private final ConcertReservationValidator concertReservationValidator;
     private final PaymentDetailStore paymentDetailStore;
-    private final QueueTokenStore queueTokenStore;
 
-    public PaymentDetailResponse execute(String userUUID) {
+    public PaymentDetailResponse execute(String userUUID, int token) {
         // 1. 유저 존재 여부 체크
         User findUser = userReader.findUser(userUUID);
         // 2. 임시 배정된 좌석 존재 여부 체크
-        Reservation findReservation = concertReservationReader.findAssignedSeat(userUUID);
+        Reservation findReservation = concertReservationReader.findAssignedSeat(userUUID, token);
         // 3. 임시 배정된 시간이 만료되었는지 체크
         concertReservationValidator.isExpired(findReservation.getAssignedAt());
         // 4. 콘서트 가격과 잔액 비교

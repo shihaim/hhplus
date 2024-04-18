@@ -27,9 +27,4 @@ public class StubQueueTokenStoreRepository implements QueueTokenStoreRepository 
                 .issuedAt(issuedAt)
                 .build();
     }
-
-    @Override
-    public void delete(QueueToken target) {
-
-    }
 }

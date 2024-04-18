@@ -1,6 +1,7 @@
 package com.example.ticketing.domain.concert.component;
 
 import com.example.ticketing.domain.concert.entity.Concert;
+import com.example.ticketing.domain.concert.entity.ConcertPK;
 import com.example.ticketing.domain.concert.repository.ConcertReaderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -28,8 +29,8 @@ public class ConcertReader {
      * TODO [단위 테스트]
      * 콘서트 예매 가능한 날짜 조회
      */
-    public Concert findByConcertCodeAndDate(String concertCode, LocalDateTime concertDate) {
-        return readerRepository.findByConcertCodeAndDate(concertCode, concertDate)
+    public Concert findConcert(String concertCode, LocalDateTime concertDate) {
+        return readerRepository.findByConcertPK(ConcertPK.of(concertCode, concertDate))
                 .orElseThrow(() -> new NoSuchElementException("존재하지 않는 콘서트입니다."));
     }
 }

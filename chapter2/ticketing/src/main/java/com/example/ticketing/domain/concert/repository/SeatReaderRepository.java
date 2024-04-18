@@ -1,15 +1,14 @@
 package com.example.ticketing.domain.concert.repository;
 
+import com.example.ticketing.domain.concert.entity.ConcertPK;
 import com.example.ticketing.domain.concert.entity.Seat;
 import com.example.ticketing.domain.concert.entity.TicketingStatus;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 public interface SeatReaderRepository {
+    List<Seat> findAllByConcertPk(ConcertPK concertPK);
 
-    List<Seat> findAllByCodeAndDate(String concertCode, LocalDateTime concertDate);
-
-    Optional<Seat> findByCodeAndDateAndStatus(String concertCode, LocalDateTime concertDate, int seatNumber, TicketingStatus status);
+    Optional<Seat> findByConcertPKAndSeatNumberAndStatus(ConcertPK concertPK, int seatNumber, TicketingStatus status);
 }

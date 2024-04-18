@@ -1,6 +1,7 @@
 package com.example.ticketing.domain.concert.repository;
 
 import com.example.ticketing.domain.concert.entity.Concert;
+import com.example.ticketing.domain.concert.entity.ConcertPK;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -19,7 +20,7 @@ public class StubConcertReaderRepository implements ConcertReaderRepository {
     }
 
     @Override
-    public Optional<Concert> findByConcertCodeAndDate(String concertCode, LocalDateTime concertDate) {
+    public Optional<Concert> findByConcertPK(ConcertPK concertPK) {
         return Optional.of(Concert.builder().price(50000).build());
     }
 }

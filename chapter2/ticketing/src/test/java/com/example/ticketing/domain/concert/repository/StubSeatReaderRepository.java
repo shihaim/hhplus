@@ -1,16 +1,16 @@
 package com.example.ticketing.domain.concert.repository;
 
 import com.example.ticketing.domain.concert.entity.Concert;
+import com.example.ticketing.domain.concert.entity.ConcertPK;
 import com.example.ticketing.domain.concert.entity.Seat;
 import com.example.ticketing.domain.concert.entity.TicketingStatus;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 public class StubSeatReaderRepository implements SeatReaderRepository {
     @Override
-    public List<Seat> findAllByCodeAndDate(String concertCode, LocalDateTime concertDate) {
+    public List<Seat> findAllByConcertPk(ConcertPK concertPK) {
         return List.of(
                 Seat.builder().seatNumber(1).build(),
                 Seat.builder().seatNumber(2).build(),
@@ -26,7 +26,7 @@ public class StubSeatReaderRepository implements SeatReaderRepository {
     }
 
     @Override
-    public Optional<Seat> findByCodeAndDateAndStatus(String concertCode, LocalDateTime concertDate, int seatNumber, TicketingStatus status) {
+    public Optional<Seat> findByConcertPKAndSeatNumberAndStatus(ConcertPK concertPK, int seatNumber, TicketingStatus status) {
         if (status == TicketingStatus.COMPLETE) return Optional.empty(); // fake??
 
         return Optional.of(

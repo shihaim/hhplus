@@ -24,7 +24,7 @@ public class Concert {
 
     @Builder
     public Concert(String concertCode, LocalDateTime concertDate, String concertName, int price) {
-        this.concertPK = new ConcertPK(concertCode, concertDate);
+        this.concertPK = ConcertPK.of(concertCode, concertDate);
         this.concertName = concertName;
         this.price = price;
     }
