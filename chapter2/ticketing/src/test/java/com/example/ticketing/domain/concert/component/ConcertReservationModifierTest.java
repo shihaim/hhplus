@@ -43,6 +43,6 @@ class ConcertReservationModifierTest {
         assertThat(result.getToken()).isEqualTo(token);
         assertThat(result.getUserUUID()).isEqualTo(userUUID);
         assertThat(result.getStatus()).isEqualTo(AssignmentStatus.ASSIGNED);
-        assertThat(result.getAssignedAt().withNano(0)).isEqualTo(LocalDateTime.now().plusMinutes(5).withNano(0));
+        assertThat(result.getAssignedAt().withNano(0)).isEqualTo(LocalDateTime.now().plusMinutes(2).withNano(0));
     }
 }

@@ -34,7 +34,7 @@ class QueueTokenReaderTest {
         token = 31 * token + concertCode.hashCode();
 
         //when
-        QueueToken findQueueToken = sut.findQueueToken(userUUID);
+        QueueToken findQueueToken = sut.findQueueToken(userUUID, token);
 
         //then
         assertThat(findQueueToken.getQueueTokenId()).isEqualTo(1L);
