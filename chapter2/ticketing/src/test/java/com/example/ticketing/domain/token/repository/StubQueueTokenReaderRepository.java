@@ -28,7 +28,7 @@ public class StubQueueTokenReaderRepository implements QueueTokenReaderRepositor
     }
 
     @Override
-    public long findLastQueueNumber(String concertCode, QueueStatus inProgress, QueueStatus expired) {
-        return 0;
+    public Optional<Long> findLastQueueNumber(String concertCode, QueueStatus inProgress, QueueStatus expired) {
+        return Optional.empty();
     }
 }

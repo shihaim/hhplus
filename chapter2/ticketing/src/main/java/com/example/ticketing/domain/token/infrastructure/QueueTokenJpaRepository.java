@@ -13,5 +13,5 @@ public interface QueueTokenJpaRepository extends JpaRepository<QueueToken, Long>
     Optional<QueueToken> findByUser_UserUUIDAndToken(@Param("userUUID") String userUUID, @Param("token") int token);
 
     @Query("select max(qt.queueTokenId) from QueueToken qt where qt.concertCode = :concertCode and (qt.status = :inProgress or qt.status = :expired)")
-    long findLastQueueNumber(String concertCode, QueueStatus inProgress, QueueStatus expired);
+    Optional<Long> findLastQueueNumber(String concertCode, QueueStatus inProgress, QueueStatus expired);
 }
