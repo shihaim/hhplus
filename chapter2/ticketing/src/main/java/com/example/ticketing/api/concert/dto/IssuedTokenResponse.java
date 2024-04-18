@@ -10,7 +10,4 @@ public record IssuedTokenResponse(
     public static IssuedTokenResponse convert(QueueToken queueToken) {
         return new IssuedTokenResponse(queueToken.getQueueTokenId(), queueToken.getToken());
     }
-    public static IssuedTokenResponse of(Long tokenId, int token) {
-        return new IssuedTokenResponse(tokenId, token);
-    }
 }

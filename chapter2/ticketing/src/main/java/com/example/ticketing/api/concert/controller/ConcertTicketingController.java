@@ -1,32 +1,45 @@
 package com.example.ticketing.api.concert.controller;
 
 import com.example.ticketing.api.concert.dto.*;
-import com.example.ticketing.domain.concert.entity.TicketingStatus;
+import com.example.ticketing.api.concert.usecase.*;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/v1/concerts")
 public class ConcertTicketingController {
+
+    private final IssueQueueTokenUseCase issueQueueTokenUseCase;
+    private final QueuePollingUseCase queuePollingUseCase;
+    private final GetAvailableDateUseCase getAvailableDateUseCase;
+    private final GetAvailableSeatsUseCase getAvailableSeatsUseCase;
+    private final ReserveSeatUseCase reserveSeatUseCase;
+
+    @GetMapping("/{concertCode}/token")
+    public ResponseEntity<ConcertApiResponse<?>> queuePolling(
+            @PathVariable("concertCode") String concertCode,
+            @RequestHeader("Authorization") int token,
+            @RequestBody String userUUID
+    ) {
+        QueuePollingResponse response = queuePollingUseCase.execute(userUUID, token);
+
+        return ResponseEntity.ok(ConcertApiResponse.of(response));
+    }
 
     @PostMapping("/{concertCode}/token")
     public ResponseEntity<ConcertApiResponse<?>> issueToken(
             @PathVariable("concertCode") String concertCode,
             @RequestBody String userUUID
     ) {
+        IssuedTokenResponse response = issueQueueTokenUseCase.execute(concertCode, userUUID);
 
-        int token = LocalDateTime.of(2024, 4, 10, 13, 30, 0).hashCode();
-        token = 31 * token + userUUID.hashCode();
-        token = 31 * token + concertCode.hashCode();
-
-        IssuedTokenResponse result = IssuedTokenResponse.of(1L, token);
-
-        return ResponseEntity.ok(ConcertApiResponse.of(result));
+        return ResponseEntity.ok(ConcertApiResponse.of(response));
     }
 
     @GetMapping("/{concertCode}")
@@ -35,15 +48,9 @@ public class ConcertTicketingController {
             @RequestHeader("Authorization") int token,
             @RequestBody String userUUID
     ) {
+        List<AvailableConcertDateResponse> response = getAvailableDateUseCase.execute(concertCode);
 
-        List<AvailableConcertDateResponse> result = List.of(
-                new AvailableConcertDateResponse(concertCode, "아이유 블루밍 콘서트",
-                        LocalDateTime.of(2024, 4, 20, 15, 0, 0)),
-                new AvailableConcertDateResponse(concertCode, "아이유 블루밍 콘서트",
-                        LocalDateTime.of(2024, 4, 21, 15, 0, 0))
-        );
-
-        return ResponseEntity.ok(ConcertApiResponse.of(result));
+        return ResponseEntity.ok(ConcertApiResponse.of(response));
     }
 
     @GetMapping("/{concertCode}/seats")
@@ -52,18 +59,9 @@ public class ConcertTicketingController {
             @RequestHeader("Authorization") int token,
             @RequestBody FindConcertSeatsRequest requestDto
     ) {
-        log.info("findAvailableConcertSeats start");
-        LocalDateTime availableConcertDate = LocalDateTime.of(2024, 4, 20, 15, 0, 0);
+        List<AvailableConcertSeatResponse> response = getAvailableSeatsUseCase.execute(concertCode, requestDto.concertDate());
 
-        List<AvailableConcertSeatResponse> result = List.of(
-                new AvailableConcertSeatResponse(concertCode, availableConcertDate, 5, TicketingStatus.NONE),
-                new AvailableConcertSeatResponse(concertCode, availableConcertDate, 10, TicketingStatus.NONE),
-                new AvailableConcertSeatResponse(concertCode, availableConcertDate, 22, TicketingStatus.NONE),
-                new AvailableConcertSeatResponse(concertCode, availableConcertDate, 41, TicketingStatus.NONE),
-                new AvailableConcertSeatResponse(concertCode, availableConcertDate, 48, TicketingStatus.NONE)
-        );
-
-        return ResponseEntity.ok(ConcertApiResponse.of(result));
+        return ResponseEntity.ok(ConcertApiResponse.of(response));
     }
 
     @PatchMapping("/{concertCode}")
@@ -72,11 +70,8 @@ public class ConcertTicketingController {
             @RequestHeader("Authorization") int token,
             @RequestBody ReservationRequest requestDto
     ) {
+        ReservationResponse response = reserveSeatUseCase.execute(requestDto.userUUID(), token, concertCode, requestDto.concertDate(), requestDto.seatNumber());
 
-        LocalDateTime concertDate = LocalDateTime.of(2024, 4, 20, 15, 0, 0);
-        LocalDateTime assignedAt = LocalDateTime.now().plusMinutes(5);
-        ReservationResponse result = new ReservationResponse(concertCode, concertDate, 25, assignedAt);
-
-        return ResponseEntity.ok(ConcertApiResponse.of(result));
+        return ResponseEntity.ok(ConcertApiResponse.of(response));
     }
 }

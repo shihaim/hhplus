@@ -17,7 +17,7 @@ import java.util.List;
 @Component
 @Transactional
 @RequiredArgsConstructor
-public class QueueSchedulerComponent {
+public class QueueScheduler {
 
     private final QueueSchedulerJpaRepository repository;
 
@@ -50,13 +50,13 @@ public class QueueSchedulerComponent {
     /**
      * TODO [통합 테스트]
      * [대기열 만료 Scheduler]
-     * 만료된 토큰을 삭제
+     * 만료된 토큰을 삭제 (soft delete)
      */
 //    @Scheduled(cron = "10/10 * * * * ?")
     public void queueExpirationScheduleTask() {
         log.info("queueExpirationScheduleTask start");
         List<QueueToken> expiredTokens = repository.findExpiredTokens(LocalDateTime.now());
-        repository.deleteAll(expiredTokens);
+        expiredTokens.forEach(QueueToken::changeTokenToExpired);
         log.info("queueExpirationScheduleTask end");
     }
 }

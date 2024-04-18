@@ -1,8 +1,10 @@
 package com.example.ticketing.api.concert.dto;
 
+import java.time.LocalDateTime;
+
 public record ReservationRequest(
         String userUUID,
-        String concertDate,
+        LocalDateTime concertDate,
         int seatNumber
 ) {
 }

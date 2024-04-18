@@ -2,7 +2,6 @@ package com.example.ticketing.api.concert.usecase;
 
 import com.example.ticketing.api.concert.dto.ReservationResponse;
 import com.example.ticketing.domain.concert.component.ConcertReader;
-import com.example.ticketing.domain.concert.component.ConcertReservationModifier;
 import com.example.ticketing.domain.concert.component.ConcertReservationValidator;
 import com.example.ticketing.domain.concert.component.ConcertSeatReader;
 import com.example.ticketing.domain.concert.entity.Reservation;
@@ -20,7 +19,6 @@ public class ReserveSeatUseCase {
 
     private final ConcertReader concertReader;
     private final ConcertSeatReader concertSeatReader;
-    private final ConcertReservationModifier concertReservationModifier;
     private final ConcertReservationValidator concertReservationValidator;
 
     /**

@@ -1,6 +1,6 @@
 package com.example.ticketing.server.interceptor.token.component;
 
-import com.example.ticketing.domain.token.entity.QueueToken;
+import com.example.ticketing.domain.token.entity.QueueStatus;
 import com.example.ticketing.server.interceptor.token.infrastructure.QueueTokenVerificationJpaRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -11,7 +11,6 @@ import org.springframework.util.PathMatcher;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.Set;
 
 @Slf4j
@@ -44,17 +43,15 @@ public class QueueTokenInterceptor implements HandlerInterceptor {
 
         if (authorization == null) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
-//            throw new AuthenticationException("존재하지 않는 토큰입니다.");
+            return false;
         }
 
         String userUUID = request.getParameter("userUUID");
+        int isExists = repository.findVerificationToken(userUUID, Integer.parseInt(authorization), QueueStatus.EXPIRED);
 
-        QueueToken queueToken = repository.findVerificationToken(userUUID)
-                .orElseThrow(() -> new NoSuchElementException("존재하지 않는 유저입니다."));
-
-        if (Integer.parseInt(authorization) != queueToken.getToken()) {
+        if (isExists != 1) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
-//            throw new RuntimeException("토큰이 유효하지 않습니다.");
+            return false;
         }
 
         return true;

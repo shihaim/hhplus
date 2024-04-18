@@ -17,12 +17,4 @@ public class QueueTokenStore {
     public QueueToken saveQueueToken(QueueToken createQueueToken) {
         return storeRepository.save(createQueueToken);
     }
-
-    /**
-     * TODO [단위 테스트]
-     * 대기열 토큰 삭제
-     */
-    public void removeQueueToken(QueueToken target) {
-        storeRepository.delete(target);
-    }
 }

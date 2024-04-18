@@ -43,8 +43,8 @@ public class PayUseCase {
         PaymentDetail savePaymentDetail = paymentDetailStore.savePaymentDetail(PaymentDetail.createPaymentDetail(findUser, findConcert, findReservation));
         // 6. 좌석 예매 완료 처리
         findSeat.ticketingComplete();
-        // 7. 대기열 토큰 제거
-        queueTokenStore.removeQueueToken(findUser.getQueueToken());
+        // 7. 대기열 토큰 제거 (soft delete)
+        findUser.getQueueToken().changeTokenToExpired();
 
         return PaymentDetailResponse.convert(savePaymentDetail);
     }

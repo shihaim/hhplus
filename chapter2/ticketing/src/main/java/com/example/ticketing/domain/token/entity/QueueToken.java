@@ -67,4 +67,8 @@ public class QueueToken {
         this.status = QueueStatus.IN_PROGRESS;
         this.expiredAt = LocalDateTime.now().plusMinutes(10);
     }
+
+    public void changeTokenToExpired() {
+        this.status = QueueStatus.EXPIRED;
+    }
 }
