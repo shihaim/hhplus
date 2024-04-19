@@ -34,10 +34,10 @@ public class Reservation {
     private LocalDateTime assignedAt;
 
     @Version
-    private int version;
+    private Long version;
 
     @Builder
-    public Reservation(Long reservationId, Seat seat, String userUUID, int token, AssignmentStatus status, LocalDateTime assignedAt, int version) {
+    public Reservation(Long reservationId, Seat seat, String userUUID, int token, AssignmentStatus status, LocalDateTime assignedAt, Long version) {
         this.reservationId = reservationId;
         this.seat = seat;
         this.userUUID = userUUID;
