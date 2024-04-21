@@ -5,8 +5,8 @@ import com.example.ticketing.domain.concert.entity.*;
 import com.example.ticketing.domain.concert.infrastructure.ConcertJpaRepository;
 import com.example.ticketing.domain.concert.infrastructure.ReservationJpaRepository;
 import com.example.ticketing.domain.concert.infrastructure.SeatJpaRepository;
-import com.example.ticketing.domain.token.component.QueueTokenStore;
 import com.example.ticketing.domain.token.entity.QueueToken;
+import com.example.ticketing.domain.token.infrastructure.QueueTokenJpaRepository;
 import com.example.ticketing.domain.user.entity.User;
 import com.example.ticketing.domain.user.infrastructure.UserJpaRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -38,10 +38,10 @@ class ReserveSeatUseCaseTest {
     private ReserveSeatUseCase reserveSeatUseCase;
 
     @Autowired
-    private QueueTokenStore queueTokenStore;
+    private UserJpaRepository userJpaRepository;
 
     @Autowired
-    private UserJpaRepository userJpaRepository;
+    private QueueTokenJpaRepository queueTokenJpaRepository;
 
     @Autowired
     private ConcertJpaRepository concertJpaRepository;
@@ -91,7 +91,7 @@ class ReserveSeatUseCaseTest {
         userJpaRepository.save(createUser);
 
         QueueToken createQueueToken = QueueToken.createQueueToken(concertCode, createUser);
-        queueTokenStore.saveQueueToken(createQueueToken);
+        queueTokenJpaRepository.save(createQueueToken);
 
         User createAnotherUser = User.builder()
                 .userUUID(anotherUserUUID)
@@ -100,7 +100,7 @@ class ReserveSeatUseCaseTest {
         userJpaRepository.save(createAnotherUser);
 
         QueueToken createAnotherQueueToken = QueueToken.createQueueToken(concertCode, createAnotherUser);
-        queueTokenStore.saveQueueToken(createAnotherQueueToken);
+        queueTokenJpaRepository.save(createAnotherQueueToken);
     }
 
     @Test
@@ -108,7 +108,6 @@ class ReserveSeatUseCaseTest {
     void case1() throws Exception {
         //given
         QueueToken findQueueToken = userJpaRepository.findById(userUUID).get().getQueueToken();
-
 
         //when
         ReservationResponse result = reserveSeatUseCase.execute(userUUID, findQueueToken.getToken(), concertCode, concertDate, 10);
