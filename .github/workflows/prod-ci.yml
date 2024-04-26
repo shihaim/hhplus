@@ -59,5 +59,8 @@ jobs:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
+    - name: Get current Date
+      id: date
+      run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
     - name: docker hub push
-      run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/prod/ticketing-${{ steps.date.outputs.date }}
+      run: docker push prod/ticketing-${{ steps.date.outputs.date }}
