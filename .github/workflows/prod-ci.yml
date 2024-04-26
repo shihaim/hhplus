@@ -9,7 +9,7 @@ name: Prod CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "hotfix-**" ]
 
 jobs:
   prod-ci:
