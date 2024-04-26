@@ -9,7 +9,7 @@ name: Develop CI
 
 on:
   push:
-    branches: [ "feature/**", "release-*" ]
+    branches: [ "feature/**", "release-**" ]
 
 jobs:
   ci:
@@ -36,11 +36,6 @@ jobs:
       run: chmod +x ./gradlew
       working-directory: ${{ env.working-directory }}
 
-    # Setting PROD Environment
-    #- name: Set YML
-      #run: echo "${{ secrets.APPLICATION_PROD_YML }}" | base64 --decode > ./src/main/resources/application.yml
-      #working-directory: ${{ env.working-directory }}
-
     - name: Test with Gradle
       run: ./gradlew test
       working-directory: ${{ env.working-directory }}
@@ -50,7 +45,7 @@ jobs:
       working-directory: ${{ env.working-directory }}
 
     - name: docker image build
-      run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/ticketing .
+      run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/develop-ticketing .
       working-directory: ${{ env.working-directory }}
 
     - name: docker login
@@ -60,17 +55,7 @@ jobs:
         password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
     - name: docker hub push
-      run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/develop/ticketing-${{ steps.date.outputs.date }}
-
-    #- name: Build with Gradle
-    #  run: ./gradlew build
-    #  working-directory: ${{ env.working-directory }}
-
-    # The USERNAME and TOKEN need to correspond to the credentials environment variables used in
-    # the publishing section of your build.gradle
-    #- name: Publish to GitHub Packages
-    #  run: ./gradlew publish
-    #  working-directory: ${{ env.working-directory }}
+      run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/develop-ticketing
     #  env:
     #    USERNAME: ${{ github.actor }}
     #    TOKEN: ${{ secrets.GITHUB_TOKEN }}
