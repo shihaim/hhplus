@@ -12,7 +12,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  ci:
+  prod-ci:
     runs-on: ubuntu-latest
     env:
       working-directory: ./chapter2/ticketing
