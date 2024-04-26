@@ -49,8 +49,12 @@ jobs:
       run: ./gradlew build -x test
       working-directory: ${{ env.working-directory }}
 
+    - name: Get current Date
+      id: date
+      run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+
     - name: docker image build
-      run: docker build -t ticketing -f ./Dockerfile .
+      run: docker build -t prod/ticketing-${{ steps.date.outputs.date }} -f ./Dockerfile .
       working-directory: ${{ env.working-directory }}
 
     - name: docker login
@@ -59,8 +63,6 @@ jobs:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-    - name: Get current Date
-      id: date
-      run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+    
     - name: docker hub push
       run: docker push prod/ticketing-${{ steps.date.outputs.date }}
