@@ -61,12 +61,3 @@ jobs:
 
     - name: docker hub push
       run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/prod/ticketing-${{ steps.date.outputs.date }}
-
-    # The USERNAME and TOKEN need to correspond to the credentials environment variables used in
-    # the publishing section of your build.gradle
-    #- name: Publish to GitHub Packages
-    #  run: ./gradlew publish
-    #  working-directory: ${{ env.working-directory }}
-    #  env:
-    #    USERNAME: ${{ github.actor }}
-    #    TOKEN: ${{ secrets.GITHUB_TOKEN }}
