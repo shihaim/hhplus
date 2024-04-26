@@ -9,9 +9,7 @@ name: Prod CI
 
 on:
   push:
-    branches: [ "feature/**", "release-*" ]
-  pull_request:
-    branches: [ "feature/**" ]
+    branches: [ "main" ]
 
 jobs:
   ci:
@@ -62,7 +60,7 @@ jobs:
         password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
     - name: docker hub push
-      run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/ticketing
+      run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/prod/ticketing-${{ steps.date.outputs.date }}
 
     # The USERNAME and TOKEN need to correspond to the credentials environment variables used in
     # the publishing section of your build.gradle
