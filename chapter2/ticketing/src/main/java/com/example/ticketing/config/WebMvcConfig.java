@@ -1,4 +1,4 @@
-package com.example.ticketing.server.interceptor.config;
+package com.example.ticketing.config;
 
 import com.example.ticketing.server.interceptor.token.component.QueueTokenInterceptor;
 import com.example.ticketing.server.interceptor.token.infrastructure.QueueTokenVerificationJpaRepository;

@@ -1,4 +1,4 @@
-package com.example.ticketing.server.schedule.config;
+package com.example.ticketing.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
