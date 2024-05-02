@@ -12,6 +12,9 @@
  - Redisson의 redlock을 이용
    - 장점: 다수 서버 인스턴스에서도 동시성을 보장하는 분산 락을 이용할 수 있으며, Pessmistic Lock/Optimistic Lock 둘 다 구현이 가능
    - 단점: Redis 인스턴스를 더 두는 것은 리소스 자원 낭비(오버 엔지니어링)가 될 수 있으며, Cluster를 설정하지 않는다면 In-Memory 환경이여서 휘발적
+#### 구현
+ - Redisson redlock을 이용하여 따닥시 순차 충전이 되도록 진행
+ - LockHandler와 TransactionHandler를 분리하여 구현
 
 ### 2. 결제 따닥 문제
  - 낙관적 락 이용
@@ -21,6 +24,8 @@
  - Redisson의 redlock을 이용
    - 장점: 다수 서버 인스턴스에서도 동시성을 보장하는 분산 락을 이용할 수 있으며, Pessmistic Lock/Optimistic Lock 둘 다 구현이 가능
    - 단점: Redis 인스턴스를 더 두는 것은 리소스 자원 낭비(오버 엔지니어링)가 될 수 있으며, Cluster를 설정하지 않는다면 In-Memory 환경이여서 휘발적
+#### 구현
+ - Redisson redlock을 이용하여 따닥시 OptimisticLockException이 발생되도록 구현
 
 ### 3. 대기열 순번 동시 접근 문제
  - RDBMS INSERT를 이용하여 순차적으로 대기열 순번 토큰을 생성
@@ -29,3 +34,5 @@
  - Redis Sorted Set을 이용하여 동시에 대기열 접근시 대기열 순번을 차례대로 생성
    - 장점: In-Memory이므로 성능이 좋고, 싱글 스레드(단일 인스턴스의 경우)이므로 동시성 제어가 가능하다.
    - 단점: Redis 인스턴스를 더 두기 때문에 리소스 자원이 추가되어야 한다. 그리고 Redis 서버가 죽게 되는 경우 큰 문제가 발생한다.
+#### 구현
+ - Sorted Set과 Skip List를 이용하여 대기열 순번 동시성 제어 및 순차 보장과 expire을 통한 토큰 만료 기능 구현
