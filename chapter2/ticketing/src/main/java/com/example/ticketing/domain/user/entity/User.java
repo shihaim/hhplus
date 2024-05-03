@@ -33,6 +33,13 @@ public class User {
      * 잔액 충전
      */
     public int chargeBalance(int amount) {
-        return balance += amount;
+        return this.balance += amount;
+    }
+
+    /**
+     * 잔액 감소
+     */
+    public int reduceBalance(int price) {
+        return this.balance -= price;
     }
 }

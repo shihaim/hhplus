@@ -31,7 +31,7 @@ public class PayUseCaseV2 {
 
     public PaymentDetailResponse execute(String userUUID, int token) {
 
-        PaymentDetailResponse result = lockHandler.runOnLock(PAY_USE_CASE_LOCK_PREFIX + userUUID, 5L, 3L,
+        PaymentDetailResponse result = lockHandler.runOnLock(PAY_USE_CASE_LOCK_PREFIX + userUUID, 0L, 3L, "이미 결제가 진행 중입니다.",
                 () -> transactionHandler.runOnWriteTransaction(() -> {
                     // 1. 유저 존재 여부 체크
                     User findUser = userReader.findUser(userUUID);
@@ -45,9 +45,11 @@ public class PayUseCaseV2 {
                     userValidator.isLessThanPrice(findConcert.getPrice(), findUser.getBalance());
                     // 5. 결제 진행
                     PaymentDetail savePaymentDetail = paymentDetailStore.savePaymentDetail(PaymentDetail.createPaymentDetail(findUser, findConcert, findReservation));
-                    // 6. 좌석 예매 완료 처리
+                    // 6. 잔액 감소
+                    findUser.reduceBalance(findConcert.getPrice());
+                    // 7. 좌석 예매 완료 처리
                     findSeat.ticketingComplete();
-                    // 7. 대기열 토큰 제거 (soft delete)
+                    // 8. 대기열 토큰 제거 (soft delete)
                     findUser.getQueueToken().changeTokenToExpired();
 
                     return PaymentDetailResponse.convert(savePaymentDetail);
