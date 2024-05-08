@@ -20,7 +20,7 @@ public class User {
     @Column
     private int balance;
 
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
     private QueueToken queueToken;
 
     @Builder

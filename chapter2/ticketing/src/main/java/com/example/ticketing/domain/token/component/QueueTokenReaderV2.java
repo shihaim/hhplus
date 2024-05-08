@@ -11,7 +11,7 @@ import java.util.NoSuchElementException;
 
 @Component
 @RequiredArgsConstructor
-public class QueueTokenReader {
+public class QueueTokenReaderV2 {
 
     @Qualifier("queueTokenCoreReaderRepository")
     private final QueueTokenReaderRepository readerRepository;

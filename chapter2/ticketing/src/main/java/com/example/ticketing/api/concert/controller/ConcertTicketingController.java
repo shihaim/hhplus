@@ -16,6 +16,7 @@ import java.util.List;
 public class ConcertTicketingController {
 
     private final IssueQueueTokenUseCase issueQueueTokenUseCase;
+    private final IssueQueueTokenUseCaseV2 issueQueueTokenUseCaseV2;
     private final QueuePollingUseCase queuePollingUseCase;
     private final GetAvailableDateUseCase getAvailableDateUseCase;
     private final GetAvailableSeatsUseCase getAvailableSeatsUseCase;
@@ -37,7 +38,8 @@ public class ConcertTicketingController {
             @PathVariable("concertCode") String concertCode,
             @RequestBody String userUUID
     ) {
-        IssuedTokenResponse response = issueQueueTokenUseCase.execute(concertCode, userUUID);
+//        IssuedTokenResponse response = issueQueueTokenUseCase.execute(concertCode, userUUID);
+        IssuedTokenResponse response = issueQueueTokenUseCaseV2.execute(concertCode, userUUID);
 
         return ResponseEntity.ok(ConcertApiResponse.of(response));
     }

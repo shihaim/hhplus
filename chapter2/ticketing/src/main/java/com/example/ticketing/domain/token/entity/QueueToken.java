@@ -36,6 +36,9 @@ public class QueueToken {
     @Column
     private LocalDateTime expiredAt;
 
+    @Transient
+    private Long rank;
+
     @Builder
     public QueueToken(Long queueTokenId, User user, String concertCode, int token, QueueStatus status, LocalDateTime issuedAt, LocalDateTime expiredAt) {
         this.queueTokenId = queueTokenId;
@@ -47,7 +50,9 @@ public class QueueToken {
         this.expiredAt = expiredAt;
     }
 
+    /* RDB 저장용 토큰 생성 */
     public static QueueToken createQueueToken(String concertCode, User user) {
+        // TODO issuedAt의 사용 점이 애매모호하다. -> token 검증용으로 쓰려고 했던 것 같지만 사용되지 않고 있음.
         LocalDateTime issuedAt = LocalDateTime.now();
 
         int token = user.getUserUUID().hashCode();
@@ -61,6 +66,21 @@ public class QueueToken {
                 .status(QueueStatus.WAITING)
                 .issuedAt(issuedAt)
                 .build();
+    }
+
+    /* Redis 저장용 토큰 생성 */
+    public static QueueToken createQueueToken(String concertCode, String userUUID) {
+        int token = userUUID.hashCode();
+        token = 31 * token + LocalDateTime.now().hashCode();
+        token = 31 * token + concertCode.hashCode();
+
+        return QueueToken.builder()
+                .token(token)
+                .build();
+    }
+
+    public void saveRank(Long rank) {
+        this.rank = rank;
     }
 
     public void changeTokenToInProgress() {

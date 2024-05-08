@@ -14,9 +14,9 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode
 public class ConcertPK implements Serializable {
 
-    @Column
+    @Column(name = "concert_code")
     private String concertCode;
-    @Column
+    @Column(name = "concert_date")
     private LocalDateTime concertDate;
 
     public static ConcertPK of(String concertCode, LocalDateTime concertDate) {

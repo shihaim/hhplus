@@ -1,8 +1,6 @@
 spring:
   profiles:
-    default: local
-  application:
-    name: ticketing
+    active: local
   datasource:
     driver-class-name: org.h2.Driver
     url: jdbc:h2:tcp://localhost:1521/hhplus-chapter2
@@ -10,7 +8,7 @@ spring:
     password:
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     properties:
       hibernate:
         format_sql: true

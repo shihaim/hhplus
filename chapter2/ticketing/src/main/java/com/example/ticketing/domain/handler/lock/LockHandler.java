@@ -1,5 +1,6 @@
 package com.example.ticketing.domain.handler.lock;
 
+import com.example.ticketing.config.RedisKey;
 import jakarta.persistence.OptimisticLockException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,10 +17,9 @@ import java.util.function.Supplier;
 public class LockHandler {
 
     private final RedissonClient redissonClient;
-    private static final String REDISSON_RLOCK_KEY_PREFIX = "RLOCK_";
 
     public <T> T runOnLock(String key, Long waitTime, Long leaseTime, Supplier<T> execute) {
-        RLock lock = redissonClient.getLock(REDISSON_RLOCK_KEY_PREFIX + key);
+        RLock lock = redissonClient.getLock(RedisKey.REDISSON_RLOCK_KEY_PREFIX.getKeyName() + key);
 
         try {
             lock.tryLock(waitTime, leaseTime, TimeUnit.SECONDS);
@@ -30,13 +30,13 @@ public class LockHandler {
             try {
                 lock.unlock();
             } catch (IllegalMonitorStateException e) {
-                log.info("Redisson Lock Already UnLock {}", REDISSON_RLOCK_KEY_PREFIX + key);
+                log.info("Redisson Lock Already UnLock {}", RedisKey.REDISSON_RLOCK_KEY_PREFIX.getKeyName() + key);
             }
         }
     }
 
     public <T> T runOnLock(String key, Long waitTime, Long leaseTime, String errMsg, Supplier<T> execute) {
-        RLock lock = redissonClient.getLock(REDISSON_RLOCK_KEY_PREFIX + key);
+        RLock lock = redissonClient.getLock(RedisKey.REDISSON_RLOCK_KEY_PREFIX.getKeyName() + key);
 
         try {
             if (!lock.tryLock(waitTime, leaseTime, TimeUnit.SECONDS)) {
@@ -51,7 +51,7 @@ public class LockHandler {
             try {
                 lock.unlock();
             } catch (IllegalMonitorStateException e) {
-                log.info("Redisson Lock Already UnLock {}", REDISSON_RLOCK_KEY_PREFIX + key);
+                log.info("Redisson Lock Already UnLock {}", RedisKey.REDISSON_RLOCK_KEY_PREFIX.getKeyName() + key);
             }
         }
     }

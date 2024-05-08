@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDateTime;
 
@@ -18,12 +19,14 @@ public class Reservation {
     private Long reservationId;
 
     @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "seat_id")
     private Seat seat;
 
     @Column(name = "user_uuid")
     private String userUUID;
 
     @Column
+    @ColumnDefault("-1")
     private int token;
 
     @Column

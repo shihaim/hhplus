@@ -4,25 +4,24 @@ import com.example.ticketing.domain.token.entity.QueueStatus;
 import com.example.ticketing.domain.token.entity.QueueToken;
 import com.example.ticketing.domain.token.repository.QueueTokenReaderRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Primary;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-@Primary
-@Repository("queueTokenCoreReaderRepository")
+@Repository("queueTokenRedisReaderRepository")
 @RequiredArgsConstructor
-public class QueueTokenCoreReaderRepository implements QueueTokenReaderRepository {
+public class QueueTokenRedisReaderRepository implements QueueTokenReaderRepository {
 
-    private final QueueTokenJpaRepository queueTokenJpaRepository;
+    private final RedisTemplate<String, Integer> redisTemplate;
 
     @Override
     public Optional<QueueToken> findByUserUUIDAndToken(String userUUID, int token) {
-        return queueTokenJpaRepository.findByUser_UserUUIDAndToken(userUUID, token);
+        return Optional.empty();
     }
 
     @Override
     public Optional<Long> findLastQueueNumber(String concertCode, QueueStatus inProgress, QueueStatus expired) {
-        return queueTokenJpaRepository.findLastQueueNumber(concertCode, inProgress, expired);
+        return Optional.empty();
     }
 }

@@ -7,7 +7,13 @@ public record IssuedTokenResponse(
         int token
 ) {
 
+    /* RDBMS */
     public static IssuedTokenResponse convert(QueueToken queueToken) {
         return new IssuedTokenResponse(queueToken.getQueueTokenId(), queueToken.getToken());
+    }
+
+    /* Redis */
+    public static IssuedTokenResponse convert2(QueueToken queueToken) {
+        return new IssuedTokenResponse(queueToken.getRank(), queueToken.getToken());
     }
 }
