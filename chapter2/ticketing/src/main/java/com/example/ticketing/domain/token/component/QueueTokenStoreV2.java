@@ -19,8 +19,8 @@ public class QueueTokenStoreV2 {
     /**
      * 대기열 토큰 생성
      */
-    public QueueTokenInfo saveQueueToken(QueueTokenInfo createQueueTokenInfo) {
-        return storeRepository.save(createQueueTokenInfo);
+    public void saveQueueToken(QueueTokenInfo createQueueTokenInfo) {
+        storeRepository.save(createQueueTokenInfo);
     }
 
     /**

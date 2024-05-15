@@ -32,10 +32,11 @@ public class IssueQueueTokenUseCaseV2 {
         concertValidator.isExist(concertReader.findConcertDates(concertCode).size());
         // 2. 유저 존재 여부 확인후 토큰 발급
         User user = userReader.findUser(userUUID);
-        QueueTokenInfo saveQueueTokenInfo = queueTokenStore.saveQueueToken(QueueTokenInfo.createQueueTokenInfo(concertCode, userUUID));
+        QueueTokenInfo createQueueTokenInfo = QueueTokenInfo.createQueueTokenInfo(concertCode, userUUID);
+        queueTokenStore.saveQueueToken(createQueueTokenInfo);
         // 3. 대기열 토큰 발급후 Rank 조회
-        queueTokenReader.findMyQueueRank(saveQueueTokenInfo, true);
+        queueTokenReader.findMyQueueRank(createQueueTokenInfo, true);
 
-        return IssuedTokenResponse.convert2(saveQueueTokenInfo);
+        return IssuedTokenResponse.convert2(createQueueTokenInfo);
     }
 }
