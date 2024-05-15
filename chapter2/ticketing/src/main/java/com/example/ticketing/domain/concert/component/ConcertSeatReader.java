@@ -33,4 +33,12 @@ public class ConcertSeatReader {
         return readerRepository.findByConcertPKAndSeatNumberAndStatus(ConcertPK.of(concertCode, concertDate), seatNumber, TicketingStatus.NONE)
                 .orElseThrow(() -> new NoSuchElementException("이미 예매가 완료된 좌석입니다."));
     }
+
+    /**
+     * 예매가 되지 않은 좌석 Count 조회
+     */
+    public int findNotCompletedSeatCount(String concertCode, TicketingStatus status) {
+        Integer notCompletedSeatCount = readerRepository.findNotCompletedSeatCount(concertCode, status);
+        return notCompletedSeatCount != null ? notCompletedSeatCount : -1;
+    }
 }

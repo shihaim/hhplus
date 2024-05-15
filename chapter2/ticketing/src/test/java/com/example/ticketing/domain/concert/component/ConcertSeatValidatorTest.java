@@ -36,6 +36,6 @@ class ConcertSeatValidatorTest {
         );
 
         //then
-        assertThat(e.getMessage()).isEqualTo("존재하지 않는 좌석입니다");
+        assertThat(e.getMessage()).isEqualTo("존재하지 않는 좌석입니다.");
     }
 }

@@ -1,16 +1,24 @@
 package com.example.ticketing.domain.token.repository;
 
-import com.example.ticketing.domain.token.entity.QueueStatus;
-import com.example.ticketing.domain.token.entity.QueueToken;
+import com.example.ticketing.domain.token.entity.QueueTokenInfo;
 
-import java.util.Optional;
+import java.util.List;
+import java.util.Set;
 
 public interface QueueTokenReaderRepositoryV2 {
 
-    Optional<QueueToken> findByUserUUIDAndToken(String userUUID, int token);
+    /**
+     * 내 Rank 조회
+     */
+    QueueTokenInfo findMyRank(QueueTokenInfo queueTokenInfo);
 
     /**
-     * IN_PROGRESS와 EXPIRED 사이의 max 값 조회하기(IN_PROGRESS가 없을 수도 있으므로)
+     * In-Progress Count 조회
      */
-    Optional<Long> findLastQueueNumber(String concertCode, QueueStatus inProgress, QueueStatus expired);
+    Set<String> findInProgressTokenCount();
+
+    /**
+     * Waiting Token Pop(Select)
+     */
+    List<QueueTokenInfo> popWaitingTokens(long count);
 }

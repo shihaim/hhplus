@@ -1,6 +1,7 @@
 package com.example.ticketing.api.concert.dto;
 
 import com.example.ticketing.domain.token.entity.QueueToken;
+import com.example.ticketing.domain.token.entity.QueueTokenInfo;
 
 public record IssuedTokenResponse(
         Long tokenId,
@@ -13,7 +14,7 @@ public record IssuedTokenResponse(
     }
 
     /* Redis */
-    public static IssuedTokenResponse convert2(QueueToken queueToken) {
-        return new IssuedTokenResponse(queueToken.getRank(), queueToken.getToken());
+    public static IssuedTokenResponse convert2(QueueTokenInfo queueTokenInfo) {
+        return new IssuedTokenResponse(queueTokenInfo.getRank(), queueTokenInfo.getToken());
     }
 }

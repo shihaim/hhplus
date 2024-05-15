@@ -15,6 +15,8 @@ public interface SeatJpaRepository extends JpaRepository<Seat, Long> {
 
     Optional<Seat> findByConcert_ConcertPKAndSeatNumberAndStatus(ConcertPK concertPK, int seatNumber, TicketingStatus status);
 
+    Integer findByConcert_ConcertPK_ConcertCodeAndStatus(String concertCode, TicketingStatus status);
+
     // Index 검증용 쿼리
     @Query("""
     select s from Seat s join fetch s.reservation

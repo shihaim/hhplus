@@ -1,5 +1,6 @@
 package com.example.ticketing.config;
 
+import com.example.ticketing.domain.token.entity.QueueTokenInfo;
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
 import org.redisson.config.Config;
@@ -12,6 +13,7 @@ import org.springframework.data.redis.connection.lettuce.LettuceClientConfigurat
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
+import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 
 @Configuration
 @EnableRedisRepositories
@@ -66,19 +68,11 @@ public class RedisConfig {
         return Redisson.create(config);
     }
 
-    /**
-     * public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory connectionFactory) {
-     *      ...
-     *      redisTemplate.setConnectionFactory(connectionFactory);
-     * }
-     */
     @Bean
-    public RedisTemplate<String, Integer> redisTemplate() {
-        RedisTemplate<String, Integer> redisTemplate = new RedisTemplate<>();
+    public RedisTemplate<String, QueueTokenInfo> redisTemplate() {
+        RedisTemplate<String, QueueTokenInfo> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(redisConnectionFactory());
-
-        // value Serializer
-//        redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<>(Object.class));
+        redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
 
         return redisTemplate;
     }

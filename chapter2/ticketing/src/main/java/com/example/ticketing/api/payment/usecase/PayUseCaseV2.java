@@ -50,7 +50,7 @@ public class PayUseCaseV2 {
                     // 7. 좌석 예매 완료 처리
                     findSeat.ticketingComplete();
                     // 8. 대기열 토큰 제거 (soft delete)
-                    findUser.getQueueToken().changeTokenToExpired();
+                    findUser.getQueueToken().changeTokenToExpired(); // TODO redis내 토큰 삭제로 변경 필요
 
                     return PaymentDetailResponse.convert(savePaymentDetail);
         }));
