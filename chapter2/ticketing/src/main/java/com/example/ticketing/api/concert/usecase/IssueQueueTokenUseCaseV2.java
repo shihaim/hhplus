@@ -29,9 +29,9 @@ public class IssueQueueTokenUseCaseV2 {
      */
     public IssuedTokenResponse execute(String concertCode, String userUUID) {
         // 1. 콘서트 존재 여부 확인
-        concertValidator.isExist(concertReader.findConcertDates(concertCode).size());
+//        concertValidator.isExist(concertReader.findConcertDates(concertCode).size()); // TODO 캐시 처리하여서 존재 여부 확인하는 방식으로 가져가기
         // 2. 유저 존재 여부 확인후 토큰 발급
-        User user = userReader.findUser(userUUID);
+//        User user = userReader.findUser(userUUID);
         QueueTokenInfo createQueueTokenInfo = QueueTokenInfo.createQueueTokenInfo(concertCode, userUUID);
         queueTokenStore.saveQueueToken(createQueueTokenInfo);
         // 3. 대기열 토큰 발급후 Rank 조회

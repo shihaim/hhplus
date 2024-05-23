@@ -27,11 +27,14 @@ public class QueueTokenInterceptor implements HandlerInterceptor {
     );
 
     private final List<String> POST_URI = List.of(
-            "/api/v1/users/*/balance"
+            "/api/v1/concerts/*/token",
+            "/api/v1/users/*/balance",
+            "/error"
     );
 
     private final List<String> PATCH_URI = List.of(
-            "/api/v1/users/*/balance"
+            "/api/v1/users/*/balance",
+            "/error"
     );
 
     private final Map<String, List<String>> excludePathPatternMap = Map.of(
@@ -39,6 +42,7 @@ public class QueueTokenInterceptor implements HandlerInterceptor {
             "POST", POST_URI,
             "PATCH", PATCH_URI
     );
+
     private final PathMatcher matcher = new AntPathMatcher();
     private final QueueTokenVerificationJpaRepository repository;
 
@@ -50,10 +54,13 @@ public class QueueTokenInterceptor implements HandlerInterceptor {
         log.info("Request :: [{}] [{}]", method, requestURI);
 
         Set<Map.Entry<String, List<String>>> entries = excludePathPatternMap.entrySet();
-        for (Map.Entry<String, List<String>> entry : entries) {
-            return entry.getValue().stream()
-                    .anyMatch(uri -> matcher.match(uri, requestURI) && entry.getKey().equals(method));
-        }
+        boolean checkUri = entries.stream()
+                .filter(entryMethod -> entryMethod.getKey().equals(method))
+                .anyMatch(entryUri -> {
+                    return entryUri.getValue().stream().anyMatch(uri -> matcher.match(uri, requestURI));
+                });
+
+        if (checkUri) return true;
 
         // 토큰 검증 URI의 경우 아래 검증 로직 진행
         String authorization = request.getHeader("Authorization");
@@ -65,12 +72,12 @@ public class QueueTokenInterceptor implements HandlerInterceptor {
         }
 
         String userUUID = request.getParameter("userUUID");
-        int isExists = repository.findVerificationToken(userUUID, Integer.parseInt(authorization), QueueStatus.EXPIRED);
+        /*int isExists = repository.findVerificationToken(userUUID, Integer.parseInt(authorization), QueueStatus.EXPIRED);
 
         if (isExists != 1) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
             return false;
-        }
+        }*/
 
         return true;
     }

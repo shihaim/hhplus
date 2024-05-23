@@ -5,6 +5,7 @@ import com.example.ticketing.domain.token.repository.QueueTokenStoreRepositoryV2
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -19,6 +20,7 @@ public class QueueTokenStoreV2 {
     /**
      * 대기열 토큰 생성
      */
+    @Transactional
     public void saveQueueToken(QueueTokenInfo createQueueTokenInfo) {
         storeRepository.save(createQueueTokenInfo);
     }

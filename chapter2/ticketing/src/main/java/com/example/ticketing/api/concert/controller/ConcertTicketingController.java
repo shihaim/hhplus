@@ -18,6 +18,7 @@ public class ConcertTicketingController {
     private final IssueQueueTokenUseCase issueQueueTokenUseCase;
     private final IssueQueueTokenUseCaseV2 issueQueueTokenUseCaseV2;
     private final QueuePollingUseCase queuePollingUseCase;
+    private final QueuePollingUseCaseV2 queuePollingUseCaseV2;
     private final GetAvailableDateUseCase getAvailableDateUseCase;
     private final GetAvailableSeatsUseCase getAvailableSeatsUseCase;
     private final ReserveSeatUseCase reserveSeatUseCase;
@@ -28,7 +29,7 @@ public class ConcertTicketingController {
             @RequestHeader("Authorization") int token,
             @RequestBody String userUUID
     ) {
-        QueuePollingResponse response = queuePollingUseCase.execute(concertCode, userUUID, token);
+        QueuePollingResponse response = queuePollingUseCaseV2.execute(concertCode, userUUID, token);
 
         return ResponseEntity.ok(ConcertApiResponse.of(response));
     }
